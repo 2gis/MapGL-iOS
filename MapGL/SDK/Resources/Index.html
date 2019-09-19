@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<style>
+		html,
+		body,
+		#map {
+			margin: 0;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div id="map"></div>
+	<script src="https://mapgl.2gis.com/api/js"></script>
+	<script>
+
+		var markers = new Map();
+		const container = document.getElementById('map');
+
+		window.initializeMap = function (center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey, bundleId) {
+			window.map = new mapgl.Map(container, {
+				center: center,
+				maxZoom: maxZoom,
+				minZoom: minZoom,
+				zoom: zoom,
+				maxPitch: maxPitch,
+				minPitch: minPitch,
+				pitch: pitch,
+				rotation: rotation,
+				key: apiKey
+			});
+
+			window.map.on('click', (ev) => {
+				window.webkit.messageHandlers.dgsMessage.postMessage({
+					type: "mapClick",
+					value: ev.lngLat
+				});
+			});
+
+			window.map.on('centerend', (ev) => {
+				window.webkit.messageHandlers.dgsMessage.postMessage({
+					type: "centerChanged",
+					value: window.map.getCenter()
+				});
+			});
+
+			window.map.on('zoomend', (ev) => {
+				window.webkit.messageHandlers.dgsMessage.postMessage({
+					type: "zoomChanged",
+					value: window.map.getZoom()
+				});
+			});
+
+			window.map.on('rotationend', (ev) => {
+				window.webkit.messageHandlers.dgsMessage.postMessage({
+					type: "rotationChanged",
+					value: window.map.getRotation()
+				});
+			});
+
+			window.map.on('pitchend', (ev) => {
+				window.webkit.messageHandlers.dgsMessage.postMessage({
+					type: "pitchChanged",
+					value: window.map.getPitch()
+				});
+			});
+		}
+
+		window.addMarker = function (point, size, img, anchor, id) {
+			const marker = new mapgl.Marker(window.map, {
+				coordinates: point,
+				icon: img,
+				anchor: anchor,
+				size: size
+			});
+			markers.set(id, marker);
+			marker.on('click', (ev) => {
+				window.webkit.messageHandlers.dgsMessage.postMessage({
+					type: "markerClick",
+					value: id
+				});
+			});
+		}
+
+		window.destroyMarker = function (id) {
+			const marker = markers.get(id);
+			marker.destroy();
+			markers.delete(id);
+		}
+
+		window.hideMarker = function (id) {
+			const marker = markers.get(id);
+			marker.hide();
+		}
+
+		window.showMarker = function (id) {
+			const marker = markers.get(id);
+			marker.show();
+		}
+
+		window.setMarkerCoordinates = function (id, coordinates) {
+			const marker = markers.get(id);
+			marker.setCoordinates(coordinates);
+		}
+
+		window.addEventListener('resize', () => window.map.invalidateSize());
+
+	</script>
+</body>
+
+</html>
