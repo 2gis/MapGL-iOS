@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -187,16 +187,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/MapGL/MapGL.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapGL.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -352,7 +347,7 @@
 			baseConfigurationReference = F9A2C164D1EB6D4691F47EF8 /* Pods-HelloSDK.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 695938Y5Q8;
 				INFOPLIST_FILE = HelloSDK/Info.plist;
@@ -374,7 +369,7 @@
 			baseConfigurationReference = 0D00A668872B91FD0A4E3EB8 /* Pods-HelloSDK.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 695938Y5Q8;
 				INFOPLIST_FILE = HelloSDK/Info.plist;

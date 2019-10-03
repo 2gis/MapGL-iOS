@@ -163,7 +163,7 @@ class Tests: XCTestCase {
 		let marker = self.testMarkerWithoutImage()
 		self.map.addMarker(marker)
 		marker.remove()
-		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.removeMarker(\"123\");")
+		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.destroyMarker(\"123\");")
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 2)
 	}
 
@@ -171,7 +171,7 @@ class Tests: XCTestCase {
 		let marker = self.testMarkerWithoutImage()
 		self.map.addMarker(marker)
 		self.map.removeMarker(marker)
-		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.removeMarker(\"123\");")
+		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.destroyMarker(\"123\");")
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 2)
 	}
 
