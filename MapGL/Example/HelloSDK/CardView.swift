@@ -5,6 +5,7 @@ class CardView : UIView {
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel(frame: .zero)
 		label.font = UIFont.systemFont(ofSize: 24)
+		label.textColor = .black
 		return label
 	}()
 
@@ -12,6 +13,7 @@ class CardView : UIView {
 		let label = UILabel(frame: .zero)
 		label.font = UIFont.systemFont(ofSize: 12)
 		label.numberOfLines = 0
+		label.textColor = .black
 		return label
 	}()
 

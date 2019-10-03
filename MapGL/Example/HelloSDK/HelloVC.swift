@@ -15,24 +15,28 @@ class HelloVC: UIViewController {
 	private lazy var mapCenterLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.systemFont(ofSize: 8)
+		label.textColor = .black
 		return label
 	}()
 
 	private lazy var mapZoomLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.systemFont(ofSize: 8)
+		label.textColor = .black
 		return label
 	}()
 
 	private lazy var mapRotationLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.systemFont(ofSize: 8)
+		label.textColor = .black
 		return label
 	}()
 
 	private lazy var mapPitchLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.systemFont(ofSize: 8)
+		label.textColor = .black
 		return label
 	}()
 
