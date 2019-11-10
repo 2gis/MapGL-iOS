@@ -1,0 +1,3 @@
+app_identifier "ru.doublegis.hellosdk" # The bundle identifier of your app
+apple_id "e.tyutyuev@2gis.ru" # Your Apple email address
+

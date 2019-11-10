@@ -3,7 +3,7 @@ import CoreLocation
 import UIKit
 
 /// Represents a single marker on the map.
-public class Marker {
+open class Marker {
 
 	/// Defines how the marker image is positioned relative to the marker coordinates.
 	///
@@ -33,7 +33,7 @@ public class Marker {
 		case relative(Double, Double)
 	}
 
-	let id: String
+	public let id: String
 	weak var delegate: MarkerDelegate?
 
 	/// Notifies of the marker click event.
@@ -71,20 +71,8 @@ public class Marker {
 	///
 	/// - Parameters:
 	///   - coordinates: Marker geographical coordinates
-	///   - image: Marker image
-	///   - anchor: Marker anchor
-	public convenience init(coordinates: CLLocationCoordinate2D, image: UIImage, anchor: Anchor) {
-		let uid = NSUUID().uuidString
-		self.init(coordinates: coordinates, image: image, anchor: anchor, uid: uid)
-	}
-
-	/// Creates the new instance of the marker object.
-	///
-	/// - Parameters:
-	///   - coordinates: Marker geographical coordinates
 	public convenience init(coordinates: CLLocationCoordinate2D) {
-		let uid = NSUUID().uuidString
-		self.init(coordinates: coordinates, image: nil, anchor: .center, uid: uid)
+		self.init(coordinates: coordinates, image: nil, anchor: .center)
 	}
 
 	/// Creates the new instance of the marker object.
@@ -94,8 +82,8 @@ public class Marker {
 	///   - image: Marker image
 	///   - anchor: Marker anchor
 	///   - uid: Marker uid
-	init(coordinates: CLLocationCoordinate2D, image: UIImage?, anchor: Anchor, uid: String) {
-		self.id = uid
+	public init(coordinates: CLLocationCoordinate2D, image: UIImage?, anchor: Anchor) {
+		self.id = NSUUID().uuidString
 		self.coordinates = coordinates
 		self.image = image
 		self.anchor = anchor
@@ -106,3 +94,4 @@ public class Marker {
 		self.delegate?.markerDidRemove(self)
 	}
 }
+

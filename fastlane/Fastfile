@@ -1,0 +1,38 @@
+fastlane_version "2.68.2"
+
+default_platform :ios
+
+platform :ios do
+
+  lane :new_minor do 
+    rlz(bump_type: "minor")
+  end
+
+  lane :rlz do |options|
+
+    version = options[:version]
+    if version.to_s.empty?
+      bump_type = options[:bump_type]
+      if bump_type.to_s.empty?
+        version_bump_podspec(bump_type: "patch")
+      else
+        version_bump_podspec(bump_type: bump_type)
+      end
+      version = lane_context[SharedValues::PODSPEC_VERSION_NUMBER]
+    else
+      version_bump_podspec(version_number: version)  
+    end
+    
+    git_commit(
+      message: "Bump up version to #{version}",
+      path: ["./*"]
+    )
+    add_git_tag(
+      tag: version
+    )
+    push_to_git_remote
+    pod_push(allow_warnings: true, use_bundle_exec: true)
+  end
+
+end
+
