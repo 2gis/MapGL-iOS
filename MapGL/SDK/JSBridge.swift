@@ -37,166 +37,144 @@ class JSBridge : NSObject {
 		"\(apiKey)",
 		"\(bundleId)");
 		"""
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func invalidateSize(completion: ((Result<Void, Error>) -> Void)?) {
 		let js = "window.map.invalidateSize();"
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func fetchMapCenter(completion: ((Result<CLLocationCoordinate2D, Error>) -> Void)?) {
 		let js = "window.map.getCenter();"
 		self.executor.evaluateJavaScript(js) { (result, erorr) in
 			if let error = erorr {
-				completion?(Result.failure(error))
+				completion?(.failure(error))
 			} else if let result = result as? [Double], result.count == 2 {
 				let lon = result[0]
 				let lat = result[1]
-				completion?(Result.success(CLLocationCoordinate2D(latitude: lat, longitude: lon)))
+				completion?(.success(CLLocationCoordinate2D(latitude: lat, longitude: lon)))
 			} else {
-				completion?(Result.failure(MapGLError(text: "Parsing error")))
+				completion?(.failure(MapGLError(text: "Parsing error")))
 			}
 		}
 	}
 
 	func setMapCenter(_ center: CLLocationCoordinate2D, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = "window.map.setCenter([\(center.longitude), \(center.latitude)]);"
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func fetchMapZoom(completion: ((Result<Double, Error>) -> Void)?) {
 		let js = "window.map.getZoom();"
 		self.executor.evaluateJavaScript(js) { (result, erorr) in
 			if let error = erorr {
-				completion?(Result.failure(error))
+				completion?(.failure(error))
 			} else if let result = result as? Double {
-				completion?(Result.success(result))
+				completion?(.success(result))
 			} else {
-				completion?(Result.failure(MapGLError(text: "Parsing error")))
+				completion?(.failure(MapGLError(text: "Parsing error")))
 			}
 		}
 	}
 
 	func setMapZoom(_ zoom: Double, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = "window.map.setZoom(\(zoom));"
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func setMapMaxZoom(_ maxZoom: Double, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = "window.map.setMaxZoom(\(maxZoom));"
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func setMapMinZoom(_ minZoom: Double, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = "window.map.setMinZoom(\(minZoom));"
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func fetchMapRotation(completion: ((Result<Double, Error>) -> Void)?) {
 		let js = "window.map.getRotation();"
 		self.executor.evaluateJavaScript(js) { (result, erorr) in
 			if let error = erorr {
-				completion?(Result.failure(error))
+				completion?(.failure(error))
 			} else if let result = result as? Double {
-				completion?(Result.success(result))
+				completion?(.success(result))
 			} else {
-				completion?(Result.failure(MapGLError(text: "Parsing error")))
+				completion?(.failure(MapGLError(text: "Parsing error")))
 			}
 		}
 	}
 
 	func setMapRotation(_ rotation: Double, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = "window.map.setRotation(\(rotation));"
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func fetchMapPitch(completion: ((Result<Double, Error>) -> Void)?) {
 		let js = "window.map.getPitch();"
 		self.executor.evaluateJavaScript(js) { (result, erorr) in
 			if let error = erorr {
-				completion?(Result.failure(error))
+				completion?(.failure(error))
 			} else if let result = result as? Double {
-				completion?(Result.success(result))
+				completion?(.success(result))
 			} else {
-				completion?(Result.failure(MapGLError(text: "Parsing error")))
+				completion?(.failure(MapGLError(text: "Parsing error")))
 			}
 		}
 	}
 
 	func setMapPitch(_ pitch: Double, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = "window.map.setPitch(\(pitch));"
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func setMapMaxPitch(_ maxPitch: Double, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = "window.map.setMaxPitch(\(maxPitch));"
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func setMapMinPitch(_ minPitch: Double, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = "window.map.setMinPitch(\(minPitch));"
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
+	}
+
+	func addPolygon(_ polygon: Polygon, completion: ((Result<Void, Error>) -> Void)?) {
+		let points = polygon.points.map {
+			"[\($0.longitude), \($0.latitude)]"
+		}.joined(separator: ",")
+		let js = """
+		window.addPolygon(
+		[[\(points)]],
+		"\(polygon.id)",
+		);
+		"""
+		self.evaluateJS(js, completion: completion)
+	}
+
+	func destroyPolygon(_ polygon: Polygon, completion: ((Result<Void, Error>) -> Void)?) {
+		let js = """
+		window.destroyPolygon("\(polygon.id)");
+		"""
+		self.evaluateJS(js, completion: completion)
+	}
+
+	func addCircle(_ circle: Circle, completion: ((Result<Void, Error>) -> Void)?) {
+		let js = """
+		window.addCircle(
+		[\(circle.center.longitude), \(circle.center.latitude)],
+		"\(circle.radius)",
+		"\(circle.id)",
+		);
+		"""
+		self.evaluateJS(js, completion: completion)
+	}
+
+	func destroyCircle(_ circle: Circle, completion: ((Result<Void, Error>) -> Void)?) {
+		let js = """
+		window.destroyCircle("\(circle.id)");
+		"""
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func addMarker(_ marker: Marker, completion: ((Result<Void, Error>) -> Void)?) {
@@ -222,52 +200,28 @@ class JSBridge : NSObject {
 			"\(marker.id)");
 			"""
 		}
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func destroyMarker(_ marker: Marker, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = """
 		window.destroyMarker("\(marker.id)");
 		"""
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func hideMarker(_ marker: Marker, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = """
 		window.hideMarker("\(marker.id)");
 		"""
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func showMarker(_ marker: Marker, completion: ((Result<Void, Error>) -> Void)?) {
 		let js = """
 		window.showMarker("\(marker.id)");
 		"""
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
-			if let error = erorr {
-				completion?(Result.failure(error))
-			} else {
-				completion?(Result.success(()))
-			}
-		}
+		self.evaluateJS(js, completion: completion)
 	}
 
 	func setMarkerCoordinates(_ marker: Marker, coordinates: CLLocationCoordinate2D, completion: ((Result<Void, Error>) -> Void)?) {
@@ -276,14 +230,19 @@ class JSBridge : NSObject {
 		"\(marker.id)",
 		[\(marker.coordinates.longitude), \(marker.coordinates.latitude)]);
 		"""
+		self.evaluateJS(js, completion: completion)
+	}
+
+	private func evaluateJS(_ js: String, completion: ((Result<Void, Error>) -> Void)?){
 		self.executor.evaluateJavaScript(js) { (result, erorr) in
 			if let error = erorr {
-				completion?(Result.failure(error))
+				completion?(.failure(error))
 			} else {
-				completion?(Result.success(()))
+				completion?(.success(()))
 			}
 		}
 	}
+
 }
 
 extension JSBridge: WKScriptMessageHandler {

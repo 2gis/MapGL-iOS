@@ -214,12 +214,37 @@ class HelloVC: UIViewController {
 			self.map.addMarker(marker)
 		}
 
-		let removeMarkersAction = UIAlertAction(title: "Remove All Markers", style: .destructive) { _ in
+		let showPolygon = UIAlertAction(title: "Show polygon", style: .default) { _ in
+			let p = Polygon(
+				points: [
+					self.map.mapCenter,
+					CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
+					CLLocationCoordinate2D(latitude: 25.24584, longitude: 55.31878),
+					self.map.mapCenter,
+				],
+				strokeColor: .red,
+				strokeWidth: 5,
+				fillColor: UIColor.blue.withAlphaComponent(0.5)
+			)
+			self.map.add(p)
+		}
+		let showCircle = UIAlertAction(title: "Show circle", style: .default) { _ in
+			let circle = Circle(
+				center: self.map.mapCenter,
+				radius: 500
+			)
+			self.map.add(circle)
+		}
+		let removeMarkersAction = UIAlertAction(title: "Remove all objects", style: .destructive) { _ in
 			self.map.removeAllMarkers()
+			self.map.removeAllCircles()
+			self.map.removeAllPolygons()
 		}
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
+		alert.addAction(showPolygon)
+		alert.addAction(showCircle)
 		alert.addAction(showMarkerAction)
 		alert.addAction(removeMarkersAction)
 		alert.addAction(cancelAction)
