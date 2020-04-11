@@ -24,9 +24,11 @@
 	<script>
 
 		var markers = new Map();
+		var polygons = new Map();
+		var circles = new Map();
 		const container = document.getElementById('map');
 
-		window.initializeMap = function (center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey, bundleId) {
+		window.initializeMap = function(center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey, bundleId) {
 			window.map = new mapgl.Map(container, {
 				center: center,
 				maxZoom: maxZoom,
@@ -84,6 +86,7 @@
 				size: size
 			});
 			markers.set(id, marker);
+
 			marker.on('click', (ev) => {
 				window.webkit.messageHandlers.dgsMessage.postMessage({
 					type: "markerClick",
@@ -113,6 +116,30 @@
 			marker.setCoordinates(coordinates);
 		}
 
+		window.addPolygon = function (points, id) {
+			const polygon = new mapgl.Polygon(window.map, {
+				coordinates: points,
+			});
+			polygons.set(id, polygon);
+		}
+		window.destroyPolygon = function (id) {
+			const polygon = polygons.get(id);
+			polygon.destroy();
+			polygons.delete(id);
+		}
+
+		window.addCircle = function (center, radius, id) {
+			const circle = new mapgl.Circle(window.map, {
+				coordinates: center,
+				radius: radius,
+			});
+			circles.set(id, circle);
+		}
+		window.destroyCircle = function (id) {
+			const circle = circles.get(id);
+			circle.destroy();
+			circles.delete(id);
+		}
 		window.addEventListener('resize', () => window.map.invalidateSize());
 
 	</script>

@@ -21,6 +21,8 @@ public class MapView : UIView {
 	}
 
 	private var markers: [String: Marker] = [:]
+	private var polygons: [String: Polygon] = [:]
+	private var circles: [String: Circle] = [:]
 	private var jsExecutor: JSExecutorProtocol?
 	private var initializeMap: (() -> Void)?
 
@@ -270,12 +272,28 @@ extension MapView : MapViewProtocol {
 		self.js.addMarker(marker, completion: nil)
 	}
 
+	/// Adds the given polygon to the map.
+	/// - Parameter polygon: Polygon to be added to the map.
+	public func add(_ polygon: Polygon) {
+		polygon.delegate = self
+		self.polygons[polygon.id] = polygon
+		self.js.addPolygon(polygon, completion: nil)
+	}
+
+	/// Adds the given polygon to the map.
+	/// - Parameter polygon: Polygon to be added to the map.
+	public func add(_ circle: Circle) {
+		circle.delegate = self
+		self.circles[circle.id] = circle
+		self.js.addCircle(circle, completion: nil)
+	}
+
 	/// Removes the given marker from the map.
 	///
 	/// - Parameter marker: Marker to be removed from the map
 	public func removeMarker(_ marker: Marker) {
 		marker.delegate = nil
-		self.markers[marker.id] = nil
+		self.markers.removeValue(forKey: marker.id)
 		self.js.destroyMarker(marker, completion: nil)
 	}
 
@@ -283,6 +301,28 @@ extension MapView : MapViewProtocol {
 	public func removeAllMarkers() {
 		for marker in self.markers.values {
 			self.removeMarker(marker)
+		}
+	}
+
+	public func remove(_ polygon: Polygon) {
+		polygon.delegate = nil
+		self.polygons.removeValue(forKey: polygon.id)
+		self.js.destroyPolygon(polygon, completion: nil)
+	}
+	public func removeAllPolygons() {
+		for polygon in self.polygons.values {
+			self.remove(polygon)
+		}
+	}
+
+	public func remove(_ circle: Circle) {
+		circle.delegate = nil
+		self.circles.removeValue(forKey: circle.id)
+		self.js.destroyCircle(circle, completion: nil)
+	}
+	public func removeAllCircles() {
+		for circle in self.circles.values {
+			self.remove(circle)
 		}
 	}
 
@@ -411,4 +451,10 @@ extension MapView: MarkerDelegate {
 		self.removeMarker(marker)
 	}
 
+}
+
+extension MapView: PolygonDelegate {
+}
+
+extension MapView: CircleDelegate {
 }
