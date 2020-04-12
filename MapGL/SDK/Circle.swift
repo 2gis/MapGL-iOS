@@ -2,9 +2,9 @@ import CoreLocation
 
 open class Circle {
 
-	let id: String
-	let center: CLLocationCoordinate2D
-	let radius: CLLocationDistance
+	public let id: String
+	public let center: CLLocationCoordinate2D
+	public let radius: CLLocationDistance
 	weak var delegate: CircleDelegate?
 
 	public init(

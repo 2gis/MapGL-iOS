@@ -2,8 +2,8 @@ import CoreLocation
 
 open class Polygon {
 
-	let id: String
-	let points: [CLLocationCoordinate2D]
+	public let id: String
+	public let points: [CLLocationCoordinate2D]
 	let strokeColor: UIColor?
 	let fillColor: UIColor?
 	let strokeWidth: CGFloat?
@@ -28,10 +28,4 @@ open class Polygon {
 }
 
 protocol PolygonDelegate: AnyObject {
-
-//	func marker(_ marker: Marker, didChangeCoordinates coordinates: CLLocationCoordinate2D)
-//	func markerDidHide(_ marker: Marker)
-//	func markerDidShow(_ marker: Marker)
-//	func markerDidRemove(_ marker: Marker)
-
 }
