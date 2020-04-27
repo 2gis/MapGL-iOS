@@ -6,4 +6,16 @@ extension CLLocationCoordinate2D: Equatable {
 		return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
 	}
 
+	func toJS() -> String {
+		"[\(self.longitude), \(self.latitude)]"
+	}
+
+}
+
+extension Array where Element == CLLocationCoordinate2D {
+
+	func toJS() -> String {
+		self.map { $0.toJS() }.joined(separator: ",")
+	}
+
 }

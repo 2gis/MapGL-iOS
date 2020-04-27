@@ -220,7 +220,6 @@ class HelloVC: UIViewController {
 					self.map.mapCenter,
 					CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
 					CLLocationCoordinate2D(latitude: 25.24584, longitude: 55.31878),
-					self.map.mapCenter,
 				],
 				strokeColor: .red,
 				strokeWidth: 5,
@@ -240,14 +239,25 @@ class HelloVC: UIViewController {
 			)
 			self.map.add(circle)
 		}
+		let showPolyline = UIAlertAction(title: "Show polyline", style: .default) { _ in
+			let polyline = Polyline(
+				points: [
+					self.map.mapCenter,
+					CLLocationCoordinate2D(latitude: 25.20, longitude: 55.378),
+				],
+				style1: PolylineStyle(color: .red, width: 5),
+				style2: PolylineStyle(color: .green, width: 9),
+				style3: PolylineStyle(color: .blue, width: 13)
+			)
+			self.map.add(polyline)
+		}
 		let removeMarkersAction = UIAlertAction(title: "Remove all objects", style: .destructive) { _ in
-			self.map.removeAllMarkers()
-			self.map.removeAllCircles()
-			self.map.removeAllPolygons()
+			self.map.removeAllObjects()
 		}
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
+		alert.addAction(showPolyline)
 		alert.addAction(showPolygon)
 		alert.addAction(showCircle)
 		alert.addAction(showMarkerAction)

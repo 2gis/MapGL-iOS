@@ -32,3 +32,22 @@ open class Circle {
 
 protocol CircleDelegate: AnyObject {
 }
+
+extension Circle: IMapObject {
+
+	func createJSCode() -> String {
+		let js = """
+		window.addCircle(
+		[\(self.center.longitude), \(self.center.latitude)],
+		"\(self.radius)",
+		"\(self.id)",
+		\(self.strokeWidth.jsValue()),
+		\(self.fillColor.jsValue()),
+		\(self.strokeColor.jsValue()),
+		\(self.z.jsValue()),
+		);
+		"""
+		return js
+	}
+
+}

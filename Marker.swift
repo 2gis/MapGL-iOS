@@ -48,7 +48,7 @@ open class Marker {
 	/// Gets or sets the marker coordinates.
 	public var coordinates: CLLocationCoordinate2D {
 		didSet {
-			if oldValue.longitude != self.coordinates.longitude || oldValue.latitude != self.coordinates.latitude {
+			if oldValue != self.coordinates {
 				self.delegate?.marker(self, didChangeCoordinates: self.coordinates)
 			}
 		}
@@ -95,3 +95,32 @@ open class Marker {
 	}
 }
 
+extension Marker: IMapObject {
+	func createJSCode() -> String {
+		let js: String
+		if let image = self.image, let imageData = image.pngData() {
+			let imageString = imageData.base64EncodedString()
+			let markerImage = "data:image/png;base64,\(imageString)"
+			js = """
+			window.addMarker(
+			\(self.coordinates.toJS()),
+			[\(image.size.width), \(image.size.height)],
+			"\(markerImage)",
+			\(self.anchor.stringify(with: image)),
+			"\(self.id)");
+			"""
+		} else {
+			js = """
+			window.addMarker(
+			\(self.coordinates.toJS()),
+			undefined,
+			undefined,
+			undefined,
+			"\(self.id)");
+			"""
+		}
+		return js
+	}
+
+	
+}

@@ -4,6 +4,8 @@ import WebKit
 
 class JSBridge : NSObject {
 
+	typealias Completion = (Result<Void, Error>) -> Void
+
 	private unowned let executor: JSExecutorProtocol
 	weak var delegate: JSBridgeDelegate?
 
@@ -22,8 +24,8 @@ class JSBridge : NSObject {
 		rotation: Double,
 		apiKey: String,
 		bundleId: String,
-		completion: ((Result<Void, Error>) -> Void)?) {
-
+		completion: Completion? = nil
+	) {
 		let js = """
 		window.initializeMap(
 		[\(center.longitude), \(center.latitude)],
@@ -40,7 +42,7 @@ class JSBridge : NSObject {
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func invalidateSize(completion: ((Result<Void, Error>) -> Void)?) {
+	func invalidateSize(completion: Completion? = nil) {
 		let js = "window.map.invalidateSize();"
 		self.evaluateJS(js, completion: completion)
 	}
@@ -60,7 +62,7 @@ class JSBridge : NSObject {
 		}
 	}
 
-	func setMapCenter(_ center: CLLocationCoordinate2D, completion: ((Result<Void, Error>) -> Void)?) {
+	func setMapCenter(_ center: CLLocationCoordinate2D, completion: Completion? = nil) {
 		let js = "window.map.setCenter([\(center.longitude), \(center.latitude)]);"
 		self.evaluateJS(js, completion: completion)
 	}
@@ -78,22 +80,22 @@ class JSBridge : NSObject {
 		}
 	}
 
-	func setMapZoom(_ zoom: Double, completion: ((Result<Void, Error>) -> Void)?) {
+	func setMapZoom(_ zoom: Double, completion: Completion? = nil) {
 		let js = "window.map.setZoom(\(zoom));"
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func setMapMaxZoom(_ maxZoom: Double, completion: ((Result<Void, Error>) -> Void)?) {
+	func setMapMaxZoom(_ maxZoom: Double, completion: Completion? = nil) {
 		let js = "window.map.setMaxZoom(\(maxZoom));"
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func setMapMinZoom(_ minZoom: Double, completion: ((Result<Void, Error>) -> Void)?) {
+	func setMapMinZoom(_ minZoom: Double, completion: Completion? = nil) {
 		let js = "window.map.setMinZoom(\(minZoom));"
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func fetchMapRotation(completion: ((Result<Double, Error>) -> Void)?) {
+	func fetchMapRotation(completion: ((Result<Double, Error>) -> Void)? = nil) {
 		let js = "window.map.getRotation();"
 		self.executor.evaluateJavaScript(js) { (result, erorr) in
 			if let error = erorr {
@@ -106,7 +108,7 @@ class JSBridge : NSObject {
 		}
 	}
 
-	func setMapRotation(_ rotation: Double, completion: ((Result<Void, Error>) -> Void)?) {
+	func setMapRotation(_ rotation: Double, completion: Completion? = nil) {
 		let js = "window.map.setRotation(\(rotation));"
 		self.evaluateJS(js, completion: completion)
 	}
@@ -124,114 +126,39 @@ class JSBridge : NSObject {
 		}
 	}
 
-	func setMapPitch(_ pitch: Double, completion: ((Result<Void, Error>) -> Void)?) {
+	func setMapPitch(_ pitch: Double, completion: Completion? = nil) {
 		let js = "window.map.setPitch(\(pitch));"
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func setMapMaxPitch(_ maxPitch: Double, completion: ((Result<Void, Error>) -> Void)?) {
+	func setMapMaxPitch(_ maxPitch: Double, completion: Completion? = nil) {
 		let js = "window.map.setMaxPitch(\(maxPitch));"
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func setMapMinPitch(_ minPitch: Double, completion: ((Result<Void, Error>) -> Void)?) {
+	func setMapMinPitch(_ minPitch: Double, completion: Completion? = nil) {
 		let js = "window.map.setMinPitch(\(minPitch));"
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func addPolygon(_ polygon: Polygon, completion: ((Result<Void, Error>) -> Void)?) {
-		assert(polygon.points.count > 2, "Polygon should countain more than 2 points")
-		var polygonPoints = polygon.points
-		// Polygon should end with same point as starts
-		if !polygonPoints.isEmpty, polygonPoints.first != polygonPoints.last {
-			polygonPoints.append(polygonPoints[0])
-		}
-		let points = polygonPoints.map {
-			"[\($0.longitude), \($0.latitude)]"
-		}.joined(separator: ",")
-		let js = """
-		window.addPolygon(
-		[[\(points)]],
-		"\(polygon.id)",
-		\(polygon.strokeWidth.jsValue()),
-		\(polygon.fillColor.jsValue()),
-		\(polygon.strokeColor.jsValue()),
-		\(polygon.z.jsValue()),
-		);
-		"""
+	func add(_ object: IMapObject, completion: Completion? = nil) {
+		let js = object.createJSCode()
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func destroyPolygon(_ polygon: Polygon, completion: ((Result<Void, Error>) -> Void)?) {
-		let js = """
-		window.destroyPolygon("\(polygon.id)");
-		"""
+	func destroy(_ object: IMapObject, completion: Completion? = nil) {
+		let js = object.destroyJSCode()
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func addCircle(_ circle: Circle, completion: ((Result<Void, Error>) -> Void)?) {
-		let js = """
-		window.addCircle(
-		[\(circle.center.longitude), \(circle.center.latitude)],
-		"\(circle.radius)",
-		"\(circle.id)",
-		\(circle.strokeWidth.jsValue()),
-		\(circle.fillColor.jsValue()),
-		\(circle.strokeColor.jsValue()),
-		\(circle.z.jsValue()),
-		);
-		"""
-		self.evaluateJS(js, completion: completion)
-	}
-
-	func destroyCircle(_ circle: Circle, completion: ((Result<Void, Error>) -> Void)?) {
-		let js = """
-		window.destroyCircle("\(circle.id)");
-		"""
-		self.evaluateJS(js, completion: completion)
-	}
-
-	func addMarker(_ marker: Marker, completion: ((Result<Void, Error>) -> Void)?) {
-		let js: String
-		if let image = marker.image, let imageData = image.pngData() {
-			let imageString = imageData.base64EncodedString()
-			let markerImage = "data:image/png;base64,\(imageString)"
-			js = """
-			window.addMarker(
-			[\(marker.coordinates.longitude), \(marker.coordinates.latitude)],
-			[\(image.size.width), \(image.size.height)],
-			"\(markerImage)",
-			\(marker.anchor.stringify(with: image)),
-			"\(marker.id)");
-			"""
-		} else {
-			js = """
-			window.addMarker(
-			[\(marker.coordinates.longitude), \(marker.coordinates.latitude)],
-			undefined,
-			undefined,
-			undefined,
-			"\(marker.id)");
-			"""
-		}
-		self.evaluateJS(js, completion: completion)
-	}
-
-	func destroyMarker(_ marker: Marker, completion: ((Result<Void, Error>) -> Void)?) {
-		let js = """
-		window.destroyMarker("\(marker.id)");
-		"""
-		self.evaluateJS(js, completion: completion)
-	}
-
-	func hideMarker(_ marker: Marker, completion: ((Result<Void, Error>) -> Void)?) {
+	func hideMarker(_ marker: Marker, completion: Completion? = nil) {
 		let js = """
 		window.hideMarker("\(marker.id)");
 		"""
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func showMarker(_ marker: Marker, completion: ((Result<Void, Error>) -> Void)?) {
+	func showMarker(_ marker: Marker, completion: Completion? = nil) {
 		let js = """
 		window.showMarker("\(marker.id)");
 		"""
@@ -247,7 +174,7 @@ class JSBridge : NSObject {
 		self.evaluateJS(js, completion: completion)
 	}
 
-	private func evaluateJS(_ js: String, completion: ((Result<Void, Error>) -> Void)?){
+	private func evaluateJS(_ js: String, completion: Completion? = nil){
 		self.executor.evaluateJavaScript(js) { (result, erorr) in
 			if let error = erorr {
 				completion?(.failure(error))
@@ -306,37 +233,3 @@ extension JSBridge: WKScriptMessageHandler {
 	}
 }
 
-private extension Marker.Anchor {
-
-	func stringify(with markerImage: UIImage) -> String {
-
-		let width = Double(markerImage.size.width)
-		let height = Double(markerImage.size.height)
-
-		switch self {
-		case .bottom:
-			return "[\(0.5 * width), \(height)]"
-		case .center:
-			return "[\(0.5 * width), \(0.5 * height)]"
-		case .left:
-			return "[0, \(0.5 * height)]"
-		case .leftBotton:
-			return "[0, \(height)]"
-		case .leftTop:
-			return "[0, 0]"
-		case .right:
-			return "[\(width), \(0.5 * height)]"
-		case .rightBottom:
-			return "[\(width), \(height)]"
-		case .rightTop:
-			return "[\(width), 0]"
-		case .top:
-			return "[\(0.5 * width), 0]"
-		case .relative(let x, let y):
-			return "[\(x * width), \(y * height)]"
-		case .absolute(let x, let y):
-			return "[\(x), \(y)]"
-
-		}
-	}
-}

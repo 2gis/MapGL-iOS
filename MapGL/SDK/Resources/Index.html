@@ -22,10 +22,7 @@
 	<div id="map"></div>
 	<script src="https://mapgl.2gis.com/api/js"></script>
 	<script>
-
-		var markers = new Map();
-		var polygons = new Map();
-		var circles = new Map();
+		var objects = new Map();
 		const container = document.getElementById('map');
 
 		window.initializeMap = function(center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey, bundleId) {
@@ -85,7 +82,7 @@
 				anchor: anchor,
 				size: size
 			});
-			markers.set(id, marker);
+			objects.set(id, marker);
 
 			marker.on('click', (ev) => {
 				window.webkit.messageHandlers.dgsMessage.postMessage({
@@ -94,25 +91,18 @@
 				});
 			});
 		}
-
-		window.destroyMarker = function (id) {
-			const marker = markers.get(id);
-			marker.destroy();
-			markers.delete(id);
-		}
-
 		window.hideMarker = function (id) {
-			const marker = markers.get(id);
+			const marker = objects.get(id);
 			marker.hide();
 		}
 
 		window.showMarker = function (id) {
-			const marker = markers.get(id);
+			const marker = objects.get(id);
 			marker.show();
 		}
 
 		window.setMarkerCoordinates = function (id, coordinates) {
-			const marker = markers.get(id);
+			const marker = objects.get(id);
 			marker.setCoordinates(coordinates);
 		}
 
@@ -124,14 +114,13 @@
 				strokeColor: strokeColor,
 				zIndex: zIndex,
 			});
-			polygons.set(id, polygon);
+			objects.set(id, polygon);
 		}
-		window.destroyPolygon = function (id) {
-			const polygon = polygons.get(id);
-			polygon.destroy();
-			polygons.delete(id);
+		window.destroyObject = function (id) {
+			const object = objects.get(id);
+			object.destroy();
+			objects.delete(id);
 		}
-
 		window.addCircle = function (center, radius, id, strokeWidth, color, strokeColor, zIndex) {
 			const circle = new mapgl.Circle(window.map, {
 				coordinates: center,
@@ -141,14 +130,24 @@
 				strokeColor: strokeColor,
 				zIndex: zIndex,
 			});
-			circles.set(id, circle);
+			objects.set(id, circle);
+		}
+		window.addPolyline = function (id, coordinates, color, width, zIndex, color2, width2, zIndex2, color3, width3, zIndex3) {
+			const polyline = new mapgl.Polyline(window.map, {
+				coordinates: coordinates,
+				color: color,
+				width: width,
+				zIndex: zIndex,
+				color2: color2,
+				width2: width2,
+				zIndex2: zIndex2,
+				color3: color3,
+				width3: width3,
+				zIndex3: zIndex3,
+			});
+			objects.set(id, polyline);
 		}
 
-		window.destroyCircle = function (id) {
-			const circle = circles.get(id);
-			circle.destroy();
-			circles.delete(id);
-		}
 		window.addEventListener('resize', () => window.map.invalidateSize());
 
 	</script>
