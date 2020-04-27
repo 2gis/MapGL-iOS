@@ -174,8 +174,8 @@ class JSBridge : NSObject {
 		self.evaluateJS(js, completion: completion)
 	}
 
-	private func evaluateJS(_ js: String, completion: Completion? = nil){
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
+	private func evaluateJS(_ js: String, completion: Completion? = nil) {
+		self.executor.evaluateJavaScript(js) { (_, erorr) in
 			if let error = erorr {
 				completion?(.failure(error))
 			} else {
@@ -194,42 +194,41 @@ extension JSBridge: WKScriptMessageHandler {
 
 	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 		guard let delegate = self.delegate else { return }
-		guard let body = message.body as? Dictionary<String, Any> else { return }
+		guard let body = message.body as? [String: Any] else { return }
 		guard let type = body["type"] as? String else { return }
 		switch type {
-		case "centerChanged":
-			let data = body["value"] as? [Double]
-			if let lat = data?.last, let lon = data?.first {
-				delegate.js(self, mapCenterDidChange: CLLocationCoordinate2D(latitude: lat, longitude: lon))
+			case "centerChanged":
+				let data = body["value"] as? [Double]
+				if let lat = data?.last, let lon = data?.first {
+					delegate.js(self, mapCenterDidChange: CLLocationCoordinate2D(latitude: lat, longitude: lon))
 			}
-		case "zoomChanged":
-			let data = body["value"] as? Double
-			if let zoom = data {
-				delegate.js(self, mapZoomDidChange: zoom)
+			case "zoomChanged":
+				let data = body["value"] as? Double
+				if let zoom = data {
+					delegate.js(self, mapZoomDidChange: zoom)
 			}
-		case "rotationChanged":
-			let data = body["value"] as? Double
-			if let rotation = data {
-				delegate.js(self, mapRotationDidChange: rotation)
+			case "rotationChanged":
+				let data = body["value"] as? Double
+				if let rotation = data {
+					delegate.js(self, mapRotationDidChange: rotation)
 			}
-		case "pitchChanged":
-			let data = body["value"] as? Double
-			if let pitch = data {
-				delegate.js(self, mapPitchDidChange: pitch)
+			case "pitchChanged":
+				let data = body["value"] as? Double
+				if let pitch = data {
+					delegate.js(self, mapPitchDidChange: pitch)
 			}
-		case "mapClick":
-			let data = body["value"] as? [Double]
-			if let lat = data?.last, let lon = data?.first {
-				delegate.js(self, didClickMapWithLocation: CLLocationCoordinate2D(latitude: lat, longitude: lon))
+			case "mapClick":
+				let data = body["value"] as? [Double]
+				if let lat = data?.last, let lon = data?.first {
+					delegate.js(self, didClickMapWithLocation: CLLocationCoordinate2D(latitude: lat, longitude: lon))
 			}
-		case "markerClick":
-			let data = body["value"] as? String
-			if let id = data {
-				delegate.js(self, didClickMarkerWithId: id)
+			case "markerClick":
+				let data = body["value"] as? String
+				if let id = data {
+					delegate.js(self, didClickMarkerWithId: id)
 			}
-		default:
-			break
+			default:
+				break
 		}
 	}
 }
-

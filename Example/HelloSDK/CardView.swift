@@ -1,6 +1,6 @@
 import UIKit
 
-class CardView : UIView {
+class CardView: UIView {
 
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel(frame: .zero)

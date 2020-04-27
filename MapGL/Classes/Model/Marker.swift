@@ -122,5 +122,4 @@ extension Marker: IMapObject {
 		return js
 	}
 
-	
 }

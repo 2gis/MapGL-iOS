@@ -304,9 +304,10 @@ extension MapView : MapViewProtocol {
 			pitch: self.mapPitch,
 			rotation: self.mapRotation,
 			apiKey: apiKey,
-			bundleId: bundleId) {
-				result in
-				switch result {
+			bundleId: bundleId
+		) {
+			result in
+			switch result {
 				case .success:
 					self.centerDidChange?(self.mapCenter)
 					self.zoomDidChange?(self.mapZoom)
@@ -315,7 +316,7 @@ extension MapView : MapViewProtocol {
 					completion(nil)
 				case .failure(let error):
 					completion(error)
-				}
+			}
 		}
 	}
 }
@@ -328,14 +329,12 @@ extension MapView: WKNavigationDelegate {
 	}
 }
 
-
 extension MapView: JSExecutorProtocol {
-	
+
 	func evaluateJavaScript(_ javaScriptString: String, completion: ((Any?, Error?) -> Void)?) {
 		self.webView.evaluateJavaScript(javaScriptString, completionHandler: completion)
 	}
 }
-
 
 extension MapView: JSBridgeDelegate {
 

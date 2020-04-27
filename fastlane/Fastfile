@@ -10,6 +10,16 @@ platform :ios do
 
   lane :rlz do |options|
 
+    swiftlint(
+      mode: :lint,      # SwiftLint mode: :lint (default) or :autocorrect
+      path: "./MapGL",       # Specify path to lint (optional)
+      executable: "./Pods/SwiftLint/swiftlint",
+      config_file: ".swiftlint.yml",     # The path of the configuration file (optional)
+      strict: true,
+      raise_if_swiftlint_error: true,      # Allow fastlane to raise an error if swiftlint fails
+      ignore_exit_status: true    # Allow fastlane to continue even if SwiftLint returns a non-zero exit status
+    )
+
     version = options[:version]
     if version.to_s.empty?
       bump_type = options[:bump_type]
