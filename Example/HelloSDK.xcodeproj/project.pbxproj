@@ -13,11 +13,10 @@
 		0F0CEC7B2305437C0084161C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F0CEC792305437C0084161C /* LaunchScreen.storyboard */; };
 		0FDE18DA232679EB00ADD5AF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FDE18D9232679EB00ADD5AF /* Extensions.swift */; };
 		0FE65D50230D958C007E3585 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE65D4F230D958C007E3585 /* CardView.swift */; };
-		84C6D8AA2FF5CEA739E8A6D4 /* Pods_HelloSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F299158B7DF8A1A42D45DAAD /* Pods_HelloSDK.framework */; };
+		6D8B35C9222890F2866F574D /* libPods-HelloSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 369C2DE07B8A0A54FC39382F /* libPods-HelloSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0D00A668872B91FD0A4E3EB8 /* Pods-HelloSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK.release.xcconfig"; path = "Target Support Files/Pods-HelloSDK/Pods-HelloSDK.release.xcconfig"; sourceTree = "<group>"; };
 		0F0CEC6D2305437A0084161C /* HelloSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F0CEC702305437A0084161C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0F0CEC722305437A0084161C /* HelloVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloVC.swift; sourceTree = "<group>"; };
@@ -26,8 +25,9 @@
 		0F0CEC7C2305437C0084161C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0FDE18D9232679EB00ADD5AF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0FE65D4F230D958C007E3585 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
-		F299158B7DF8A1A42D45DAAD /* Pods_HelloSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F9A2C164D1EB6D4691F47EF8 /* Pods-HelloSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK.debug.xcconfig"; path = "Target Support Files/Pods-HelloSDK/Pods-HelloSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		369C2DE07B8A0A54FC39382F /* libPods-HelloSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		437C9F6E2BA611CA80277878 /* Pods-HelloSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK.debug.xcconfig"; path = "Target Support Files/Pods-HelloSDK/Pods-HelloSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		B43DFA8977133CDF104A001B /* Pods-HelloSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK.release.xcconfig"; path = "Target Support Files/Pods-HelloSDK/Pods-HelloSDK.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,7 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84C6D8AA2FF5CEA739E8A6D4 /* Pods_HelloSDK.framework in Frameworks */,
+				6D8B35C9222890F2866F574D /* libPods-HelloSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,8 +47,8 @@
 			children = (
 				0F0CEC6F2305437A0084161C /* HelloSDK */,
 				0F0CEC6E2305437A0084161C /* Products */,
-				76752FB296A7E642927F0B7F /* Pods */,
 				A479EAFAE28CA00EABD7991A /* Frameworks */,
+				D700940ED0D36E0EFC180FC7 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,21 +74,22 @@
 			path = HelloSDK;
 			sourceTree = "<group>";
 		};
-		76752FB296A7E642927F0B7F /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				F9A2C164D1EB6D4691F47EF8 /* Pods-HelloSDK.debug.xcconfig */,
-				0D00A668872B91FD0A4E3EB8 /* Pods-HelloSDK.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		A479EAFAE28CA00EABD7991A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F299158B7DF8A1A42D45DAAD /* Pods_HelloSDK.framework */,
+				369C2DE07B8A0A54FC39382F /* libPods-HelloSDK.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D700940ED0D36E0EFC180FC7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				437C9F6E2BA611CA80277878 /* Pods-HelloSDK.debug.xcconfig */,
+				B43DFA8977133CDF104A001B /* Pods-HelloSDK.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,7 +103,7 @@
 				0F0CEC692305437A0084161C /* Sources */,
 				0F0CEC6A2305437A0084161C /* Frameworks */,
 				0F0CEC6B2305437A0084161C /* Resources */,
-				F0D50485305EEF2D5C6790B1 /* [CP] Embed Pods Frameworks */,
+				1C676B8A66C6C4134D50D5E1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -159,6 +160,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1C676B8A66C6C4134D50D5E1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		675D0FE8394C5A2B1FD8251B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -179,23 +197,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F0D50485305EEF2D5C6790B1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -344,7 +345,7 @@
 		};
 		0F0CEC802305437C0084161C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F9A2C164D1EB6D4691F47EF8 /* Pods-HelloSDK.debug.xcconfig */;
+			baseConfigurationReference = 437C9F6E2BA611CA80277878 /* Pods-HelloSDK.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -366,7 +367,7 @@
 		};
 		0F0CEC812305437C0084161C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0D00A668872B91FD0A4E3EB8 /* Pods-HelloSDK.release.xcconfig */;
+			baseConfigurationReference = B43DFA8977133CDF104A001B /* Pods-HelloSDK.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";

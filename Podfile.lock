@@ -1,0 +1,16 @@
+PODS:
+  - MapGL (0.0.6)
+
+DEPENDENCIES:
+  - MapGL (from `./`)
+
+EXTERNAL SOURCES:
+  MapGL:
+    :path: "./"
+
+SPEC CHECKSUMS:
+  MapGL: f8ce0610b1d3532a888ad7af6abe2a2aeab7e5bf
+
+PODFILE CHECKSUM: c59efce8eb9617a3c07892fcfd3679cad750e674
+
+COCOAPODS: 1.8.4
