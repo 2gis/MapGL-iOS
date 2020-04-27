@@ -224,14 +224,19 @@ class HelloVC: UIViewController {
 				],
 				strokeColor: .red,
 				strokeWidth: 5,
-				fillColor: UIColor.blue.withAlphaComponent(0.5)
+				fillColor: UIColor.blue.withAlphaComponent(0.5),
+				z: 4
 			)
 			self.map.add(p)
 		}
 		let showCircle = UIAlertAction(title: "Show circle", style: .default) { _ in
 			let circle = Circle(
 				center: self.map.mapCenter,
-				radius: 500
+				radius: 500,
+				strokeColor: .red,
+				strokeWidth: 5,
+				fillColor: UIColor.lightGray.withAlphaComponent(0.5),
+				z: 5
 			)
 			self.map.add(circle)
 		}

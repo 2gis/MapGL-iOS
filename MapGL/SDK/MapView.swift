@@ -281,7 +281,7 @@ extension MapView : MapViewProtocol {
 	}
 
 	/// Adds the given polygon to the map.
-	/// - Parameter polygon: Polygon to be added to the map.
+	/// - Parameter circle: Circle to be added to the map.
 	public func add(_ circle: Circle) {
 		circle.delegate = self
 		self.circles[circle.id] = circle

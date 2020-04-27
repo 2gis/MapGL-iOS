@@ -122,7 +122,7 @@
 				strokeWidth: strokeWidth,
 				color: color,
 				strokeColor: strokeColor,
-				zIndex: zIndex
+				zIndex: zIndex,
 			});
 			polygons.set(id, polygon);
 		}
@@ -132,13 +132,18 @@
 			polygons.delete(id);
 		}
 
-		window.addCircle = function (center, radius, id) {
+		window.addCircle = function (center, radius, id, strokeWidth, color, strokeColor, zIndex) {
 			const circle = new mapgl.Circle(window.map, {
 				coordinates: center,
 				radius: radius,
+				color: color,
+				strokeWidth: strokeWidth,
+				strokeColor: strokeColor,
+				zIndex: zIndex,
 			});
 			circles.set(id, circle);
 		}
+
 		window.destroyCircle = function (id) {
 			const circle = circles.get(id);
 			circle.destroy();

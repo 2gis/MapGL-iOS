@@ -140,7 +140,13 @@ class JSBridge : NSObject {
 	}
 
 	func addPolygon(_ polygon: Polygon, completion: ((Result<Void, Error>) -> Void)?) {
-		let points = polygon.points.map {
+		assert(polygon.points.count > 2, "Polygon should countain more than 2 points")
+		var polygonPoints = polygon.points
+		// Polygon should end with same point as starts
+		if !polygonPoints.isEmpty, polygonPoints.first != polygonPoints.last {
+			polygonPoints.append(polygonPoints[0])
+		}
+		let points = polygonPoints.map {
 			"[\($0.longitude), \($0.latitude)]"
 		}.joined(separator: ",")
 		let js = """
@@ -169,6 +175,10 @@ class JSBridge : NSObject {
 		[\(circle.center.longitude), \(circle.center.latitude)],
 		"\(circle.radius)",
 		"\(circle.id)",
+		\(circle.strokeWidth.jsValue()),
+		\(circle.fillColor.jsValue()),
+		\(circle.strokeColor.jsValue()),
+		\(circle.z.jsValue()),
 		);
 		"""
 		self.evaluateJS(js, completion: completion)
