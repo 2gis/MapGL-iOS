@@ -116,9 +116,13 @@
 			marker.setCoordinates(coordinates);
 		}
 
-		window.addPolygon = function (points, id) {
+		window.addPolygon = function (points, id, strokeWidth, color, strokeColor, zIndex) {
 			const polygon = new mapgl.Polygon(window.map, {
 				coordinates: points,
+				strokeWidth: strokeWidth,
+				color: color,
+				strokeColor: strokeColor,
+				zIndex: zIndex
 			});
 			polygons.set(id, polygon);
 		}

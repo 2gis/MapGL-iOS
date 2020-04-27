@@ -7,7 +7,7 @@ open class Polygon {
 	let strokeColor: UIColor?
 	let fillColor: UIColor?
 	let strokeWidth: CGFloat?
-	let z: Int
+	let z: Int?
 	weak var delegate: PolygonDelegate?
 
 	public init(
@@ -15,7 +15,7 @@ open class Polygon {
 		strokeColor: UIColor? = nil,
 		strokeWidth: CGFloat? = nil,
 		fillColor: UIColor? = nil,
-		z: Int = 0
+		z: Int? = nil
 	) {
 		self.id = UUID().uuidString
 		self.points = points

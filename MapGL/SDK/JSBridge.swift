@@ -147,6 +147,10 @@ class JSBridge : NSObject {
 		window.addPolygon(
 		[[\(points)]],
 		"\(polygon.id)",
+		\(polygon.strokeWidth.jsValue()),
+		\(polygon.fillColor.jsValue()),
+		\(polygon.strokeColor.jsValue()),
+		\(polygon.z.jsValue()),
 		);
 		"""
 		self.evaluateJS(js, completion: completion)
