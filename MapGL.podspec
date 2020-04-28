@@ -16,9 +16,16 @@ Pod::Spec.new do |s|
 	}
 	s.source = {
 		:git => 'https://github.com/2gis/MapGL-iOS.git',
-		:tag => "v#{spec.version}"
+		:tag => "v#{s.version}"
 	}
 	s.framework = "UIKit"
 	s.source_files = 'MapGL/Classes/**/*.{swift}'
 	s.resource_bundles = { 'Map' => 'MapGL/Resources/**/*.{html}' }
+
+	s.test_spec 'Tests' do |ts|
+		ts.source_files = 'MapGL/Tests/**/*.{swift}'
+		ts.requires_app_host = true
+		ts.app_host_name = 'TestHost/App'
+		ts.dependency 'TestHost/App'
+	end
 end

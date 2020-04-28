@@ -82,8 +82,13 @@ open class Marker {
 	///   - image: Marker image
 	///   - anchor: Marker anchor
 	///   - uid: Marker uid
-	public init(coordinates: CLLocationCoordinate2D, image: UIImage?, anchor: Anchor) {
-		self.id = NSUUID().uuidString
+	public init(
+		id: String = NSUUID().uuidString,
+		coordinates: CLLocationCoordinate2D,
+		image: UIImage?,
+		anchor: Anchor
+	) {
+		self.id = id
 		self.coordinates = coordinates
 		self.image = image
 		self.anchor = anchor

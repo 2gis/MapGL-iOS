@@ -14,9 +14,11 @@
 		0FDE18DA232679EB00ADD5AF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FDE18D9232679EB00ADD5AF /* Extensions.swift */; };
 		0FE65D50230D958C007E3585 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE65D4F230D958C007E3585 /* CardView.swift */; };
 		6D8B35C9222890F2866F574D /* libPods-HelloSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 369C2DE07B8A0A54FC39382F /* libPods-HelloSDK.a */; };
+		714FB5319642F37EB73310FB /* libPods-HelloSDK-HelloSDKTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BFC5BC2536FE0441FD2AA5E /* libPods-HelloSDK-HelloSDKTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0BFC5BC2536FE0441FD2AA5E /* libPods-HelloSDK-HelloSDKTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSDK-HelloSDKTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F0CEC6D2305437A0084161C /* HelloSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F0CEC702305437A0084161C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0F0CEC722305437A0084161C /* HelloVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloVC.swift; sourceTree = "<group>"; };
@@ -25,9 +27,15 @@
 		0F0CEC7C2305437C0084161C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0FDE18D9232679EB00ADD5AF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0FE65D4F230D958C007E3585 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		276AEDAF5EC433ED25BC7895 /* Pods-HelloSDK-HelloSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK-HelloSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 		369C2DE07B8A0A54FC39382F /* libPods-HelloSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		437C9F6E2BA611CA80277878 /* Pods-HelloSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK.debug.xcconfig"; path = "Target Support Files/Pods-HelloSDK/Pods-HelloSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		737E1A542457BF89006D5087 /* HelloSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		737E1A582457BF89006D5087 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7813E63B01671344A2702392 /* Pods-HelloSDK-HelloSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK-HelloSDKTests.release.xcconfig"; path = "Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		B43DFA8977133CDF104A001B /* Pods-HelloSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK.release.xcconfig"; path = "Target Support Files/Pods-HelloSDK/Pods-HelloSDK.release.xcconfig"; sourceTree = "<group>"; };
+		DB889E7B734F557C6E9F7819 /* Pods-HelloSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDKTests.release.xcconfig"; path = "Target Support Files/Pods-HelloSDKTests/Pods-HelloSDKTests.release.xcconfig"; sourceTree = "<group>"; };
+		E26AF74FD0AAD4E3A3CE9D6C /* Pods-HelloSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-HelloSDKTests/Pods-HelloSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +47,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		737E1A512457BF89006D5087 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				714FB5319642F37EB73310FB /* libPods-HelloSDK-HelloSDKTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -46,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				0F0CEC6F2305437A0084161C /* HelloSDK */,
+				737E1A552457BF89006D5087 /* HelloSDKTests */,
 				0F0CEC6E2305437A0084161C /* Products */,
 				A479EAFAE28CA00EABD7991A /* Frameworks */,
 				D700940ED0D36E0EFC180FC7 /* Pods */,
@@ -56,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				0F0CEC6D2305437A0084161C /* HelloSDK.app */,
+				737E1A542457BF89006D5087 /* HelloSDKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -74,10 +92,19 @@
 			path = HelloSDK;
 			sourceTree = "<group>";
 		};
+		737E1A552457BF89006D5087 /* HelloSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				737E1A582457BF89006D5087 /* Info.plist */,
+			);
+			path = HelloSDKTests;
+			sourceTree = "<group>";
+		};
 		A479EAFAE28CA00EABD7991A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				369C2DE07B8A0A54FC39382F /* libPods-HelloSDK.a */,
+				0BFC5BC2536FE0441FD2AA5E /* libPods-HelloSDK-HelloSDKTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -87,6 +114,10 @@
 			children = (
 				437C9F6E2BA611CA80277878 /* Pods-HelloSDK.debug.xcconfig */,
 				B43DFA8977133CDF104A001B /* Pods-HelloSDK.release.xcconfig */,
+				E26AF74FD0AAD4E3A3CE9D6C /* Pods-HelloSDKTests.debug.xcconfig */,
+				DB889E7B734F557C6E9F7819 /* Pods-HelloSDKTests.release.xcconfig */,
+				276AEDAF5EC433ED25BC7895 /* Pods-HelloSDK-HelloSDKTests.debug.xcconfig */,
+				7813E63B01671344A2702392 /* Pods-HelloSDK-HelloSDKTests.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -115,18 +146,41 @@
 			productReference = 0F0CEC6D2305437A0084161C /* HelloSDK.app */;
 			productType = "com.apple.product-type.application";
 		};
+		737E1A532457BF89006D5087 /* HelloSDKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 737E1A5D2457BF89006D5087 /* Build configuration list for PBXNativeTarget "HelloSDKTests" */;
+			buildPhases = (
+				80DBE19CE2A227AD0D365394 /* [CP] Check Pods Manifest.lock */,
+				737E1A502457BF89006D5087 /* Sources */,
+				737E1A512457BF89006D5087 /* Frameworks */,
+				737E1A522457BF89006D5087 /* Resources */,
+				389EED86680C465E3C9FB472 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HelloSDKTests;
+			productName = HelloSDKTests;
+			productReference = 737E1A542457BF89006D5087 /* HelloSDKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		0F0CEC652305437A0084161C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1030;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = "Alexander Volokhin";
 				TargetAttributes = {
 					0F0CEC6C2305437A0084161C = {
 						CreatedOnToolsVersion = 10.3;
+					};
+					737E1A532457BF89006D5087 = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = 0F0CEC6C2305437A0084161C;
 					};
 				};
 			};
@@ -144,6 +198,7 @@
 			projectRoot = "";
 			targets = (
 				0F0CEC6C2305437A0084161C /* HelloSDK */,
+				737E1A532457BF89006D5087 /* HelloSDKTests */,
 			);
 		};
 /* End PBXProject section */
@@ -155,6 +210,13 @@
 			files = (
 				0F0CEC7B2305437C0084161C /* LaunchScreen.storyboard in Resources */,
 				0F0CEC782305437C0084161C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		737E1A522457BF89006D5087 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +238,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		389EED86680C465E3C9FB472 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		675D0FE8394C5A2B1FD8251B /* [CP] Check Pods Manifest.lock */ = {
@@ -218,6 +297,28 @@
 			shellPath = /bin/sh;
 			shellScript = "cd \"../MapGL\"\necho $PWD\n${PODS_ROOT}/SwiftLint/swiftlint lint\n\n";
 		};
+		80DBE19CE2A227AD0D365394 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HelloSDK-HelloSDKTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -229,6 +330,13 @@
 				0FE65D50230D958C007E3585 /* CardView.swift in Sources */,
 				0F0CEC712305437A0084161C /* AppDelegate.swift in Sources */,
 				0FDE18DA232679EB00ADD5AF /* Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		737E1A502457BF89006D5087 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,6 +514,48 @@
 			};
 			name = Release;
 		};
+		737E1A5B2457BF89006D5087 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 276AEDAF5EC433ED25BC7895 /* Pods-HelloSDK-HelloSDKTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = HelloSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = teanet.HelloSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HelloSDK.app/HelloSDK";
+			};
+			name = Debug;
+		};
+		737E1A5C2457BF89006D5087 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7813E63B01671344A2702392 /* Pods-HelloSDK-HelloSDKTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = HelloSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = teanet.HelloSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HelloSDK.app/HelloSDK";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -423,6 +573,15 @@
 			buildConfigurations = (
 				0F0CEC802305437C0084161C /* Debug */,
 				0F0CEC812305437C0084161C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		737E1A5D2457BF89006D5087 /* Build configuration list for PBXNativeTarget "HelloSDKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				737E1A5B2457BF89006D5087 /* Debug */,
+				737E1A5C2457BF89006D5087 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

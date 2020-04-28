@@ -163,7 +163,7 @@ class Tests: XCTestCase {
 		let marker = self.testMarkerWithoutImage()
 		self.map.addMarker(marker)
 		marker.remove()
-		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.destroyMarker(\"123\");")
+		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.destroyObject(\"123\");")
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 2)
 	}
 
@@ -171,7 +171,7 @@ class Tests: XCTestCase {
 		let marker = self.testMarkerWithoutImage()
 		self.map.addMarker(marker)
 		self.map.removeMarker(marker)
-		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.destroyMarker(\"123\");")
+		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.destroyObject(\"123\");")
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 2)
 	}
 
@@ -202,19 +202,19 @@ class Tests: XCTestCase {
 
 	private func testMarkerWithImage(anchor: Marker.Anchor) -> Marker {
 		let marker = Marker(
+			id: "123",
 			coordinates: CLLocationCoordinate2D(latitude: 1, longitude: 2),
 			image: self.testMarkerImage,
-			anchor: anchor,
-			uid: "123")
+			anchor: anchor)
 		return marker
 	}
 
 	private func testMarkerWithoutImage() -> Marker {
 		let marker = Marker(
+			id: "123",
 			coordinates: CLLocationCoordinate2D(latitude: 1, longitude: 2),
 			image: nil,
-			anchor: .center,
-			uid: "123")
+			anchor: .center)
 		return marker
 	}
 }

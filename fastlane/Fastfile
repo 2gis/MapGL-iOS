@@ -20,6 +20,11 @@ platform :ios do
       ignore_exit_status: true    # Allow fastlane to continue even if SwiftLint returns a non-zero exit status
     )
 
+    run_tests(
+      project: "./Pods/Pods.xcodeproj",
+      scheme: "MapGL-Unit-Tests"
+    )
+    
     version = options[:version]
     if version.to_s.empty?
       bump_type = options[:bump_type]
