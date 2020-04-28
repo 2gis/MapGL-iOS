@@ -22,14 +22,14 @@ map.show(apiKey: "Your API access key")
 map.show(
     apiKey: "Your API access key",
     center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-    zoom: 16)
+    zoom: 16
+)
 ```
 
 ### Showing the Marker with default image
 All manipulations with the map is allowed after the `show(apiKey:)` method is completed.
 ```swift
-map.show(apiKey: "apiKey") {
-    _ in
+map.show(apiKey: "apiKey") { _ in
     let marker = Marker(coordinates: map.mapCenter)
     map.addMarker(marker)
 }
@@ -40,22 +40,21 @@ map.show(apiKey: "apiKey") {
 let marker = Marker(
     coordinates: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
     image: UIImage(named: "pin")!,
-    anchor: .bottom)
+    anchor: .bottom
+)
 map.addMarker(marker)
 ```
 
 ### Receiving Map Click Events
 ```swift
-map.mapClick = {
-    coordinates in
+map.mapClick = { coordinates in
     // Do smth with map click coordinates
 }
 ```
 
 ### Receiving Marker Click Events
 ```swift
-map.markerClick = {
-    marker in
+map.markerClick = { marker in
     // Do smth with marker
 }
 ```
