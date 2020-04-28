@@ -10,12 +10,13 @@ Pod::Spec.new do |s|
 		:type => 'BSD 2-Clause Simplified License',
 		:file => 'LICENSE'
 	}
-	s.author = {
-		'Alexander Volokhin' => 'mapgl@2gis.com'
+	s.authors = {
+		'Alexander Volokhin' => 'mapgl@2gis.com',
+		'Eugene Tyutyuev' => 'e.tyutyuev@2gis.ru'
 	}
 	s.source = {
 		:git => 'https://github.com/2gis/MapGL-iOS.git',
-		:tag => "#{s.version}" 
+		:tag => "v#{spec.version}"
 	}
 	s.framework = "UIKit"
 	s.source_files = 'MapGL/Classes/**/*.{swift}'
