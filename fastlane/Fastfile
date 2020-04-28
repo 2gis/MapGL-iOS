@@ -38,7 +38,7 @@ platform :ios do
       path: ["./*"]
     )
     add_git_tag(
-      tag: version
+      tag: "v#{version}"
     )
     push_to_git_remote
     pod_push(allow_warnings: true, use_bundle_exec: true)
