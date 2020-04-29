@@ -47,6 +47,7 @@ public class MapView : UIView {
 	private lazy var webView: WKWebView = {
 		let webConfiguration = WKWebViewConfiguration()
 		webConfiguration.userContentController.add(self.js, name: self.js.messageHandlerName)
+		webConfiguration.userContentController.add(self.js, name: self.js.errorHandlerName)
 		let webView = WKWebView(frame: .zero, configuration: webConfiguration)
 		webView.navigationDelegate = self
 		return webView

@@ -188,11 +188,27 @@ class JSBridge : NSObject {
 
 extension JSBridge: WKScriptMessageHandler {
 
-	var messageHandlerName: String {
-		return "dgsMessage"
+	var messageHandlerName: String { "dgsMessage" }
+	var errorHandlerName: String { "error" }
+
+	func userContentController(
+		_ userContentController: WKUserContentController,
+		didReceive message: WKScriptMessage
+	) {
+		switch message.name {
+			case self.errorHandlerName:
+				self.handleError(message: message)
+			case self.messageHandlerName:
+				self.handleMessage(message: message)
+			default:
+				break
+		}
 	}
 
-	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+	private func handleError(message: WKScriptMessage) {
+	}
+
+	private func handleMessage(message: WKScriptMessage) {
 		guard let delegate = self.delegate else { return }
 		guard let body = message.body as? [String: Any] else { return }
 		guard let type = body["type"] as? String else { return }
@@ -231,4 +247,5 @@ extension JSBridge: WKScriptMessageHandler {
 				break
 		}
 	}
+
 }
