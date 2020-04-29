@@ -213,7 +213,13 @@ class HelloVC: UIViewController {
 			)
 			self.map.addMarker(marker)
 		}
-
+		let showCluster = UIAlertAction(title: "Show cluster", style: .default) { _ in
+			let cluster = Cluster(radius: 100, markers: [
+				Marker(coordinates: self.map.mapCenter),
+				Marker(coordinates: CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878)),
+			])
+			self.map.add(cluster)
+		}
 		let showPolygon = UIAlertAction(title: "Show polygon", style: .default) { _ in
 			let p = Polygon(
 				points: [
@@ -257,6 +263,7 @@ class HelloVC: UIViewController {
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
+		alert.addAction(showCluster)
 		alert.addAction(showPolyline)
 		alert.addAction(showPolygon)
 		alert.addAction(showCircle)

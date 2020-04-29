@@ -4,7 +4,7 @@ import CoreLocation
 
 public class MapView : UIView {
 
-	struct Const {
+	enum Const {
 		static let mapMinZoom: Double = 2
 		static let mapMaxZoom: Double = 20
 		static let mapMinPitch: Double = 0
@@ -50,6 +50,7 @@ public class MapView : UIView {
 		webConfiguration.userContentController.add(self.js, name: self.js.errorHandlerName)
 		let webView = WKWebView(frame: .zero, configuration: webConfiguration)
 		webView.navigationDelegate = self
+		webView.uiDelegate = self
 		return webView
 	}()
 
@@ -466,6 +467,10 @@ extension MapView {
 		}
 	}
 
+	public func add(_ cluster: Cluster) {
+		self.js.add(cluster)
+	}
+
 	public func remove(_ polygon: Polygon) {
 		polygon.delegate = nil
 		self.polygons.removeValue(forKey: polygon.id)
@@ -498,4 +503,16 @@ extension MapView {
 			self.remove(circle)
 		}
 	}
+}
+
+extension MapView: WKUIDelegate {
+
+	public func webView(
+		_ webView: WKWebView,
+		runJavaScriptAlertPanelWithMessage message: String,
+		initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void
+	) {
+		completionHandler()
+	}
+
 }

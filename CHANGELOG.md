@@ -3,7 +3,7 @@
 ## [Unreleased]
  ### Added
  - Changelog
-
+ - Cluster support
  ## 2020-04-27 - 0.0.8
  ### Added
  - Polyline, circle, polygon support with colors

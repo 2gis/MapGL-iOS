@@ -21,6 +21,7 @@
 <body>
 	<div id="map"></div>
 	<script src="https://mapgl.2gis.com/api/js"></script>
+	<script src="https://unpkg.com/@2gis/mapgl-clusterer@^1/dist/clustering.js"></script>
 	<script>
 		var objects = new Map();
 		const container = document.getElementById('map');
@@ -75,21 +76,24 @@
 			});
 		}
 
-		window.addMarker = function (point, size, img, anchor, id) {
-			const marker = new mapgl.Marker(window.map, {
-				coordinates: point,
-				icon: img,
-				anchor: anchor,
-				size: size
-			});
+		window.addMarker = function (id, markerOptions) {
+			const marker = new mapgl.Marker(window.map, markerOptions);
 			objects.set(id, marker);
-
 			marker.on('click', (ev) => {
 				window.webkit.messageHandlers.dgsMessage.postMessage({
 					type: "markerClick",
 					value: id
 				});
 			});
+		}
+		window.addCluster = function (id, radius, markers) {
+			const clusterer = new mapgl.Clusterer(window.map, {
+				radius: radius,
+			});
+			clusterer.on('click', (event) => {
+				alert(`${event.target} is clicked`);
+			});
+			clusterer.load(markers);
 		}
 		window.hideMarker = function (id) {
 			const marker = objects.get(id);

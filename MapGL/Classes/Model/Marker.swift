@@ -101,29 +101,37 @@ open class Marker {
 }
 
 extension Marker: IMapObject {
-	func createJSCode() -> String {
+
+	func jsCode() -> String {
 		let js: String
 		if let image = self.image, let imageData = image.pngData() {
 			let imageString = imageData.base64EncodedString()
 			let markerImage = "data:image/png;base64,\(imageString)"
 			js = """
-			window.addMarker(
-			\(self.coordinates.toJS()),
-			[\(image.size.width), \(image.size.height)],
-			"\(markerImage)",
-			\(self.anchor.stringify(with: image)),
-			"\(self.id)");
+			{
+				coordinates: \(self.coordinates.toJS()),
+				icon: "\(markerImage)",
+				anchor: \(self.anchor.stringify(with: image)),
+				size: [\(image.size.width), \(image.size.height)]
+			}
 			"""
 		} else {
 			js = """
-			window.addMarker(
-			\(self.coordinates.toJS()),
-			undefined,
-			undefined,
-			undefined,
-			"\(self.id)");
+			{
+				coordinates: \(self.coordinates.toJS()),
+				icon: undefined,
+				anchor: undefined,
+				size: undefined
+			}
 			"""
 		}
+		return js
+	}
+
+	func createJSCode() -> String {
+		let js = """
+		window.addMarker("\(self.id)", \(self.jsCode()));
+		"""
 		return js
 	}
 
