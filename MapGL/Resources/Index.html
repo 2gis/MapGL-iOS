@@ -76,80 +76,67 @@
 			});
 		}
 
-		window.addMarker = function (id, markerOptions) {
-			const marker = new mapgl.Marker(window.map, markerOptions);
-			objects.set(id, marker);
-			marker.on('click', (ev) => {
-				window.webkit.messageHandlers.dgsMessage.postMessage({
-					type: "markerClick",
-					value: id
-				});
-			});
+		window.addMarker = function (options) {
+			const marker = new mapgl.Marker(window.map, options);
+			window.setupObject(options.id, marker);
 		}
 		window.addCluster = function (id, radius, markers) {
 			const clusterer = new mapgl.Clusterer(window.map, {
 				radius: radius,
 			});
+			clusterer.__id = id
 			clusterer.on('click', (event) => {
-				alert(`${event.target} is clicked`);
+				window.webkit.messageHandlers.dgsMessage.postMessage({
+					type: "clusterClick",
+					value: event.target.data,
+					id: id
+				});
 			});
+			objects.set(id, clusterer);
+			window.updateCluster(id, markers);
+		}
+		window.updateCluster = function (id, markers) {
+			const clusterer = objects.get(id);
 			clusterer.load(markers);
 		}
 		window.hideMarker = function (id) {
 			const marker = objects.get(id);
 			marker.hide();
 		}
-
 		window.showMarker = function (id) {
 			const marker = objects.get(id);
 			marker.show();
 		}
-
 		window.setMarkerCoordinates = function (id, coordinates) {
 			const marker = objects.get(id);
 			marker.setCoordinates(coordinates);
 		}
-
-		window.addPolygon = function (points, id, strokeWidth, color, strokeColor, zIndex) {
-			const polygon = new mapgl.Polygon(window.map, {
-				coordinates: points,
-				strokeWidth: strokeWidth,
-				color: color,
-				strokeColor: strokeColor,
-				zIndex: zIndex,
-			});
-			objects.set(id, polygon);
+		window.addPolygon = function (options) {
+			const polygon = new mapgl.Polygon(window.map, options);
+			window.setupObject(options.id, polygon);
+		}
+		window.addCircle = function (options) {
+			const circle = new mapgl.Circle(window.map, options);
+			window.setupObject(options.id, circle);
+		}
+		window.addPolyline = function (options) {
+			const polyline = new mapgl.Polyline(window.map, options);
+			window.setupObject(options.id, polyline);
 		}
 		window.destroyObject = function (id) {
 			const object = objects.get(id);
 			object.destroy();
 			objects.delete(id);
 		}
-		window.addCircle = function (center, radius, id, strokeWidth, color, strokeColor, zIndex) {
-			const circle = new mapgl.Circle(window.map, {
-				coordinates: center,
-				radius: radius,
-				color: color,
-				strokeWidth: strokeWidth,
-				strokeColor: strokeColor,
-				zIndex: zIndex,
-			});
-			objects.set(id, circle);
-		}
-		window.addPolyline = function (id, coordinates, color, width, zIndex, color2, width2, zIndex2, color3, width3, zIndex3) {
-			const polyline = new mapgl.Polyline(window.map, {
-				coordinates: coordinates,
-				color: color,
-				width: width,
-				zIndex: zIndex,
-				color2: color2,
-				width2: width2,
-				zIndex2: zIndex2,
-				color3: color3,
-				width3: width3,
-				zIndex3: zIndex3,
-			});
-			objects.set(id, polyline);
+		window.setupObject = function (id, object) {
+			object.__id = id;
+			objects.set(id, object);
+			object.on('click', (event) => {
+				window.webkit.messageHandlers.dgsMessage.postMessage({
+					type: "objectClick",
+					value: id
+				});
+			})
 		}
 		window.onerror = (msg, url, line, column, error) => {
 			const message = {

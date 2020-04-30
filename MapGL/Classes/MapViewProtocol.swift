@@ -8,7 +8,6 @@ protocol MapViewProtocol {
 	var rotationDidChange: ((Double) -> Void)? { get set }
 	var pitchDidChange: ((Double) -> Void)? { get set }
 	var mapClick: ((CLLocationCoordinate2D) -> Void)? { get set }
-	var markerClick: ((Marker) -> Void)? { get set }
 
 	var mapCenter: CLLocationCoordinate2D { get set }
 	var mapRotation: Double { get set }
@@ -31,7 +30,4 @@ protocol MapViewProtocol {
 	func zoomIn()
 	func zoomOut()
 
-	func addMarker(_ marker: Marker)
-	func removeMarker(_ marker: Marker)
-	func removeAllMarkers()
 }

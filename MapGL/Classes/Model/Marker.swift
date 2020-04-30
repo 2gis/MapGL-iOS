@@ -3,7 +3,7 @@ import CoreLocation
 import UIKit
 
 /// Represents a single marker on the map.
-open class Marker {
+open class Marker: MapObject {
 
 	/// Defines how the marker image is positioned relative to the marker coordinates.
 	///
@@ -33,12 +33,6 @@ open class Marker {
 		case relative(Double, Double)
 	}
 
-	public let id: String
-	weak var delegate: MarkerDelegate?
-
-	/// Notifies of the marker click event.
-	public var click: (() -> Void)?
-
 	/// Gets the marker image.
 	public let image: UIImage?
 
@@ -49,7 +43,7 @@ open class Marker {
 	public var coordinates: CLLocationCoordinate2D {
 		didSet {
 			if oldValue != self.coordinates {
-				self.delegate?.marker(self, didChangeCoordinates: self.coordinates)
+				self.setMarkerCoordinates(coordinates: self.coordinates)
 			}
 		}
 	}
@@ -59,20 +53,12 @@ open class Marker {
 		didSet {
 			if oldValue != self.isHidden {
 				if self.isHidden {
-					self.delegate?.markerDidHide(self)
+					self.hide()
 				} else {
-					self.delegate?.markerDidShow(self)
+					self.show()
 				}
 			}
 		}
-	}
-
-	/// Creates the new instance of the marker object.
-	///
-	/// - Parameters:
-	///   - coordinates: Marker geographical coordinates
-	public convenience init(coordinates: CLLocationCoordinate2D) {
-		self.init(coordinates: coordinates, image: nil, anchor: .center)
 	}
 
 	/// Creates the new instance of the marker object.
@@ -85,22 +71,18 @@ open class Marker {
 	public init(
 		id: String = NSUUID().uuidString,
 		coordinates: CLLocationCoordinate2D,
-		image: UIImage?,
-		anchor: Anchor
+		image: UIImage? = nil,
+		anchor: Anchor = .center
 	) {
-		self.id = id
 		self.coordinates = coordinates
 		self.image = image
 		self.anchor = anchor
+		super.init(id: id)
 	}
 
-	/// Removes the marker from the map.
-	public func remove() {
-		self.delegate?.markerDidRemove(self)
-	}
 }
 
-extension Marker: IMapObject {
+extension Marker {
 
 	func jsCode() -> String {
 		let js: String
@@ -109,30 +91,56 @@ extension Marker: IMapObject {
 			let markerImage = "data:image/png;base64,\(imageString)"
 			js = """
 			{
-				coordinates: \(self.coordinates.toJS()),
-				icon: "\(markerImage)",
-				anchor: \(self.anchor.stringify(with: image)),
-				size: [\(image.size.width), \(image.size.height)]
+			id: "\(self.id)",
+			coordinates: \(self.coordinates.toJS()),
+			icon: "\(markerImage)",
+			anchor: \(self.anchor.stringify(with: image)),
+			size: [\(image.size.width), \(image.size.height)],
 			}
 			"""
 		} else {
 			js = """
 			{
-				coordinates: \(self.coordinates.toJS()),
-				icon: undefined,
-				anchor: undefined,
-				size: undefined
+			id: "\(self.id)",
+			coordinates: \(self.coordinates.toJS()),
+			icon: undefined,
+			anchor: undefined,
+			size: undefined,
 			}
 			"""
 		}
 		return js
 	}
 
-	func createJSCode() -> String {
+	override func createJSCode() -> String {
 		let js = """
-		window.addMarker("\(self.id)", \(self.jsCode()));
+		window.addMarker(\(self.jsCode()));
 		"""
 		return js
+	}
+
+	private func hide() {
+		let js = """
+		window.hideMarker("\(self.id)");
+		"""
+		self.delegate?.evaluateJS(js)
+	}
+
+	private func show() {
+		let js = """
+		window.showMarker("\(self.id)");
+		"""
+		self.delegate?.evaluateJS(js)
+	}
+
+	func setMarkerCoordinates(coordinates: CLLocationCoordinate2D) {
+		let js = """
+		window.setMarkerCoordinates(
+		"\(self.id)",
+		\(self.coordinates.toJS())
+		);
+		"""
+		self.delegate?.evaluateJS(js)
 	}
 
 }

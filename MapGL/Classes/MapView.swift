@@ -20,12 +20,11 @@ public class MapView : UIView {
 		static let mapDefaultCenter = CLLocationCoordinate2D(latitude: 55.750574, longitude: 37.618317)
 	}
 
-	private var markers: [String: Marker] = [:]
-	private var polygons: [String: Polygon] = [:]
-	private var circles: [String: Circle] = [:]
-	private var polylines: [String: Polyline] = [:]
+	public weak var delegate: MapViewDelegate?
+
+	private var objects: [String: MapObject] = [:]
+
 	private var jsExecutor: JSExecutorProtocol?
-	private var initializeMap: (() -> Void)?
 
 	private var _mapCenter = Const.mapDefaultCenter
 	private var _mapRotation: Double = Const.mapDefaultRotation
@@ -37,6 +36,8 @@ public class MapView : UIView {
 	private var _mapPitch: Double = Const.mapDefaultPitch
 	private var _mapMinPitch: Double = Const.mapDefaultMinPitch
 	private var _mapMaxPitch: Double = Const.mapDefaultMaxPitch
+	// swiftlint:disable:next weak_delegate
+	private let wkDelegate = WKDelegate()
 
 	private lazy var js: JSBridge = {
 		let js = JSBridge(executor: self.jsExecutor ?? self)
@@ -49,8 +50,8 @@ public class MapView : UIView {
 		webConfiguration.userContentController.add(self.js, name: self.js.messageHandlerName)
 		webConfiguration.userContentController.add(self.js, name: self.js.errorHandlerName)
 		let webView = WKWebView(frame: .zero, configuration: webConfiguration)
-		webView.navigationDelegate = self
-		webView.uiDelegate = self
+		webView.navigationDelegate = self.wkDelegate
+		webView.uiDelegate = self.wkDelegate
 		return webView
 	}()
 
@@ -64,8 +65,6 @@ public class MapView : UIView {
 	public var pitchDidChange: ((Double) -> Void)?
 	/// Notifies of the map click event.
 	public var mapClick: ((CLLocationCoordinate2D) -> Void)?
-	/// Notifies of the marker click event.
-	public var markerClick: ((Marker) -> Void)?
 
 	/// Creates the new instance of the MapView object.
 	///
@@ -290,7 +289,7 @@ extension MapView : MapViewProtocol {
 	private func loadHtml(path: String, completion: @escaping (Error?) -> Void) {
 		let url = URL(fileURLWithPath: path)
 		self.webView.loadFileURL(url, allowingReadAccessTo: url)
-		self.initializeMap = {
+		self.wkDelegate.onInitializeMap = {
 			completion(nil)
 		}
 	}
@@ -320,14 +319,6 @@ extension MapView : MapViewProtocol {
 					completion(error)
 			}
 		}
-	}
-}
-
-extension MapView: WKNavigationDelegate {
-
-	public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation) {
-		self.initializeMap?()
-		self.initializeMap = nil
 	}
 }
 
@@ -364,155 +355,54 @@ extension MapView: JSBridgeDelegate {
 		self.mapClick?(location)
 	}
 
-	func js(_ js: JSBridge, didClickMarkerWithId makerId: String) {
-		if let marker = self.markers[makerId] {
-			marker.click?()
-			self.markerClick?(marker)
+	func js(_ js: JSBridge, didClickObjectWithId objectId: String) {
+		if let object = self.objects[objectId] {
+			self.delegate?.mapView?(self, didSelectObject: object)
+		} else {
+			assertionFailure()
 		}
 	}
-}
 
-extension MapView: MarkerDelegate {
-
-	func marker(_ marker: Marker, didChangeCoordinates coordinates: CLLocationCoordinate2D) {
-		self.js.setMarkerCoordinates(marker, coordinates: coordinates, completion: nil)
-	}
-
-	func markerDidHide(_ marker: Marker) {
-		self.js.hideMarker(marker, completion: nil)
-	}
-
-	func markerDidShow(_ marker: Marker) {
-		self.js.showMarker(marker, completion: nil)
-	}
-
-	func markerDidRemove(_ marker: Marker) {
-		self.removeMarker(marker)
+	func js(_ js: JSBridge, didClickClusterWithId clusterId: String, markerIds: [String]) {
+		if let cluster = self.objects[clusterId] as? Cluster {
+			let markers = cluster.markers.filter { markerIds.contains($0.id) }
+			self.delegate?.mapView?(self, didSelectMarkers: markers, in: cluster)
+		} else {
+			assertionFailure()
+		}
 	}
 
 }
 
-extension MapView: PolygonDelegate {
+extension MapView: IObjectDelegate {
+	func evaluateJS(_ js: String) {
+		self.js.evaluateJS(js)
+	}
 }
 
-extension MapView: CircleDelegate {
-}
-
-extension MapView: PolylineDelegate {
-}
-
-/// Objects
+// MARK: - Objects
 extension MapView {
 
 	/// Adds the given marker to the map.
 	///
 	/// - Parameter marker: Marker to be added to the map.
-	public func addMarker(_ marker: Marker) {
-		marker.delegate = self
-		self.markers[marker.id] = marker
-		self.js.add(marker, completion: nil)
-	}
-	public func add(_ marker: Marker) {
-		self.addMarker(marker)
+	public func add(_ object: MapObject) {
+		object.delegate = self
+		self.objects[object.id] = object
+		self.js.add(object, completion: nil)
 	}
 
-	/// Adds the given polygon to the map.
-	/// - Parameter polygon: Polygon to be added to the map.
-	public func add(_ polygon: Polygon) {
-		polygon.delegate = self
-		self.polygons[polygon.id] = polygon
-		self.js.add(polygon)
-	}
-
-	/// Adds the given polygon to the map.
-	/// - Parameter polygon: Polygon to be added to the map.
-	public func add(_ polyline: Polyline) {
-		polyline.delegate = self
-		self.polylines[polyline.id] = polyline
-		self.js.add(polyline)
-	}
-
-	public func remove(_ polyline: Polyline) {
-		polyline.delegate = nil
-		self.polylines.removeValue(forKey: polyline.id)
-		self.js.destroy(polyline)
-	}
-
-	public func removeAllPolylines() {
-		for polyline in self.polylines.values {
-			self.remove(polyline)
-		}
+	public func remove(_ object: MapObject) {
+		object.delegate = nil
+		self.objects.removeValue(forKey: object.id)
+		self.js.destroy(object)
 	}
 
 	public func removeAllObjects() {
-		self.removeAllPolygons()
-		self.removeAllCircles()
-		self.removeAllMarkers()
-		self.removeAllPolylines()
-	}
-
-	/// Removes the given marker from the map.
-	///
-	/// - Parameter marker: Marker to be removed from the map
-	public func removeMarker(_ marker: Marker) {
-		marker.delegate = nil
-		self.markers.removeValue(forKey: marker.id)
-		self.js.destroy(marker, completion: nil)
-	}
-
-	/// Remover all the markers from the map.
-	public func removeAllMarkers() {
-		for marker in self.markers.values {
-			self.removeMarker(marker)
+		for marker in self.objects.values {
+			self.objects.removeValue(forKey: marker.id)
+			self.js.destroy(marker)
 		}
-	}
-
-	public func add(_ cluster: Cluster) {
-		self.js.add(cluster)
-	}
-
-	public func remove(_ polygon: Polygon) {
-		polygon.delegate = nil
-		self.polygons.removeValue(forKey: polygon.id)
-		self.js.destroy(polygon)
-	}
-	public func removeAllPolygons() {
-		for polygon in self.polygons.values {
-			self.remove(polygon)
-		}
-	}
-	/// Adds the given circle to the map.
-	/// - Parameter circle: Circle to be added to the map.
-	public func add(_ circle: Circle) {
-		circle.delegate = self
-		self.circles[circle.id] = circle
-		self.js.add(circle)
-	}
-
-	/// Removes the given circle from the map.
-	/// - Parameter circle: Circle to be removed from the map.
-	public func remove(_ circle: Circle) {
-		circle.delegate = nil
-		self.circles.removeValue(forKey: circle.id)
-		self.js.destroy(circle)
-	}
-
-	/// Removes all circles from the map.
-	public func removeAllCircles() {
-		for circle in self.circles.values {
-			self.remove(circle)
-		}
-	}
-}
-
-extension MapView: WKUIDelegate {
-
-	public func webView(
-		_ webView: WKWebView,
-		runJavaScriptAlertPanelWithMessage message: String,
-		initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void
-	) {
-		completionHandler()
 	}
 
 }

@@ -6,8 +6,6 @@ class HelloVC: UIViewController {
 
 	private static let cardViewHeight: CGFloat = 100
 
-	private var selectedMarker: Marker?
-
 	private lazy var map: MapView = {
 		return MapView(frame: .zero)
 	}()
@@ -82,23 +80,19 @@ class HelloVC: UIViewController {
 
 		self.loadUI()
 
-		self.map.centerDidChange = {
-			[weak self] center in
+		self.map.centerDidChange = { [weak self] center in
 			self?.mapCenterLabel.text = "Map center: \(center.latitude), \(center.longitude)"
 		}
 
-		self.map.zoomDidChange = {
-			[weak self] zoom in
+		self.map.zoomDidChange = { [weak self] zoom in
 			self?.mapZoomLabel.text = "Map zoom: \(zoom)"
 		}
 
-		self.map.rotationDidChange = {
-			[weak self] rotation in
+		self.map.rotationDidChange = { [weak self] rotation in
 			self?.mapRotationLabel.text = "Map rotation: \(rotation)"
 		}
 
-		self.map.pitchDidChange = {
-			[weak self] pitch in
+		self.map.pitchDidChange = { [weak self] pitch in
 			self?.mapPitchLabel.text = "Map pitch: \(pitch)"
 		}
 
@@ -106,41 +100,23 @@ class HelloVC: UIViewController {
 			[weak self] coordinates in
 			guard let self = self else { return }
 			let marker = Marker(coordinates: coordinates, image: UIImage(named: "pin")!, anchor: .bottom)
-			self.map.addMarker(marker)
-			self.updateCardView(with: marker)
-			self.selectedMarker = marker
-			self.showCardView()
-		}
-
-		self.map.markerClick = {
-			[weak self] marker in
-			guard let self = self else { return }
-			self.updateCardView(with: marker)
-			self.selectedMarker = marker
-			self.showCardView()
+			self.map.add(marker)
+			self.showCardView(object: marker)
 		}
 
 		self.cardView.onClose = {
 			[weak self] in
 			guard let self = self else { return }
-			self.selectedMarker = nil
+			self.cardView.onRemove = nil
 			self.hideCardView()
 		}
-
-		self.cardView.onRemove = {
-			[weak self] in
-			guard let self = self else { return }
-			self.selectedMarker?.remove()
-			self.selectedMarker = nil
-			self.hideCardView()
-		}
-
+		
 		self.map.show(
-			apiKey: "apiKey",
+			apiKey: "18ac22be-09c9-11ea-8133-5795fd7e14a6",
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-			zoom: 16) {
-				error in
-				print(error ?? "Map initialized")
+			zoom: 16
+		) { error in
+			print(error ?? "Map initialized")
 		}
 	}
 
@@ -162,9 +138,16 @@ class HelloVC: UIViewController {
 		self.map.mapZoom = 16
 	}
 
-	private func updateCardView(with marker: Marker) {
-		self.cardView.title = "Marker"
-		self.cardView.text = "Lon: \(marker.coordinates.longitude)\nLat: \(marker.coordinates.latitude)"
+	private func showCardView(object: MapObject) {
+		self.cardView.title = object.title
+		self.cardView.text = object.text
+		self.cardView.onRemove = {
+			[weak self] in
+			guard let self = self else { return }
+			self.map.remove(object)
+			self.hideCardView()
+		}
+		self.showCardView()
 	}
 
 	private func showCardView() {
@@ -211,12 +194,14 @@ class HelloVC: UIViewController {
 				image: UIImage(named: "pin")!,
 				anchor: .bottom
 			)
-			self.map.addMarker(marker)
+			self.map.add(marker)
 		}
 		let showCluster = UIAlertAction(title: "Show cluster", style: .default) { _ in
 			let cluster = Cluster(radius: 100, markers: [
 				Marker(coordinates: self.map.mapCenter),
 				Marker(coordinates: CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878)),
+				Marker(coordinates: CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4978)),
+				Marker(coordinates: CLLocationCoordinate2D(latitude: 25.20, longitude: 55.5278)),
 			])
 			self.map.add(cluster)
 		}
@@ -276,6 +261,7 @@ class HelloVC: UIViewController {
 
 	private func loadUI() {
 
+		self.map.delegate = self
 		self.view.addSubview(self.map)
 		self.view.addSubview(self.mapCenterLabel)
 		self.view.addSubview(self.mapZoomLabel)
@@ -351,6 +337,56 @@ class HelloVC: UIViewController {
 			self.cardView.trailingAnchor.constraint(equalTo: self.view.safeAreaTrailingAnchor, constant: -16),
 			self.cardView.bottomAnchor.constraint(equalTo: self.view.safeAreaBottomAnchor, constant: -16),
 			])
+	}
+
+}
+
+extension HelloVC: MapViewDelegate {
+
+	func mapView(_ mapView: MapView, didSelectMarkers markers: [Marker], in cluster: Cluster) {
+		self.cardView.title = "Cluster"
+		self.cardView.text = markers.map { $0.coordinates.toCard() }.joined(separator: "\n")
+		self.cardView.onRemove = {
+			[weak self] in
+			guard let self = self else { return }
+			let removeIds = markers.map { $0.id }
+			cluster.markers = cluster.markers.filter({
+				!removeIds.contains($0.id)
+			})
+			self.hideCardView()
+		}
+		self.showCardView()
+	}
+
+	func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
+		self.showCardView(object: object)
+	}
+
+}
+
+extension MapObject {
+	var title: String {
+		return type(of: self).description()
+	}
+	var text: String {
+		if let marker = self as? Marker {
+			return marker.coordinates.toCard()
+		} else if let marker = self as? Circle {
+			return marker.center.toCard()
+		} else if let marker = self as? Polygon {
+			return marker.points[0].toCard()
+		} else if let marker = self as? Polyline {
+			return marker.points[0].toCard()
+		}
+		return ""
+	}
+
+}
+
+extension CLLocationCoordinate2D {
+
+	func toCard() -> String {
+		"Lat: \(self.latitude) Lon: \(self.longitude)"
 	}
 
 }

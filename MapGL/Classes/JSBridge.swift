@@ -141,40 +141,17 @@ class JSBridge : NSObject {
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func add(_ object: IMapObject, completion: Completion? = nil) {
+	func add(_ object: IJSMapObject, completion: Completion? = nil) {
 		let js = object.createJSCode()
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func destroy(_ object: IMapObject, completion: Completion? = nil) {
+	func destroy(_ object: IJSMapObject, completion: Completion? = nil) {
 		let js = object.destroyJSCode()
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func hideMarker(_ marker: Marker, completion: Completion? = nil) {
-		let js = """
-		window.hideMarker("\(marker.id)");
-		"""
-		self.evaluateJS(js, completion: completion)
-	}
-
-	func showMarker(_ marker: Marker, completion: Completion? = nil) {
-		let js = """
-		window.showMarker("\(marker.id)");
-		"""
-		self.evaluateJS(js, completion: completion)
-	}
-
-	func setMarkerCoordinates(_ marker: Marker, coordinates: CLLocationCoordinate2D, completion: ((Result<Void, Error>) -> Void)?) {
-		let js = """
-		window.setMarkerCoordinates(
-		"\(marker.id)",
-		[\(marker.coordinates.longitude), \(marker.coordinates.latitude)]);
-		"""
-		self.evaluateJS(js, completion: completion)
-	}
-
-	private func evaluateJS(_ js: String, completion: Completion? = nil) {
+	func evaluateJS(_ js: String, completion: Completion? = nil) {
 		self.executor.evaluateJavaScript(js) { (_, erorr) in
 			if let error = erorr {
 				completion?(.failure(error))
@@ -238,13 +215,31 @@ extension JSBridge: WKScriptMessageHandler {
 				if let lat = data?.last, let lon = data?.first {
 					delegate.js(self, didClickMapWithLocation: CLLocationCoordinate2D(latitude: lat, longitude: lon))
 			}
-			case "markerClick":
-				let data = body["value"] as? String
-				if let id = data {
-					delegate.js(self, didClickMarkerWithId: id)
-			}
+			case "objectClick":
+				if let id = body["value"] as? String {
+					delegate.js(self, didClickObjectWithId: id)
+				} else {
+					assertionFailure()
+				}
+			case "clusterClick":
+				guard let clusterId = body["id"] as? String else { assertionFailure(); return }
+
+				if let marker = body["value"] as? [String: Any] {
+					if let id = marker["id"] as? String {
+						delegate.js(self, didClickClusterWithId: clusterId, markerIds: [id])
+					} else {
+						assertionFailure()
+					}
+				} else if let cluster = body["value"] as? [[String: Any]] {
+					let ids = cluster.compactMap { $0["id"] as? String }
+					assert(cluster.count == ids.count)
+					delegate.js(self, didClickClusterWithId: clusterId, markerIds: ids)
+				} else {
+					assertionFailure()
+				}
+
 			default:
-				break
+				assertionFailure()
 		}
 	}
 

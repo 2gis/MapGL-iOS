@@ -1,17 +1,16 @@
 import CoreLocation
 
-open class Circle {
+open class Circle: MapObject {
 
-	public let id: String
 	public let center: CLLocationCoordinate2D
 	public let radius: CLLocationDistance
 	let strokeColor: UIColor?
 	let fillColor: UIColor?
 	let strokeWidth: CGFloat?
 	let z: Int?
-	weak var delegate: CircleDelegate?
 
 	public init(
+		id: String = UUID().uuidString,
 		center: CLLocationCoordinate2D,
 		radius: CLLocationDistance,
 		strokeColor: UIColor? = nil,
@@ -19,33 +18,36 @@ open class Circle {
 		fillColor: UIColor? = nil,
 		z: Int? = nil
 	) {
-		self.id = UUID().uuidString
 		self.center = center
 		self.radius = radius
 		self.strokeColor = strokeColor
 		self.strokeWidth = strokeWidth
 		self.fillColor = fillColor
 		self.z = z
+		super.init(id: id)
 	}
 
 }
 
-protocol CircleDelegate: AnyObject {
-}
+extension Circle {
 
-extension Circle: IMapObject {
+	func jsCode() -> String {
+		return """
+		{
+		id: "\(self.id)",
+		coordinates: \(self.center.toJS()),
+		radius: \(self.radius),
+		color: \(self.fillColor.jsValue()),
+		strokeWidth: \(self.strokeWidth.jsValue()),
+		strokeColor: \(self.strokeColor.jsValue()),
+		zIndex: \(self.z.jsValue()),
+		}
+		"""
+	}
 
-	func createJSCode() -> String {
+	override func createJSCode() -> String {
 		let js = """
-		window.addCircle(
-		[\(self.center.longitude), \(self.center.latitude)],
-		"\(self.radius)",
-		"\(self.id)",
-		\(self.strokeWidth.jsValue()),
-		\(self.fillColor.jsValue()),
-		\(self.strokeColor.jsValue()),
-		\(self.z.jsValue()),
-		);
+		window.addCircle(\(self.jsCode()));
 		"""
 		return js
 	}

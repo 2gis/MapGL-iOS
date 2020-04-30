@@ -12,45 +12,53 @@ open class PolylineStyle {
 	}
 }
 
-open class Polyline {
+open class Polyline: MapObject {
 
-	public let id: String
 	public let points: [CLLocationCoordinate2D]
 	let style1: PolylineStyle?
 	let style2: PolylineStyle?
 	let style3: PolylineStyle?
-	weak var delegate: PolylineDelegate?
 
 	public init(
+		id: String = UUID().uuidString,
 		points: [CLLocationCoordinate2D],
 		style1: PolylineStyle? = nil,
 		style2: PolylineStyle? = nil,
 		style3: PolylineStyle? = nil
 	) {
 		assert(points.count > 1, "Polyline should countain more than 1 point")
-		self.id = UUID().uuidString
 		self.points = points
 		self.style1 = style1
 		self.style2 = style2
 		self.style3 = style3
+		super.init(id: id)
 	}
 
 }
 
-protocol PolylineDelegate: AnyObject {
-}
+extension Polyline {
 
-extension Polyline: IMapObject {
+	func jsCode() -> String {
+		return """
+		{
+		id: "\(self.id)",
+		coordinates: [\(self.points.toJS())],
+		color: \((self.style1?.color).jsValue()),
+		width: \((self.style1?.width).jsValue()),
+		zIndex: \((self.style1?.z).jsValue()),
+		color2: \((self.style2?.color).jsValue()),
+		width2: \((self.style2?.width).jsValue()),
+		zIndex2: \((self.style2?.z).jsValue()),
+		color3: \((self.style3?.color).jsValue()),
+		width3: \((self.style3?.width).jsValue()),
+		zIndex3: \((self.style3?.z).jsValue()),
+		}
+		"""
+	}
 
-	func createJSCode() -> String {
+	override func createJSCode() -> String {
 		let js = """
-		window.addPolyline(
-		"\(self.id)",
-		[\(self.points.toJS())],
-		\(self.style1.jsValue()),
-		\(self.style2.jsValue()),
-		\(self.style3.jsValue()),
-		);
+		window.addPolyline(\(self.jsCode()));
 		"""
 		return js
 	}

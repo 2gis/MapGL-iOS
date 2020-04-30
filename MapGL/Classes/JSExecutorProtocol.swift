@@ -1,5 +1,5 @@
 import Foundation
 
-protocol JSExecutorProtocol : class {
+protocol JSExecutorProtocol : AnyObject {
 	func evaluateJavaScript(_ javaScriptString: String, completion: ((Any?, Error?) -> Void)?)
 }
