@@ -7,7 +7,6 @@ target 'HelloSDK' do
   pod 'MapGL', :path => './'
   pod 'SwiftLint', '~> 0.39.2'
   target 'HelloSDKTests' do
-    pod 'TestHost', :path => 'MapGL/Host'
     pod 'MapGL', :path => './', :testspecs => ['Tests']
   end
 end

@@ -25,7 +25,5 @@ Pod::Spec.new do |s|
 	s.test_spec 'Tests' do |ts|
 		ts.source_files = 'MapGL/Tests/**/*.{swift}'
 		ts.requires_app_host = true
-		ts.app_host_name = 'TestHost/App'
-		ts.dependency 'TestHost/App'
 	end
 end

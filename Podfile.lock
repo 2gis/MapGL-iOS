@@ -1,16 +1,12 @@
 PODS:
-  - MapGL (0.0.8)
-  - MapGL/Tests (0.0.8):
-    - TestHost/App
+  - MapGL (0.1.0)
+  - MapGL/Tests (0.1.0)
   - SwiftLint (0.39.2)
-  - TestHost (0.0.1)
-  - TestHost/App (0.0.1)
 
 DEPENDENCIES:
   - MapGL (from `./`)
   - MapGL/Tests (from `./`)
   - SwiftLint (~> 0.39.2)
-  - TestHost (from `MapGL/Host`)
 
 SPEC REPOS:
   trunk:
@@ -19,14 +15,11 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   MapGL:
     :path: "./"
-  TestHost:
-    :path: MapGL/Host
 
 SPEC CHECKSUMS:
-  MapGL: 61bb6e6521fc5c7348b7cda517dc15ec1b87d769
+  MapGL: b0368edebfece44cc1102ed826d4818e3362b2a6
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
-  TestHost: f78602a1b0cd1eb477b5e37a377a01259cfb2bc8
 
-PODFILE CHECKSUM: 09075a9e6698e03996406516753ab41473e907eb
+PODFILE CHECKSUM: 8a4b032b3db50fef2324fc6fb4a90aa74370a311
 
 COCOAPODS: 1.9.1
