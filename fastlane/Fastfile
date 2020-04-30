@@ -10,6 +10,11 @@ platform :ios do
 
   lane :rlz do |options|
 
+    cocoapods(
+      try_repo_update_on_error: true,
+      use_bundle_exec: true,
+    )
+
     swiftlint(
       mode: :lint,      # SwiftLint mode: :lint (default) or :autocorrect
       path: "./MapGL",       # Specify path to lint (optional)
