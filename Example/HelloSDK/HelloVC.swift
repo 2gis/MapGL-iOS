@@ -112,7 +112,7 @@ class HelloVC: UIViewController {
 		}
 		
 		self.map.show(
-			apiKey: "18ac22be-09c9-11ea-8133-5795fd7e14a6",
+			apiKey: "apiKey",
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
 			zoom: 16
 		) { error in
