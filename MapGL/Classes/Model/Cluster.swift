@@ -2,6 +2,7 @@ import CoreLocation
 
 open class Cluster: MapObject {
 
+	/// Markers in clusterer 
 	public var markers: [Marker] {
 		didSet {
 			self.updateMarkers()

@@ -12,11 +12,15 @@ open class PolylineStyle {
 	}
 }
 
+/// Polyline map object
 open class Polyline: MapObject {
 
 	public let points: [CLLocationCoordinate2D]
+	/// Topmost line style
 	let style1: PolylineStyle?
+	/// Middle line style, should be wider than style1
 	let style2: PolylineStyle?
+	/// Bottom line style, should be wider than style2
 	let style3: PolylineStyle?
 
 	public init(
