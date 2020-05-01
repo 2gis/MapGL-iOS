@@ -1,4 +1,6 @@
 # MapGL
+[![Version](https://img.shields.io/cocoapods/v/MapGL.svg?style=flat)](https://cocoapods.org/pods/MapGL)
+
 2GIS Maps SDK for iOS.
 
 ## Usage
@@ -54,11 +56,11 @@ map.addMarker(marker)
 
 ```swift
 let circle = Circle(
-	center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-	radius: 500,
-	strokeColor: .red,
-	strokeWidth: 5,
-	fillColor: UIColor.lightGray.withAlphaComponent(0.5)
+    center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
+    radius: 500,
+    strokeColor: .red,
+    strokeWidth: 5,
+    fillColor: UIColor.lightGray.withAlphaComponent(0.5)
 )
 map.add(circle)
 ```
@@ -68,14 +70,14 @@ map.add(circle)
 
 ```swift
 let polygon = Polygon(
-	points: [
-		CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4478),
-		CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
-		CLLocationCoordinate2D(latitude: 25.24584, longitude: 55.31878),
-	],
-	strokeColor: .red,
-	strokeWidth: 5,
-	fillColor: UIColor.blue.withAlphaComponent(0.5)
+    points: [
+        CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4478),
+        CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
+        CLLocationCoordinate2D(latitude: 25.24584, longitude: 55.31878),
+    ],
+    strokeColor: .red,
+    strokeWidth: 5,
+    fillColor: UIColor.blue.withAlphaComponent(0.5)
 )
 map.add(polygon)
 ```
@@ -84,13 +86,13 @@ map.add(polygon)
 
 ```swift
 let polyline = Polyline(
-	points: [
-		CLLocationCoordinate2D(latitude: 25.30, longitude: 55.378),
-		CLLocationCoordinate2D(latitude: 25.20, longitude: 55.378),
-	],
-	style1: PolylineStyle(color: .red, width: 5),
-	style2: PolylineStyle(color: .green, width: 9),
-	style3: PolylineStyle(color: .blue, width: 13)
+    points: [
+        CLLocationCoordinate2D(latitude: 25.30, longitude: 55.378),
+        CLLocationCoordinate2D(latitude: 25.20, longitude: 55.378),
+    ],
+    style1: PolylineStyle(color: .red, width: 5),
+    style2: PolylineStyle(color: .green, width: 9),
+    style3: PolylineStyle(color: .blue, width: 13)
 )
 map.add(polyline)
 ```
@@ -107,7 +109,7 @@ map.mapClick = { coordinates in
 
 ```swift
 func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
-	// do smth with object
+    // do smth with object
 }
 ```
 
