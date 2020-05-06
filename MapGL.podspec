@@ -20,7 +20,6 @@ Pod::Spec.new do |s|
 	}
 	s.framework = "UIKit"
 	s.source_files = 'MapGL/Classes/**/*.{swift}'
-	s.resource_bundles = { 'Map' => 'MapGL/Resources/**/*.{html}' }
 
 	s.test_spec 'Tests' do |ts|
 		ts.source_files = 'MapGL/Tests/**/*.{swift}'

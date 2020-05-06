@@ -230,6 +230,18 @@ class HelloVC: UIViewController {
 			)
 			self.map.add(circle)
 		}
+		let showLabel = UIAlertAction(title: "Show label, hide in 5 sec", style: .default) { _ in
+			let label = Label(
+				center: self.map.mapCenter,
+				color: .red,
+				text: "Demo label",
+				fontSize: 24
+			)
+			self.map.add(label)
+			DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+				label.hide()
+			}
+		}
 		let showPolyline = UIAlertAction(title: "Show polyline", style: .default) { _ in
 			let polyline = Polyline(
 				points: [
@@ -248,6 +260,7 @@ class HelloVC: UIViewController {
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
+		alert.addAction(showLabel)
 		alert.addAction(showCluster)
 		alert.addAction(showPolyline)
 		alert.addAction(showPolygon)
@@ -371,12 +384,12 @@ extension MapObject {
 	var text: String {
 		if let marker = self as? Marker {
 			return marker.coordinates.toCard()
-		} else if let marker = self as? Circle {
-			return marker.center.toCard()
-		} else if let marker = self as? Polygon {
-			return marker.points[0].toCard()
-		} else if let marker = self as? Polyline {
-			return marker.points[0].toCard()
+		} else if let circle = self as? Circle {
+			return circle.center.toCard()
+		} else if let polygon = self as? Polygon {
+			return polygon.points[0].toCard()
+		} else if let polyline = self as? Polyline {
+			return polyline.points[0].toCard()
 		}
 		return ""
 	}

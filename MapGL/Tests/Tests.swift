@@ -181,7 +181,7 @@ class Tests: XCTestCase {
 		let marker = self.testMarkerWithoutImage()
 		self.map.add(marker)
 		marker.isHidden = true
-		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.hideMarker(\"123\");")
+		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.hideObject(\"123\");")
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 2)
 	}
 
@@ -190,7 +190,7 @@ class Tests: XCTestCase {
 		self.map.add(marker)
 		marker.isHidden = true
 		marker.isHidden = false
-		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.showMarker(\"123\");")
+		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.showObject(\"123\");")
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 3)
 	}
 

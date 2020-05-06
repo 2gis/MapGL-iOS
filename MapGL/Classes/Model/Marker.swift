@@ -82,6 +82,8 @@ open class Marker: MapObject {
 
 }
 
+extension Marker: IHideable {}
+
 extension Marker {
 
 	func jsCode() -> String {
@@ -117,20 +119,6 @@ extension Marker {
 		window.addMarker(\(self.jsCode()));
 		"""
 		return js
-	}
-
-	private func hide() {
-		let js = """
-		window.hideMarker("\(self.id)");
-		"""
-		self.delegate?.evaluateJS(js)
-	}
-
-	private func show() {
-		let js = """
-		window.showMarker("\(self.id)");
-		"""
-		self.delegate?.evaluateJS(js)
 	}
 
 	func setMarkerCoordinates(coordinates: CLLocationCoordinate2D) {

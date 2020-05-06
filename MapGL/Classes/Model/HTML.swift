@@ -1,3 +1,5 @@
+enum HTML {
+static let html = """
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +28,7 @@
 		var objects = new Map();
 		const container = document.getElementById('map');
 
-		window.initializeMap = function(center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey, bundleId) {
+		window.initializeMap = function(center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey) {
 			window.map = new mapgl.Map(container, {
 				center: center,
 				maxZoom: maxZoom,
@@ -99,11 +101,11 @@
 			const clusterer = objects.get(id);
 			clusterer.load(markers);
 		}
-		window.hideMarker = function (id) {
-			const marker = objects.get(id);
-			marker.hide();
+		window.hideObject = function (id) {
+			const object = objects.get(id);
+			object.hide();
 		}
-		window.showMarker = function (id) {
+		window.showObject = function (id) {
 			const marker = objects.get(id);
 			marker.show();
 		}
@@ -122,6 +124,10 @@
 		window.addPolyline = function (options) {
 			const polyline = new mapgl.Polyline(window.map, options);
 			window.setupObject(options.id, polyline);
+		}
+		window.addLabel = function (options) {
+			const label = new mapgl.Label(window.map, options);
+			window.setupObject(options.id, label);
 		}
 		window.destroyObject = function (id) {
 			const object = objects.get(id);
@@ -158,3 +164,5 @@
 </body>
 
 </html>
+"""
+}

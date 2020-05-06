@@ -23,7 +23,6 @@ class JSBridge : NSObject {
 		pitch: Double,
 		rotation: Double,
 		apiKey: String,
-		bundleId: String,
 		completion: Completion? = nil
 	) {
 		let js = """
@@ -37,7 +36,7 @@ class JSBridge : NSObject {
 		\(pitch),
 		\(rotation),
 		"\(apiKey)",
-		"\(bundleId)");
+		);
 		"""
 		self.evaluateJS(js, completion: completion)
 	}

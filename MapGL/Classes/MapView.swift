@@ -237,18 +237,8 @@ extension MapView : MapViewProtocol {
 			_mapPitch = min(_mapPitch, _mapMaxPitch)
 		}
 
-		self.loadHtml {
-			[weak self] error in
-			guard let self = self else { return }
-			if let error = error {
-				completion?(error)
-				return
-			}
-			guard let bundleId = Bundle.main.bundleIdentifier else {
-				completion?(MapGLError(text: "Error reading application Bundle Identifier"))
-				return
-			}
-			self.initializeMap(apiKey: apiKey, bundleId: bundleId) {
+		self.loadHtml { [weak self] in
+			self?.initializeMap(apiKey: apiKey) {
 				error in
 				completion?(error)
 			}
@@ -265,36 +255,14 @@ extension MapView : MapViewProtocol {
 		self.mapZoom = max(self.mapZoom - 1, self.mapMinZoom)
 	}
 
-	private func loadHtml(completion: @escaping (Error?) -> Void) {
-		let frameworkBundle = Bundle(for: MapView.self)
-		if let pathInFrameworkBundle = frameworkBundle.path(forResource: "Index", ofType: "html") {
-			self.loadHtml(path: pathInFrameworkBundle, completion: completion)
-		} else {
-			guard let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("Map.bundle") else {
-				completion(MapGLError(text: "Unable to read the resource bundle"))
-				return
-			}
-			guard let resourceBundle = Bundle(url: bundleURL) else {
-				completion(MapGLError(text: "Unable to create the resource bundle"))
-				return
-			}
-			guard let pathInResourceBundle = resourceBundle.path(forResource: "Index", ofType: "html") else {
-				completion(MapGLError(text: "Unable to find Index.html in the resource bundle"))
-				return
-			}
-			self.loadHtml(path: pathInResourceBundle, completion: completion)
-		}
-	}
-
-	private func loadHtml(path: String, completion: @escaping (Error?) -> Void) {
-		let url = URL(fileURLWithPath: path)
-		self.webView.loadFileURL(url, allowingReadAccessTo: url)
+	private func loadHtml(completion: @escaping () -> Void) {
+		self.webView.loadHTMLString(HTML.html, baseURL: nil)
 		self.wkDelegate.onInitializeMap = {
-			completion(nil)
+			completion()
 		}
 	}
 
-	private func initializeMap(apiKey: String, bundleId: String, completion: @escaping ((Error?) -> Void)) {
+	private func initializeMap(apiKey: String, completion: @escaping ((Error?) -> Void)) {
 		self.js.initializeMap(
 			center: self.mapCenter,
 			maxZoom: self.mapMaxZoom,
@@ -304,8 +272,7 @@ extension MapView : MapViewProtocol {
 			minPitch: self.mapMinPitch,
 			pitch: self.mapPitch,
 			rotation: self.mapRotation,
-			apiKey: apiKey,
-			bundleId: bundleId
+			apiKey: apiKey
 		) {
 			result in
 			switch result {
