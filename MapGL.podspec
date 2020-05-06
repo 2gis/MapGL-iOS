@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 	s.name = 'MapGL'
-	s.version = '0.1.2'
+	s.version = '0.1.3'
 	s.swift_version = '5.0'
 	s.summary = '2GIS Maps SDK for iOS'
 	s.homepage = 'https://github.com/2gis/MapGL-iOS'

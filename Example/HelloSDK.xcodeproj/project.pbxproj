@@ -134,7 +134,6 @@
 				0F0CEC692305437A0084161C /* Sources */,
 				0F0CEC6A2305437A0084161C /* Frameworks */,
 				0F0CEC6B2305437A0084161C /* Resources */,
-				1C676B8A66C6C4134D50D5E1 /* [CP] Copy Pods Resources */,
 				737E1A472457309F006D5087 /* Lint */,
 			);
 			buildRules = (
@@ -154,7 +153,6 @@
 				737E1A502457BF89006D5087 /* Sources */,
 				737E1A512457BF89006D5087 /* Frameworks */,
 				737E1A522457BF89006D5087 /* Resources */,
-				389EED86680C465E3C9FB472 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -223,40 +221,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1C676B8A66C6C4134D50D5E1 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSDK/Pods-HelloSDK-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		389EED86680C465E3C9FB472 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		675D0FE8394C5A2B1FD8251B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
