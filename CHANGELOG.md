@@ -1,7 +1,13 @@
 # Changelog
 
 ## [Unreleased]
-## 2020-04-30 - 0.1.0
+## 2020-05-06 - 0.1.3
+
+### Added
+- Label support
+- Label show/hide support
+
+## 2020-04-30 - 0.1.2
 
 ### Added
 - Changelog
@@ -29,7 +35,8 @@
 ### Changed
 - Nothing.
 
-[0.1.0]: https://github.com/2gis/MapGL-iOS/compare/0.0.8...0.1.0
+[0.1.3]: https://github.com/2gis/MapGL-iOS/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/2gis/MapGL-iOS/compare/0.0.8...v0.1.2
 [0.0.8]: https://github.com/2gis/MapGL-iOS/compare/0.0.6...0.0.8
 [0.0.6]: https://github.com/2gis/MapGL-iOS/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/2gis/MapGL-iOS/compare/0.0.4...0.0.5

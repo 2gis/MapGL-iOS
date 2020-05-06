@@ -97,6 +97,19 @@ let polyline = Polyline(
 map.add(polyline)
 ```
 
+
+### Showing the Label
+
+```swift
+let label = Label(
+	center: CLLocationCoordinate2D(latitude: 25.30, longitude: 55.378),
+	color: .red,
+	text: "Demo label",
+	fontSize: 24
+)
+map.add(label)
+```
+
 ### Receiving Map Click Events
 
 ```swift
@@ -112,6 +125,10 @@ func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
     // do smth with object
 }
 ```
+
+### Hiding and showing objects
+
+Some objects (Marker, Label) can be shown/hidden via `.show()` or `.hide()` method
 
 ## Example
 To run the example project, clone the repo, and run `pod install` from the Example directory.
