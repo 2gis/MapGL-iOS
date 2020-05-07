@@ -1,3 +1,5 @@
+import UIKit.UIColor
+
 extension UIColor {
 
 	func hexString() -> String? {

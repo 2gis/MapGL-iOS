@@ -19,10 +19,10 @@ Pod::Spec.new do |s|
 		:tag => "v#{s.version}"
 	}
 	s.framework = "UIKit"
-	s.source_files = 'MapGL/Classes/**/*.{swift}'
+	s.source_files = 'Sources/MapGL/**/*.{swift}'
 
 	s.test_spec 'Tests' do |ts|
-		ts.source_files = 'MapGL/Tests/**/*.{swift}'
+		ts.source_files = 'Tests/MapGLTests/**/*.{swift}'
 		ts.requires_app_host = true
 	end
 end

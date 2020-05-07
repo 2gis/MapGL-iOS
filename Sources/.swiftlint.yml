@@ -16,7 +16,7 @@ disabled_rules:
   - type_body_length
   - type_name
 included:
-  - Classes
+  - MapGL
 
 switch_case_alignment:
   indented_cases: true

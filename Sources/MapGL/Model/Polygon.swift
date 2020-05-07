@@ -1,4 +1,5 @@
 import CoreLocation
+import UIKit.UIColor
 
 open class Polygon: MapObject {
 

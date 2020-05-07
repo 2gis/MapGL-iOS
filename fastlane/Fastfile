@@ -17,7 +17,7 @@ platform :ios do
 
     swiftlint(
       mode: :lint,      # SwiftLint mode: :lint (default) or :autocorrect
-      path: "./MapGL",       # Specify path to lint (optional)
+      path: "./Sources",       # Specify path to lint (optional)
       executable: "./Pods/SwiftLint/swiftlint",
       config_file: ".swiftlint.yml",     # The path of the configuration file (optional)
       strict: true,
@@ -26,8 +26,8 @@ platform :ios do
     )
 
     run_tests(
-      project: "./Pods/Pods.xcodeproj",
-      scheme: "MapGL-Unit-Tests"
+      project: "./MapGL-iOS.xcodeproj",
+      scheme: "MapGL-iOS-Package"
     )
     
     version = options[:version]

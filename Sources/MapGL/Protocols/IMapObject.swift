@@ -1,3 +1,5 @@
+import Foundation
+
 @objc public protocol IMapObject {
 	var id: String { get }
 }

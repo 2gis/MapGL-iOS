@@ -1,3 +1,5 @@
+import UIKit.UIImage
+
 extension Marker.Anchor {
 
 	func stringify(with markerImage: UIImage) -> String {

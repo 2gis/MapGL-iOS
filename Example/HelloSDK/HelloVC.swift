@@ -110,7 +110,7 @@ class HelloVC: UIViewController {
 			self.cardView.onRemove = nil
 			self.hideCardView()
 		}
-		
+
 		self.map.show(
 			apiKey: "apiKey",
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),

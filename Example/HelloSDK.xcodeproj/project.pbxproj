@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -259,7 +259,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"../MapGL\"\necho $PWD\n${PODS_ROOT}/SwiftLint/swiftlint lint\n\n";
+			shellScript = "cd \"../Sources\"\necho $PWD\n${PODS_ROOT}/SwiftLint/swiftlint lint\n\n";
 		};
 		80DBE19CE2A227AD0D365394 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

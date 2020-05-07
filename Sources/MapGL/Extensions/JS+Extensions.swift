@@ -1,3 +1,5 @@
+import UIKit.UIColor
+
 private enum JS {
 	static let undefined = "undefined"
 }

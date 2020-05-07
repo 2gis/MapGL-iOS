@@ -18,10 +18,10 @@ class Tests: XCTestCase {
 		return self.testMarkerImage.pngData()!.base64EncodedString()
 	}()
 
-    override func setUp() {
-        self.jsExecutor = JSExecutor()
+	override func setUp() {
+		self.jsExecutor = JSExecutor()
 		self.map = MapView(jsExecutor: self.jsExecutor)
-    }
+	}
 
 	func test_map_initial_state() {
 		XCTAssertEqual(self.map.mapCenter.latitude, MapView.Const.mapDefaultCenter.latitude)
@@ -89,11 +89,11 @@ class Tests: XCTestCase {
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 1)
 	}
 
-    func test_execute_js_on_zoom_change() {
+	func test_execute_js_on_zoom_change() {
 		self.map.mapZoom = 10
 		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.map.setZoom(10.0);")
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 1)
-    }
+	}
 
 	func test_execute_js_on_min_zoom_change() {
 		self.map.mapMinZoom = 5
@@ -156,7 +156,7 @@ class Tests: XCTestCase {
 		size: [120.0, 177.0],
 		});
 		"""
-		self.map.add(self.testMarkerWithImage(anchor: .leftTop))
+		self.map.add(self.testMarkerWithImage(self.testMarkerImage, anchor: .leftTop))
 		XCTAssertEqual(self.jsExecutor.javaScriptString, expected)
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 1)
 	}
@@ -202,23 +202,20 @@ class Tests: XCTestCase {
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 2)
 	}
 
-	private func testMarkerWithImage(anchor: Marker.Anchor) -> Marker {
+	private func testMarkerWithImage(
+		_ image: UIImage?,
+		anchor: Marker.Anchor = .center
+	) -> Marker {
 		let marker = Marker(
 			id: "123",
 			coordinates: CLLocationCoordinate2D(latitude: 1, longitude: 2),
-			image: self.testMarkerImage,
+			image: image,
 			anchor: anchor
 		)
 		return marker
 	}
 
 	private func testMarkerWithoutImage() -> Marker {
-		let marker = Marker(
-			id: "123",
-			coordinates: CLLocationCoordinate2D(latitude: 1, longitude: 2),
-			image: nil,
-			anchor: .center
-		)
-		return marker
+		return self.testMarkerWithImage(nil)
 	}
 }

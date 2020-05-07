@@ -1,4 +1,5 @@
 import CoreLocation
+import UIKit.UIColor
 
 /// Polyline map object
 open class Label: MapObject {

@@ -1,3 +1,5 @@
+import Foundation
+
 open class MapObject: NSObject {
 
 	@objc public let id: String

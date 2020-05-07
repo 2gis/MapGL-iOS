@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+
+### Added
+- Swift PM support
+
 ## 2020-05-06 - 0.1.3
 
 ### Added
