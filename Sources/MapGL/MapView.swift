@@ -20,6 +20,7 @@ public class MapView : UIView {
 		static let mapDefaultCenter = CLLocationCoordinate2D(latitude: 55.750574, longitude: 37.618317)
 	}
 
+	/// Optional methods that you use to receive map-related update messages.
 	public weak var delegate: MapViewDelegate?
 
 	private var objects: [String: MapObject] = [:]
