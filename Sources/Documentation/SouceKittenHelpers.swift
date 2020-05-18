@@ -53,8 +53,9 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 	}
 
 	var properties: [Property]? {
-		guard let properties = self[.substructure]?.arrayOfDict else { return nil }
-		return properties.compactMap { $0.property }
+		guard let list = self[.substructure]?.arrayOfDict else { return nil }
+		let properties = list.compactMap { $0.property }
+		return properties.isEmpty ? nil : properties
 	}
 	var accessibility: Accessibility? {
 		guard let accessibility = self[SwiftDocKey.accessibility] as? String else { return nil }
@@ -69,9 +70,7 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 
 		return Property(
 			name: name,
-			description: self.fullXMLDocs,
-			types: [instanceType],
-			isOptional: nil
+			types: [instanceType]
 		)
 	}
 
@@ -79,31 +78,84 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 		self[.fullXMLDocs] as? String
 	}
 
+	var fully_annotated_decl: String? {
+		self["key.fully_annotated_decl"] as? String
+	}
+
 	var instanceType: InstanceType? {
 		guard let typeName = self[.typeName] as? String else { return nil }
-		return InstanceType(name: typeName, refLink: nil)
+		return InstanceType(name: typeName)
 	}
 
 	var objectProperties: Properties? {
 		guard let name = self.name else { return nil }
-		var properties = Properties(name: name, description: nil)
+		let properties = Properties(name: name)
+		print("Name>>>>>\(name)")
 		properties.properties = self.properties
+		properties.inherits = self.inherited
+//		properties.implement
+		let methods = self.methods
+		properties.methods = methods?.filter({ $0.isConstructor != true })
+		properties.constructorMethod = methods?.first(where: {
+			$0.isConstructor == true
+		})
 		return properties
 	}
 
+	var methods: [Method]? {
+		guard let properties = self[.substructure]?.arrayOfDict else { return nil }
+		print(">>>>>\(123)")
+		let methods = properties.compactMap { $0.method }
+		return methods.isEmpty ? nil : methods
+	}
 
+	var method: Method? {
+		print(">>>>>\(self.kind) \(self.accessibility) \(self.name)")
+		guard self.kind == .functionMethodInstance,
+			self.accessibility?.isValidForExport == true else { return nil }
+
+		let fully_annotated_decl = self.fully_annotated_decl
+		if let fully_annotated_decl = fully_annotated_decl {
+
+			let method =
+				fully_annotated_decl.parseMethod() ??
+				fully_annotated_decl.parseConstructor()
+
+			if method == nil {
+				assertionFailure("Should be documented: \(fully_annotated_decl)")
+			}
+			return method
+		}
+//		if let doc = self.fullXMLDocs {
+//			let d = parseFullXMLDocs(doc)
+//			print(">>>>>\(d)")
+//		}
+		return nil
+	}
+
+	var typeName: String? {
+		self[.typeName] as? String
+	}
+
+	var inherited: [InstanceType]? {
+		guard let inherited = self[.inheritedtypes] as? SourceKitDict,
+			let name = inherited.name else { return nil }
+		return [InstanceType(name: name)]
+	}
 
 }
 
+typealias SourceKitDict = [String: SourceKitRepresentable]
+
 extension SourceKitRepresentable {
 
-	var dictionary: [String: SourceKitRepresentable]? {
-		return self as? [String: SourceKitRepresentable]
+	var dictionary: SourceKitDict? {
+		return self as? SourceKitDict
 	}
 	var array: [SourceKitRepresentable]? {
 		return self as? [SourceKitRepresentable]
 	}
-	var arrayOfDict: [[String: SourceKitRepresentable]]? {
-		return self as? [[String: SourceKitRepresentable]]
+	var arrayOfDict: [SourceKitDict]? {
+		return self as? [SourceKitDict]
 	}
 }

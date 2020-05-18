@@ -1,7 +1,8 @@
 import Foundation
 import SourceKittenFramework
 
-//let module = Module(spmArguments: [], spmName: "MapGL")
+//try? String.xml2.parseMethod()
+
 let module = Module(
 	xcodeBuildArguments: [
 		"-project", "MapGL-iOS.xcodeproj",
@@ -15,23 +16,26 @@ let module = Module(
 guard let docs = module?.docs else { exit(0) }
 
 var refMap = [String : Object]()
+var nameMap = [String: String]()
+
 for doc in docs {
 
 	if let substructures = doc.docsDictionary[.substructure]?.arrayOfDict {
 		for substructure in substructures {
 
-			if let accessibility = Accessibility(substructure[SwiftDocKey.accessibility]),
-				accessibility.isValidForExport,
+			if substructure.accessibility?.isValidForExport == true,
 				let objectType = substructure.kind?.objectType(),
 				let properties = substructure.objectProperties {
 				let object = Object(type: objectType, props: properties)
-				refMap[UUID().uuidString] = object
+				nameMap[object.props.name] = object.refMap()
+				refMap[object.refMap()] = object
 				_ = substructure
 			}
 		}
 	}
 
 }
+
 let e = JSONEncoder()
 e.outputFormatting = [.prettyPrinted]
 let documentation = Documentation(refMap: refMap)
