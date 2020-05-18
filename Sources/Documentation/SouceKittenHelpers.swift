@@ -68,10 +68,23 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 			let name = self.name,
 			let instanceType = self.instanceType else { return nil }
 
-		return Property(
+		let property = Property(
 			name: name,
 			types: [instanceType]
 		)
+		property.description = self.fullXMLDocs?.propertyDescription()
+		return property
+	}
+
+	var docParams: [SourceKitDict] {
+		self[.docParameters] as? [SourceKitDict] ?? []
+	}
+
+	func docDescription(for key: String) -> String? {
+		guard let discussion = self[key] as? [SourceKitDict],
+			let para = discussion.first(where: { $0["Para"] != nil }) else { return nil }
+		let docDescription = para["Para"] as? String
+		return docDescription
 	}
 
 	var fullXMLDocs: String? {
@@ -92,25 +105,31 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 		let properties = Properties(name: name)
 		print("Name>>>>>\(name)")
 		properties.properties = self.properties
+
+		if let pps = self.properties {
+			for property in pps {
+				if property.description == nil {
+					print("Warning: Property \(name).\(property.name) missing description")
+				}
+			}
+		}
 		properties.inherits = self.inherited
-//		properties.implement
+		#warning("properties.implement")
 		let methods = self.methods
 		properties.methods = methods?.filter({ $0.isConstructor != true })
-		properties.constructorMethod = methods?.first(where: {
-			$0.isConstructor == true
-		})
+		properties.constructorMethods = methods?.filter({ $0.isConstructor == true })
+
 		return properties
 	}
 
 	var methods: [Method]? {
 		guard let properties = self[.substructure]?.arrayOfDict else { return nil }
-		print(">>>>>\(123)")
 		let methods = properties.compactMap { $0.method }
 		return methods.isEmpty ? nil : methods
 	}
 
 	var method: Method? {
-		print(">>>>>\(self.kind) \(self.accessibility) \(self.name)")
+//		print(">>>>>\(self.kind) \(self.accessibility) \(self.name)")
 		guard self.kind == .functionMethodInstance,
 			self.accessibility?.isValidForExport == true else { return nil }
 
@@ -124,12 +143,11 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 			if method == nil {
 				assertionFailure("Should be documented: \(fully_annotated_decl)")
 			}
+			if let doc = self.fullXMLDocs {
+				method?.fill(with: doc)
+			}
 			return method
 		}
-//		if let doc = self.fullXMLDocs {
-//			let d = parseFullXMLDocs(doc)
-//			print(">>>>>\(d)")
-//		}
 		return nil
 	}
 

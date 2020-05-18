@@ -45,7 +45,7 @@ class Properties: Codable {
 	let name: String
 	var description: String?
 	/// Class
-	var constructorMethod: Method?
+	var constructorMethods: [Method]?
 	var methods: [Method]?
 	var implement: [InstanceType]?
 	/// Interface
@@ -88,7 +88,7 @@ extension Object {
 	}
 
 	mutating func addMissingRefs(_ refs: [String: String]) {
-		self.props.constructorMethod?.addMissingRefs(refs)
+		self.props.constructorMethods?.forEach({ $0.addMissingRefs(refs) })
 		self.props.implement?.addMissingRefs(refs)
 		self.props.inherits?.addMissingRefs(refs)
 		self.props.methods?.forEach({ $0.addMissingRefs(refs) })
