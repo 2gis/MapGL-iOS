@@ -30,7 +30,7 @@ extension String {
 			name: "init",
 			isConstructor: true,
 			parameters: parameters,
-			result: ReturnResult(types: [])
+			result: nil
 		)
 	}
 
@@ -43,11 +43,12 @@ extension String {
 		if let returnType = xml.type(with: "decl.function.returntype") {
 			returnTypes += [InstanceType(name: returnType)]
 		}
+		let result: ReturnResult? = returnTypes.isEmpty ? nil : ReturnResult(types: returnTypes)
 		let parameters = xml.properties()
 		return Method(
 			name: name,
 			parameters: parameters,
-			result: ReturnResult(types: returnTypes)
+			result: result
 		)
 	}
 
@@ -71,7 +72,7 @@ extension Method {
 		}
 
 		let docParams = doc.docParams
-		self.result.description = doc.docDescription(for: "key.doc.result_discussion")
+		self.result?.description = doc.docDescription(for: "key.doc.result_discussion")
 		for docParam in docParams {
 			if let name = docParam["name"] as? String {
 				if let parameter = self.parameters.first(where: { $0.name == name }) {

@@ -21,8 +21,8 @@ class Method: Codable {
 	var description: String?
 	var isConstructor: Bool?
 	var parameters: [Property]
-	var result: ReturnResult
-	init(name: String, isConstructor: Bool? = nil, parameters: [Property], result: ReturnResult) {
+	var result: ReturnResult?
+	init(name: String, isConstructor: Bool? = nil, parameters: [Property], result: ReturnResult?) {
 		self.name = name
 		self.parameters = parameters
 		self.isConstructor = isConstructor
@@ -101,7 +101,7 @@ extension Object {
 
 extension Method {
 	func addMissingRefs(_ refs: [String: String]) {
-		self.result.addMissingRefs(refs)
+		self.result?.addMissingRefs(refs)
 	}
 }
 
