@@ -11,8 +11,11 @@ enum ObjectType: String, Codable {
 class InstanceType: Codable {
 	let name: String
 	var refLink: String?
-	var nonOptionalName: String {
-		self.name.replacingOccurrences(of: "?", with: "")
+	var pureName: String {
+		self.name
+			.replacingOccurrences(of: "?", with: "")
+			.replacingOccurrences(of: "[", with: "")
+			.replacingOccurrences(of: "]", with: "")
 	}
 
 	init(name: String) {
@@ -111,6 +114,7 @@ extension Object {
 
 extension Method {
 	func addMissingRefs(_ refs: [String: String]) {
+		self.parameters.forEach { $0.addMissingRefs(refs) }
 		self.result?.addMissingRefs(refs)
 	}
 }
@@ -123,7 +127,7 @@ extension Property {
 
 extension InstanceType {
 	func addMissingRefs(_ refs: [String: String]) {
-		self.refLink = refs[self.nonOptionalName]
+		self.refLink = refs[self.pureName]
 	}
 }
 
