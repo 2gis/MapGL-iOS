@@ -97,7 +97,7 @@ class ReturnResult: Codable {
 extension Object {
 
 	func refMap() -> String {
-		"/ios/maps/reference/\(self.props.name)"
+		"/en/ios/maps/reference/\(self.props.name)"
 	}
 
 	func addMissingRefs(_ refs: [String: String]) {
