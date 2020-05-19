@@ -11,6 +11,10 @@ enum ObjectType: String, Codable {
 class InstanceType: Codable {
 	let name: String
 	var refLink: String?
+	var nonOptionalName: String {
+		self.name.replacingOccurrences(of: "?", with: "")
+	}
+
 	init(name: String) {
 		self.name = name
 	}
@@ -19,13 +23,13 @@ class InstanceType: Codable {
 class Method: Codable {
 	let name: String
 	var description: String?
-	var isConstructor: Bool?
 	var parameters: [Property]
 	var result: ReturnResult?
-	init(name: String, isConstructor: Bool? = nil, parameters: [Property], result: ReturnResult?) {
+	private let isConstructor: Bool = false
+
+	init(name: String, parameters: [Property], result: ReturnResult?) {
 		self.name = name
 		self.parameters = parameters
-		self.isConstructor = isConstructor
 		self.result = result
 	}
 }
@@ -35,10 +39,12 @@ class Property: Codable {
 	let types: [InstanceType]
 	var description: String?
 	var isOptional: Bool?
+
 	init(name: String, types: [InstanceType]) {
 		self.name = name
 		self.types = types
 	}
+
 }
 
 class Properties: Codable {
@@ -60,9 +66,13 @@ class Properties: Codable {
 	}
 }
 
-struct Object: Codable {
+class Object: Codable {
 	let type: ObjectType
 	var props: Properties
+	init(type: ObjectType, props: Properties) {
+		self.type = type
+		self.props = props
+	}
 }
 
 struct Documentation: Codable {
@@ -87,7 +97,7 @@ extension Object {
 		"/ios/maps/reference/\(self.props.name)"
 	}
 
-	mutating func addMissingRefs(_ refs: [String: String]) {
+	func addMissingRefs(_ refs: [String: String]) {
 		self.props.constructorMethods?.forEach({ $0.addMissingRefs(refs) })
 		self.props.implement?.addMissingRefs(refs)
 		self.props.inherits?.addMissingRefs(refs)
@@ -113,7 +123,7 @@ extension Property {
 
 extension InstanceType {
 	func addMissingRefs(_ refs: [String: String]) {
-		self.refLink = refs[self.name]
+		self.refLink = refs[self.nonOptionalName]
 	}
 }
 

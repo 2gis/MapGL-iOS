@@ -28,7 +28,6 @@ extension String {
 		let parameters = xml.properties()
 		return Method(
 			name: "init",
-			isConstructor: true,
 			parameters: parameters,
 			result: nil
 		)

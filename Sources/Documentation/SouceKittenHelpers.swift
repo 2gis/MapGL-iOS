@@ -116,8 +116,8 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 		properties.inherits = self.inherited
 		#warning("properties.implement")
 		let methods = self.methods
-		properties.methods = methods?.filter({ $0.isConstructor != true })
-		properties.constructorMethods = methods?.filter({ $0.isConstructor == true })
+		properties.methods = methods?.filter({ !$0.name.hasPrefix("init") })
+		properties.constructorMethods = methods?.filter({ $0.name.hasPrefix("init") })
 
 		return properties
 	}

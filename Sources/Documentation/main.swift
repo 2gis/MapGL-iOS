@@ -16,7 +16,7 @@ let module = Module(
 guard let docs = module?.docs else { exit(0) }
 
 var refMap = [String : Object]()
-var nameMap = [String: String]()
+var nameRefMap = [String: String]()
 
 for doc in docs {
 
@@ -27,13 +27,16 @@ for doc in docs {
 				let objectType = substructure.kind?.objectType(),
 				let properties = substructure.objectProperties {
 				let object = Object(type: objectType, props: properties)
-				nameMap[object.props.name] = object.refMap()
+				nameRefMap[object.props.name] = object.refMap()
 				refMap[object.refMap()] = object
 				_ = substructure
 			}
 		}
 	}
+}
 
+refMap.forEach {
+	$0.value.addMissingRefs(nameRefMap)
 }
 
 let e = JSONEncoder()
