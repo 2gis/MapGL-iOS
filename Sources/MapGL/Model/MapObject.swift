@@ -20,6 +20,13 @@ open class MapObject: NSObject {
 		return ""
 	}
 
+	func destroyJSCode() -> String {
+		let js = """
+		window.destroyObject("\(self.id)");
+		"""
+		return js
+	}
+
 }
 
 protocol IObjectDelegate: AnyObject {

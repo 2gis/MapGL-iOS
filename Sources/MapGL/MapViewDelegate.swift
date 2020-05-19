@@ -5,7 +5,7 @@ import CoreLocation
 	/// Notifies when user select any object
 	/// - Parameters:
 	///   - mapView: Map view
-	///   - object: instance of map object (marker, circle, polygon, etc)
+	///   - object: instance of map object (marker, circle, polygon, building, etc)
 	@objc optional func mapView(_ mapView: MapView, didSelectObject object: MapObject)
 
 	/// Notifies when user select one or many markers in cluster

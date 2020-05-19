@@ -26,6 +26,7 @@ static let html = """
 	<script src="https://unpkg.com/@2gis/mapgl-clusterer@^1/dist/clustering.js"></script>
 	<script>
 		var objects = new Map();
+		let selectedIds = [];
 		const container = document.getElementById('map');
 
 		window.initializeMap = function(center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey) {
@@ -45,7 +46,7 @@ static let html = """
 			window.map.on('click', (ev) => {
 				window.webkit.messageHandlers.dgsMessage.postMessage({
 					type: "mapClick",
-					value: ev.lngLat
+					value: JSON.stringify(ev)
 				});
 			});
 
@@ -108,6 +109,18 @@ static let html = """
 		window.showObject = function (id) {
 			const marker = objects.get(id);
 			marker.show();
+		}
+		window.showBuilding = function (id) {
+			if (!selectedIds.includes(id)) {
+				selectedIds.push(id);
+				window.map.setSelectedObjects(selectedIds);
+			}
+		}
+		window.hideBuilding = function (id) {
+			if (selectedIds.includes(id)) {
+				selectedIds = selectedIds.filter((i) => i !== id);
+				window.map.setSelectedObjects(selectedIds);
+			}
 		}
 		window.setMarkerCoordinates = function (id, coordinates) {
 			const marker = objects.get(id);

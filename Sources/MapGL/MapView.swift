@@ -318,8 +318,12 @@ extension MapView: JSBridgeDelegate {
 		self.pitchDidChange?(mapPitch)
 	}
 
-	func js(_ js: JSBridge, didClickMapWithLocation location: CLLocationCoordinate2D) {
-		self.mapClick?(location)
+	func js(_ js: JSBridge, didClickMapWithEvent event: MapClickEvent) {
+		self.mapClick?(event.coordinate)
+		self.delegate?.mapView?(self, didSelectCoordnates: event.coordinate)
+		if let objectId = event.target?.id {
+			self.delegate?.mapView?(self, didSelectObject: Building(id: objectId))
+		}
 	}
 
 	func js(_ js: JSBridge, didClickObjectWithId objectId: String) {
@@ -366,9 +370,9 @@ extension MapView {
 	}
 
 	public func removeAllObjects() {
-		for marker in self.objects.values {
-			self.objects.removeValue(forKey: marker.id)
-			self.js.destroy(marker)
+		for object in self.objects.values {
+			self.objects.removeValue(forKey: object.id)
+			self.js.destroy(object)
 		}
 	}
 

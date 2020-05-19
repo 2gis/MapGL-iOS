@@ -210,10 +210,10 @@ extension JSBridge: WKScriptMessageHandler {
 					delegate.js(self, mapPitchDidChange: pitch)
 			}
 			case "mapClick":
-				let data = body["value"] as? [Double]
-				if let lat = data?.last, let lon = data?.first {
-					delegate.js(self, didClickMapWithLocation: CLLocationCoordinate2D(latitude: lat, longitude: lon))
-			}
+				let data = body["value"] as? String
+				if let event = MapClickEvent(string: data) {
+					delegate.js(self, didClickMapWithEvent: event)
+				}
 			case "objectClick":
 				if let id = body["value"] as? String {
 					delegate.js(self, didClickObjectWithId: id)

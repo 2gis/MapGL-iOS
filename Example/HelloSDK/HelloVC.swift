@@ -96,14 +96,6 @@ class HelloVC: UIViewController {
 			self?.mapPitchLabel.text = "Map pitch: \(pitch)"
 		}
 
-		self.map.mapClick = {
-			[weak self] coordinates in
-			guard let self = self else { return }
-			let marker = Marker(coordinates: coordinates, image: UIImage(named: "pin")!, anchor: .bottom)
-			self.map.add(marker)
-			self.showCardView(object: marker)
-		}
-
 		self.cardView.onClose = {
 			[weak self] in
 			guard let self = self else { return }
@@ -254,12 +246,21 @@ class HelloVC: UIViewController {
 			)
 			self.map.add(polyline)
 		}
+		let showBuilding = UIAlertAction(title: "Show Building, hide in 5 sec", style: .default) { _ in
+			let building = Building(id: "13933647002609599")
+			self.map.add(building)
+			DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+				building.hide()
+			}
+		}
+
 		let removeMarkersAction = UIAlertAction(title: "Remove all objects", style: .destructive) { _ in
 			self.map.removeAllObjects()
 		}
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
+		alert.addAction(showBuilding)
 		alert.addAction(showLabel)
 		alert.addAction(showCluster)
 		alert.addAction(showPolyline)
@@ -373,6 +374,9 @@ extension HelloVC: MapViewDelegate {
 
 	func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
 		self.showCardView(object: object)
+		if let building = object as? Building {
+			self.map.add(building)
+		}
 	}
 
 }
@@ -390,6 +394,8 @@ extension MapObject {
 			return polygon.points[0].toCard()
 		} else if let polyline = self as? Polyline {
 			return polyline.points[0].toCard()
+		} else if let building = self as? Building {
+			return building.id
 		}
 		return ""
 	}

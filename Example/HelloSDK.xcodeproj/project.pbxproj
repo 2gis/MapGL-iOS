@@ -32,6 +32,8 @@
 		437C9F6E2BA611CA80277878 /* Pods-HelloSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK.debug.xcconfig"; path = "Target Support Files/Pods-HelloSDK/Pods-HelloSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		737E1A542457BF89006D5087 /* HelloSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		737E1A582457BF89006D5087 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		739E320B2473EB9F00820C75 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../../CHANGELOG.md; sourceTree = "<group>"; };
+		739E320D2473EBAF00820C75 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 		7813E63B01671344A2702392 /* Pods-HelloSDK-HelloSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK-HelloSDKTests.release.xcconfig"; path = "Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		B43DFA8977133CDF104A001B /* Pods-HelloSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK.release.xcconfig"; path = "Target Support Files/Pods-HelloSDK/Pods-HelloSDK.release.xcconfig"; sourceTree = "<group>"; };
 		DB889E7B734F557C6E9F7819 /* Pods-HelloSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDKTests.release.xcconfig"; path = "Target Support Files/Pods-HelloSDKTests/Pods-HelloSDKTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -81,6 +83,8 @@
 		0F0CEC6F2305437A0084161C /* HelloSDK */ = {
 			isa = PBXGroup;
 			children = (
+				739E320B2473EB9F00820C75 /* CHANGELOG.md */,
+				739E320D2473EBAF00820C75 /* README.md */,
 				0F0CEC702305437A0084161C /* AppDelegate.swift */,
 				0F0CEC722305437A0084161C /* HelloVC.swift */,
 				0FE65D4F230D958C007E3585 /* CardView.swift */,

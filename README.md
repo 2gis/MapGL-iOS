@@ -110,6 +110,15 @@ let label = Label(
 map.add(label)
 ```
 
+### Showing the Building
+
+```swift
+let building = Building(
+	id: "13933647002609599"
+)
+map.add(label)
+```
+
 ### Receiving Map Click Events
 
 ```swift
@@ -128,7 +137,7 @@ func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
 
 ### Hiding and showing objects
 
-Some objects (Marker, Label) can be shown/hidden via `.show()` or `.hide()` method
+Some objects (Marker, Label, Building) can be shown/hidden via `.show()` or `.hide()` method
 
 ## Example
 To run the example project, clone the repo, and run `pod install` from the Example directory.
