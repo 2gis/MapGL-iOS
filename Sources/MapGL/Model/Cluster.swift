@@ -22,18 +22,11 @@ open class Cluster: MapObject {
 
 }
 
-extension Array where Element == Marker {
-	func jsCode() -> String {
-		let markers = self.map { $0.jsCode() }.joined(separator: ",")
-		return "[\(markers)]"
-	}
-}
-
 extension Cluster {
 
 	override func createJSCode() -> String {
 		return """
-		window.addCluster("\(self.id)", \(self.radius), \(self.markers.jsCode()));
+		window.addCluster("\(self.id)", \(self.radius), \(self.markers.jsValue()));
 		"""
 	}
 
@@ -41,7 +34,7 @@ extension Cluster {
 		let js = """
 		window.updateCluster(
 		"\(self.id)",
-		\(self.markers.jsCode())
+		\(self.markers.jsValue())
 		);
 		"""
 		self.delegate?.evaluateJS(js)

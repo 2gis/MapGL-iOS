@@ -160,6 +160,13 @@ class JSBridge : NSObject {
 		}
 	}
 
+	func setSelectedObjects(_ objectsIds: [String]) {
+		let js = """
+		window.setSelectedObjects(\(objectsIds.jsValue()));
+		"""
+		self.evaluateJS(js)
+	}
+
 }
 
 extension JSBridge: WKScriptMessageHandler {

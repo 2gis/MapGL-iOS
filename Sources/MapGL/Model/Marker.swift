@@ -84,9 +84,9 @@ open class Marker: MapObject {
 
 extension Marker: IHideable {}
 
-extension Marker {
+extension Marker: IJSValue {
 
-	func jsCode() -> String {
+	func jsValue() -> String {
 		let js: String
 		if let image = self.image, let imageData = image.pngData() {
 			let imageString = imageData.base64EncodedString()
@@ -94,7 +94,7 @@ extension Marker {
 			js = """
 			{
 			id: "\(self.id)",
-			coordinates: \(self.coordinates.toJS()),
+			coordinates: \(self.coordinates.jsValue()),
 			icon: "\(markerImage)",
 			anchor: \(self.anchor.stringify(with: image)),
 			size: [\(image.size.width), \(image.size.height)],
@@ -104,7 +104,7 @@ extension Marker {
 			js = """
 			{
 			id: "\(self.id)",
-			coordinates: \(self.coordinates.toJS()),
+			coordinates: \(self.coordinates.jsValue()),
 			icon: undefined,
 			anchor: undefined,
 			size: undefined,
@@ -116,7 +116,7 @@ extension Marker {
 
 	override func createJSCode() -> String {
 		let js = """
-		window.addMarker(\(self.jsCode()));
+		window.addMarker(\(self.jsValue()));
 		"""
 		return js
 	}
@@ -125,7 +125,7 @@ extension Marker {
 		let js = """
 		window.setMarkerCoordinates(
 		"\(self.id)",
-		\(self.coordinates.toJS())
+		\(self.coordinates.jsValue())
 		);
 		"""
 		self.delegate?.evaluateJS(js)

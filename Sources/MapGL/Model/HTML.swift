@@ -110,17 +110,21 @@ static let html = """
 			const marker = objects.get(id);
 			marker.show();
 		}
-		window.showBuilding = function (id) {
+		window.selectObject = function (id) {
 			if (!selectedIds.includes(id)) {
 				selectedIds.push(id);
 				window.map.setSelectedObjects(selectedIds);
 			}
 		}
-		window.hideBuilding = function (id) {
+		window.deselectObject = function (id) {
 			if (selectedIds.includes(id)) {
-				selectedIds = selectedIds.filter((i) => i !== id);
-				window.map.setSelectedObjects(selectedIds);
+				ids = selectedIds.filter((i) => i !== id);
+				window.setSelectedObjects(ids);
 			}
+		}
+		window.setSelectedObjects = function (ids) {
+			selectedIds = ids;
+			window.map.setSelectedObjects(selectedIds);
 		}
 		window.setMarkerCoordinates = function (id, coordinates) {
 			const marker = objects.get(id);

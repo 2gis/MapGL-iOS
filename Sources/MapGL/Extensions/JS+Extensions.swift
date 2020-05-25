@@ -8,55 +8,47 @@ protocol IJSValue {
 	func jsValue() -> String
 }
 
-extension Optional where Wrapped: SignedNumeric {
-
-	func jsValue() -> String {
-		return self?.jsValue() ?? JS.undefined
-	}
-
+extension Optional: IJSValue where Wrapped: IJSValue {
+	func jsValue() -> String { self?.jsValue() ?? JS.undefined }
 }
 
-extension SignedNumeric {
+extension String: IJSValue {
+	func jsValue() -> String { "\"\(self)\"" }
+}
 
+extension Array: IJSValue where Element: IJSValue {
 	func jsValue() -> String {
-		return "\(self)"
+		let js = "[\(self.map({ $0.jsValue() }).joined(separator: ","))]"
+		return js
 	}
+}
+extension Array where Element == IJSValue {
+	func jsValue() -> String {
+		let js = "[\(self.map({ $0.jsValue() }).joined(separator: ","))]"
+		return js
+	}
+}
 
+extension Int: IJSValue {
+	func jsValue() -> String { "\(self)" }
+}
+
+extension CGFloat: IJSValue {
+	func jsValue() -> String { "\(self)" }
 }
 
 extension UIColor: IJSValue {
-
-	func jsValue() -> String {
-		guard let hex = self.hexString() else { return JS.undefined }
-		return "\"\(hex)\""
-	}
-
-}
-
-extension Optional where Wrapped == UIColor {
-
-	func jsValue() -> String {
-		return self?.jsValue() ?? JS.undefined
-	}
-
+	func jsValue() -> String { self.hexString().jsValue() }
 }
 
 extension PolylineStyle: IJSValue {
-
 	func jsValue() -> String {
-		return """
-		\(self.color.jsValue()),
-		\(self.width.jsValue()),
-		\(self.z.jsValue())
-		"""
+		"\(self.color.jsValue()),\(self.width.jsValue()),\(self.z.jsValue())"
 	}
-
 }
 
 extension Optional where Wrapped == PolylineStyle {
-
 	func jsValue() -> String {
 		return self?.jsValue() ?? "\(JS.undefined),\(JS.undefined),\(JS.undefined)"
 	}
-
 }

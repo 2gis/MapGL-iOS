@@ -30,13 +30,13 @@ open class Circle: MapObject {
 
 }
 
-extension Circle {
+extension Circle: IJSValue {
 
-	func jsCode() -> String {
+	func jsValue() -> String {
 		return """
 		{
 		id: "\(self.id)",
-		coordinates: \(self.center.toJS()),
+		coordinates: \(self.center.jsValue()),
 		radius: \(self.radius),
 		color: \(self.fillColor.jsValue()),
 		strokeWidth: \(self.strokeWidth.jsValue()),
@@ -48,7 +48,7 @@ extension Circle {
 
 	override func createJSCode() -> String {
 		let js = """
-		window.addCircle(\(self.jsCode()));
+		window.addCircle(\(self.jsValue()));
 		"""
 		return js
 	}

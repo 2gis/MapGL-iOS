@@ -41,13 +41,13 @@ open class Polyline: MapObject {
 
 }
 
-extension Polyline {
+extension Polyline: IJSValue {
 
-	func jsCode() -> String {
+	func jsValue() -> String {
 		return """
 		{
 		id: "\(self.id)",
-		coordinates: [\(self.points.toJS())],
+		coordinates: \(self.points.jsValue()),
 		color: \((self.style1?.color).jsValue()),
 		width: \((self.style1?.width).jsValue()),
 		zIndex: \((self.style1?.z).jsValue()),
@@ -63,7 +63,7 @@ extension Polyline {
 
 	override func createJSCode() -> String {
 		let js = """
-		window.addPolyline(\(self.jsCode()));
+		window.addPolyline(\(self.jsValue()));
 		"""
 		return js
 	}

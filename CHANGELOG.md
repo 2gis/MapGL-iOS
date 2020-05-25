@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+
+### Added
+- MapEntity selection support 
+
+### Changed
+- rename Building -> MapEntity
+
 ## 2020-05-19 - 0.1.4
 
 ### Added

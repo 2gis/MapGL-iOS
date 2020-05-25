@@ -4,7 +4,7 @@ import Foundation
 	var id: String { get }
 }
 
-protocol IJSMapObject: IMapObject {
+internal protocol IJSMapObject: IMapObject {
 	func createJSCode() -> String
 	func destroyJSCode() -> String
 }

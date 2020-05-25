@@ -246,16 +246,18 @@ class HelloVC: UIViewController {
 			)
 			self.map.add(polyline)
 		}
-		let showBuilding = UIAlertAction(title: "Show Building, hide in 5 sec", style: .default) { _ in
-			let building = Building(id: "13933647002609599")
-			self.map.add(building)
+		let showBuilding = UIAlertAction(title: "Select Building, deselect in 5 sec", style: .default) { _ in
+			let entity = MapEntity(id: "13933647002609599")
+			self.map.add(entity)
 			DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-				building.hide()
+				entity.deselect()
 			}
 		}
-
 		let removeMarkersAction = UIAlertAction(title: "Remove all objects", style: .destructive) { _ in
 			self.map.removeAllObjects()
+		}
+		let delesectAllObjects = UIAlertAction(title: "Deselect all objects", style: .destructive) { _ in
+			self.map.setSelectedObjects([])
 		}
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -268,8 +270,8 @@ class HelloVC: UIViewController {
 		alert.addAction(showCircle)
 		alert.addAction(showMarkerAction)
 		alert.addAction(removeMarkersAction)
+		alert.addAction(delesectAllObjects)
 		alert.addAction(cancelAction)
-
 		self.present(alert, animated: true, completion: nil)
 	}
 
@@ -374,8 +376,8 @@ extension HelloVC: MapViewDelegate {
 
 	func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
 		self.showCardView(object: object)
-		if let building = object as? Building {
-			self.map.add(building)
+		if let entity = object as? MapEntity {
+			self.map.add(entity)
 		}
 	}
 
@@ -394,8 +396,8 @@ extension MapObject {
 			return polygon.points[0].toCard()
 		} else if let polyline = self as? Polyline {
 			return polyline.points[0].toCard()
-		} else if let building = self as? Building {
-			return building.id
+		} else if let entity = self as? MapEntity {
+			return entity.entityId
 		}
 		return ""
 	}

@@ -322,7 +322,7 @@ extension MapView: JSBridgeDelegate {
 		self.mapClick?(event.coordinate)
 		self.delegate?.mapView?(self, didSelectCoordnates: event.coordinate)
 		if let objectId = event.target?.id {
-			self.delegate?.mapView?(self, didSelectObject: Building(id: objectId))
+			self.delegate?.mapView?(self, didSelectObject: MapEntity(id: objectId))
 		}
 	}
 
@@ -354,26 +354,36 @@ extension MapView: IObjectDelegate {
 // MARK: - Objects
 extension MapView {
 
-	/// Adds the given marker to the map.
+	/// Adds the given object to the map.
 	///
-	/// - Parameter marker: Marker to be added to the map.
+	/// - Parameter object: MapObject to be added to the map.
 	public func add(_ object: MapObject) {
 		object.delegate = self
 		self.objects[object.id] = object
 		self.js.add(object, completion: nil)
 	}
 
+	/// Removes the given object to the map.
+	/// - Parameter object: MapObject to be removed from map.
 	public func remove(_ object: MapObject) {
 		object.delegate = nil
 		self.objects.removeValue(forKey: object.id)
 		self.js.destroy(object)
 	}
 
+	/// Remove all objects from map
 	public func removeAllObjects() {
 		for object in self.objects.values {
 			self.objects.removeValue(forKey: object.id)
 			self.js.destroy(object)
 		}
+	}
+
+	/// Select objects on map with given ids
+	/// remove selection from all selected objeccts not in list
+	/// - Parameter objectsIds: objects Ids to be selected
+	public func setSelectedObjects(_ objectsIds: [String]) {
+		self.js.setSelectedObjects(objectsIds)
 	}
 
 }

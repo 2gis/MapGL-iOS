@@ -110,13 +110,13 @@ let label = Label(
 map.add(label)
 ```
 
-### Showing the Building
+### Selecting the building, road and others objects on map
 
 ```swift
-let building = Building(
+let entity = MapEntity(
 	id: "13933647002609599"
 )
-map.add(label)
+map.add(entity)
 ```
 
 ### Receiving Map Click Events

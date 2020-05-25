@@ -27,13 +27,13 @@ open class Label: MapObject {
 
 extension Label: IHideable {}
 
-extension Label {
+extension Label: IJSValue {
 
-	func jsCode() -> String {
+	func jsValue() -> String {
 		return """
 		{
 		id: "\(self.id)",
-		coordinates: \(self.center.toJS()),
+		coordinates: \(self.center.jsValue()),
 		color: \(self.color.jsValue()),
 		text: '\(self.text)',
 		fontSize: \(self.fontSize),
@@ -43,7 +43,7 @@ extension Label {
 
 	override func createJSCode() -> String {
 		let js = """
-		window.addLabel(\(self.jsCode()));
+		window.addLabel(\(self.jsValue()));
 		"""
 		return js
 	}

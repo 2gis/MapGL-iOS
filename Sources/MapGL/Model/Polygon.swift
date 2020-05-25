@@ -28,19 +28,19 @@ open class Polygon: MapObject {
 
 }
 
-extension Polygon {
+extension Polygon: IJSValue {
 
-	func jsCode() -> String {
+	func jsValue() -> String {
 		var polygonPoints = self.points
 		// Polygon should end with same point as starts
 		if !polygonPoints.isEmpty, polygonPoints.first != polygonPoints.last {
 			polygonPoints.append(polygonPoints[0])
 		}
-		let points = polygonPoints.toJS()
+		let points = polygonPoints.jsValue()
 		return """
 		{
 			id: "\(self.id)",
-			coordinates: [[\(points)]],
+			coordinates: [\(points)],
 			strokeWidth: \(self.strokeWidth.jsValue()),
 			color: \(self.fillColor.jsValue()),
 			strokeColor: \(self.strokeColor.jsValue()),
@@ -51,7 +51,7 @@ extension Polygon {
 
 	override func createJSCode() -> String {
 		let js = """
-		window.addPolygon(\(self.jsCode()));
+		window.addPolygon(\(self.jsValue()));
 		"""
 		return js
 	}
