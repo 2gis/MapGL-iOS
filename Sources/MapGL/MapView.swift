@@ -4,24 +4,6 @@ import CoreLocation
 
 public class MapView : UIView {
 
-	/// Method line 1
-	/// Method line 2
-	/// - Parameters:
-	///   - param1: param1 dscr
-	///   - param2: param2 dscr
-	///   - param3: param3 dscr
-	/// - Returns: ssssssttttring
-	func method1(_ param1: String, param2: Int?, _ param3: String = "") -> String {}
-	func method2(param1: String) {}
-	func method3() -> String? {}
-
-	func doSmsth(
-		with string: String,
-		param2: Int?,
-		_ param3: String = ""
-		, _: String
-	) -> String {}
-
 	enum Const {
 		static let mapMinZoom: Double = 2
 		static let mapMaxZoom: Double = 20
@@ -89,7 +71,9 @@ public class MapView : UIView {
 	/// Creates the new instance of the MapView object.
 	///
 	/// - Parameter frame: Initial view frame
-	public override init(frame: CGRect) {
+	public override init(
+		frame: CGRect
+	) {
 		super.init(frame: frame)
 		self.commonInit()
 	}
@@ -118,14 +102,10 @@ public class MapView : UIView {
 		self.addSubview(self.webView)
 	}
 
-	/// Lays out subviews.
 	public override func layoutSubviews() {
 		super.layoutSubviews()
 		self.webView.frame = self.bounds
 	}
-}
-
-extension MapView : MapViewProtocol {
 
 	/// Gets or sets the geographical center of the map.
 	public var mapCenter: CLLocationCoordinate2D {
@@ -307,6 +287,7 @@ extension MapView : MapViewProtocol {
 			}
 		}
 	}
+
 }
 
 extension MapView: JSExecutorProtocol {

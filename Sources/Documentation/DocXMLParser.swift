@@ -33,7 +33,6 @@ extension String {
 		)
 	}
 
-	///android/maps/reference
 	func parseMethod() -> Method? {
 		let xml = SWXMLHash.parse(self)["decl.function.method.instance"]
 		guard let name = xml["decl.name"].element?.text else { return nil }

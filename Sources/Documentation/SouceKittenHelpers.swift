@@ -51,7 +51,14 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 		guard let kind = self[.kind] as? String else { return nil }
 		return SwiftDeclarationKind(rawValue: kind)
 	}
-
+	var object: Object? {
+		if let objectType = self.kind?.objectType(),
+			let properties = self.objectProperties {
+			let object = Object(type: objectType, props: properties)
+			return object
+		}
+		return nil
+	}
 	var properties: [Property]? {
 		guard let list = self[.substructure]?.arrayOfDict else { return nil }
 		let properties = list.compactMap { $0.property }
@@ -99,13 +106,19 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 		guard let typeName = self[.typeName] as? String else { return nil }
 		return InstanceType(name: typeName)
 	}
-
+	var inheritedTypes: [InstanceType]? {
+		guard let types = self[.inheritedtypes]?.arrayOfDict else { return nil }
+		return types.compactMap {
+			if let name = $0.name {
+				return InstanceType(name: name)
+			}
+			return nil
+		}
+	}
 	var objectProperties: Properties? {
 		guard let name = self.name else { return nil }
 		let properties = Properties(name: name)
-		print("Name>>>>>\(name)")
 		properties.properties = self.properties
-
 		if let pps = self.properties {
 			for property in pps {
 				if property.description == nil {
@@ -113,7 +126,19 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 				}
 			}
 		}
-		properties.inherits = self.inherited
+		if var inheritedTypes = self.inheritedTypes {
+			// если это класс, то первый параметр это то от кого класс наследуется
+			// если не класс, то это те протоколы, которым объект конформит
+			if self.kind == .class, !inheritedTypes.isEmpty {
+				let inherits = inheritedTypes.removeFirst()
+				properties.inherits = [inherits]
+				properties.implement = inheritedTypes
+			} else {
+				properties.implement = inheritedTypes
+			}
+		}
+
+//		properties.implement
 		#warning("properties.implement")
 		let methods = self.methods
 		properties.methods = methods?.filter({ !$0.name.hasPrefix("init") })
@@ -143,6 +168,7 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 			if method == nil {
 				assertionFailure("Should be documented: \(fully_annotated_decl)")
 			}
+			method?.paramsSignature = self[.parsedDeclaration] as? String
 			if let doc = self.fullXMLDocs {
 				method?.fill(with: doc)
 			}
@@ -155,11 +181,11 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 		self[.typeName] as? String
 	}
 
-	var inherited: [InstanceType]? {
-		guard let inherited = self[.inheritedtypes] as? SourceKitDict,
-			let name = inherited.name else { return nil }
-		return [InstanceType(name: name)]
-	}
+//	var inherited: [InstanceType]? {
+//		guard let inherited = self[.inheritedtypes] as? SourceKitDict,
+//			let name = inherited.name else { return nil }
+//		return [InstanceType(name: name)]
+//	}
 
 }
 

@@ -28,6 +28,7 @@ class Method: Codable {
 	var description: String?
 	var parameters: [Property]
 	var result: ReturnResult?
+	var paramsSignature: String?
 	private let isConstructor: Bool = false
 
 	init(name: String, parameters: [Property], result: ReturnResult?) {
@@ -62,6 +63,7 @@ class Properties: Codable {
 	var properties: [Property]?
 	/// Method
 	var isConstructor: Bool?
+	/// Method only
 	var parameters: [Property]?
 	var result: ReturnResult?
 	init(name: String) {
@@ -72,6 +74,11 @@ class Properties: Codable {
 class Object: Codable {
 	let type: ObjectType
 	var props: Properties
+	var accessibility: Accessibility?
+	enum CodingKeys: String, CodingKey {
+		case type
+		case props
+	}
 	init(type: ObjectType, props: Properties) {
 		self.type = type
 		self.props = props
