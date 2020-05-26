@@ -40,12 +40,14 @@ class Method: Codable {
 
 class Property: Codable {
 	let name: String
+	let label: String?
 	let types: [InstanceType]
 	var description: String?
 	var isOptional: Bool?
 
-	init(name: String, types: [InstanceType]) {
+	init(name: String, label: String?, types: [InstanceType]) {
 		self.name = name
+		self.label = label
 		self.types = types
 	}
 
@@ -98,55 +100,6 @@ class ReturnResult: Codable {
 	var description: String?
 	init(types: [InstanceType]) {
 		self.types = types
-	}
-}
-
-extension Object {
-
-	func refMap() -> String {
-		"/en/ios/maps/reference/\(self.props.name)"
-	}
-
-	func addMissingRefs(_ refs: [String: String]) {
-		self.props.constructorMethods?.forEach({ $0.addMissingRefs(refs) })
-		self.props.implement?.addMissingRefs(refs)
-		self.props.inherits?.addMissingRefs(refs)
-		self.props.methods?.forEach({ $0.addMissingRefs(refs) })
-		self.props.properties?.forEach({ $0.addMissingRefs(refs) })
-		self.props.parameters?.forEach({ $0.addMissingRefs(refs) })
-		self.props.result?.addMissingRefs(refs)
-	}
-
-}
-
-extension Method {
-	func addMissingRefs(_ refs: [String: String]) {
-		self.parameters.forEach { $0.addMissingRefs(refs) }
-		self.result?.addMissingRefs(refs)
-	}
-}
-
-extension Property {
-	func addMissingRefs(_ refs: [String: String]) {
-		self.types.addMissingRefs(refs)
-	}
-}
-
-extension InstanceType {
-	func addMissingRefs(_ refs: [String: String]) {
-		self.refLink = refs[self.pureName]
-	}
-}
-
-extension ReturnResult {
-	func addMissingRefs(_ refs: [String: String]) {
-		self.types.addMissingRefs(refs)
-	}
-}
-
-extension Array where Element == InstanceType {
-	func addMissingRefs(_ refs: [String: String]) {
-		self.forEach { $0.addMissingRefs(refs) }
 	}
 }
 

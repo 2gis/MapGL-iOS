@@ -1,6 +1,7 @@
 import Foundation
 
 @objc public protocol IMapObject {
+	/// Unique object id, used to search objects on map
 	var id: String { get }
 }
 

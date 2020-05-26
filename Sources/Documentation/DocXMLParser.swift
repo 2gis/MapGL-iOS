@@ -103,7 +103,8 @@ extension XMLIndexer {
 			if let typeName = e.type(with: "decl.var.parameter.type") {
 				let type = InstanceType(name: typeName)
 				return Property(
-					name: label ?? name ?? "",
+					name: name ?? label ?? "",
+					label: label,
 					types: [type]
 				)
 			}

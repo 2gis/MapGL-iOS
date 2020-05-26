@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "MapGL-iOS::Documentation"
-               BuildableName = "Documentation"
-               BlueprintName = "Documentation"
+               BlueprintIdentifier = "MapGL-iOS::MapGL"
+               BuildableName = "MapGL.framework"
+               BlueprintName = "MapGL"
                ReferencedContainer = "container:MapGL-iOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,9 +28,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "MapGL-iOS::MapGL"
-               BuildableName = "MapGL.framework"
-               BlueprintName = "MapGL"
+               BlueprintIdentifier = "MapGL-iOS::Documentation"
+               BuildableName = "Documentation"
+               BlueprintName = "Documentation"
                ReferencedContainer = "container:MapGL-iOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

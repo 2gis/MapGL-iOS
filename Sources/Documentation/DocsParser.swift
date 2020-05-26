@@ -4,25 +4,24 @@ import Foundation
 class DocsParser {
 
 	var nameObjectMap = [String: Object]()
-	var allNameObjectMap = [String: Object]()
-	var nameRefMap = [String: String]()
+	var allNameObjectMap = [String: [Object]]()
 	var extensions = [String: [Object]]()
 
 	func parse(_ docs: [SwiftDocs]) -> String {
+		var nameRefMap = [String: String]()
 		for doc in docs {
 			if let substructures = doc.docsDictionary[.substructure]?.arrayOfDict {
 				for substructure in substructures {
 					if let object = substructure.object {
 						object.accessibility = substructure.accessibility
-						self.nameRefMap[object.props.name] = object.refMap()
-						self.allNameObjectMap[object.props.name] = object
+						nameRefMap[object.props.name] = object.refMap()
+						self.allNameObjectMap.append(key: object.props.name, newValue: object)
 						if substructure.kind == .extension {
 							// собираем в кучу все экстеншены
-							var existingExtensions = self.extensions[object.props.name] ?? []
-							existingExtensions += [object]
-							self.extensions[object.props.name] = existingExtensions
+							self.extensions.append(key: object.props.name, newValue: object)
 						} else {
 							// все что не экстеншены, считаем объектами
+							assert(self.nameObjectMap[object.props.name] == nil)
 							self.nameObjectMap[object.props.name] = object
 						}
 					}
@@ -44,17 +43,18 @@ class DocsParser {
 				if let implement = object.props.implement, !implement.isEmpty {
 					// удалим все непубличные протоколы
 					let validProtocols = implement.filter {
-						let object = self.allNameObjectMap[$0.name]
-						return object?.isValidExtension() == true
+						let objects = self.allNameObjectMap[$0.name]
+						return objects?.contains { $0.isValidExtension() } == true
 					}
 					object.props.implement = validProtocols.isEmpty ? nil : validProtocols
 				}
 				refMap[object.refMap()] = object
 			}
 		}
+		let referenceVisitor = ReferenceVisitor(existingReferences: nameRefMap)
 		// добавим ссылки всем объектам
 		refMap.forEach {
-			$0.value.addMissingRefs(self.nameRefMap)
+			$0.value.addMissingRefs(referenceVisitor)
 		}
 		let e = JSONEncoder()
 		e.outputFormatting = [.prettyPrinted]
@@ -75,9 +75,11 @@ extension Object {
 		"LocalizedError",
 	]
 
+	/// Должен ли этот экстеншн экспортироваться в документацию
 	func isValidExtension() -> Bool {
-		return true
-		return self.accessibility?.isValidForExport == true
+		return
+			self.accessibility?.isValidForExport == true ||
+			Object.validProtocols.contains(self.props.name)
 	}
 
 	func applyExtension(_ ext: Object) {
@@ -101,6 +103,19 @@ extension Object {
 			} else {
 				self.props.implement = extImplement
 			}
+		}
+	}
+
+}
+
+extension Dictionary {
+
+	mutating func append<T>(key: Key, newValue: T) where Value == Array<T> {
+		if var values = self[key] {
+			values.append(newValue)
+			self[key] = values
+		} else {
+			self[key] = [newValue]
 		}
 	}
 

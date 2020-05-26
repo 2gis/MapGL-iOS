@@ -77,6 +77,7 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 
 		let property = Property(
 			name: name,
+			label: nil,
 			types: [instanceType]
 		)
 		property.description = self.fullXMLDocs?.propertyDescription()
@@ -137,9 +138,6 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 				properties.implement = inheritedTypes
 			}
 		}
-
-//		properties.implement
-		#warning("properties.implement")
 		let methods = self.methods
 		properties.methods = methods?.filter({ !$0.name.hasPrefix("init") })
 		properties.constructorMethods = methods?.filter({ $0.name.hasPrefix("init") })
@@ -168,7 +166,7 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 			if method == nil {
 				assertionFailure("Should be documented: \(fully_annotated_decl)")
 			}
-			method?.paramsSignature = self[.parsedDeclaration] as? String
+			method?.paramsSignature = self.swiftParamsSignature
 			if let doc = self.fullXMLDocs {
 				method?.fill(with: doc)
 			}
@@ -177,15 +175,18 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 		return nil
 	}
 
+	var swiftParamsSignature: String? {
+		guard let paramsSignature = self[.parsedDeclaration] as? String else { return nil }
+		return """
+		```swift
+		\(paramsSignature)
+		```
+		"""
+	}
+
 	var typeName: String? {
 		self[.typeName] as? String
 	}
-
-//	var inherited: [InstanceType]? {
-//		guard let inherited = self[.inheritedtypes] as? SourceKitDict,
-//			let name = inherited.name else { return nil }
-//		return [InstanceType(name: name)]
-//	}
 
 }
 
