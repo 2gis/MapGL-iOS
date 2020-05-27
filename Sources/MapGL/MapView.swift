@@ -67,7 +67,6 @@ public class MapView : UIView {
 	/// Notifies of the map click event.
 	public var mapClick: ((CLLocationCoordinate2D) -> Void)?
 
-
 	/// Creates the new instance of the MapView object.
 	///
 	/// - Parameter frame: Initial view frame

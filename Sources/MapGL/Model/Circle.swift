@@ -4,7 +4,8 @@ import UIKit.UIColor
 /// Circle object on map
 open class Circle: MapObject {
 
-	let center: CLLocationCoordinate2D
+	/// Position on map
+	public let center: CLLocationCoordinate2D
 	let radius: CLLocationDistance
 	let strokeColor: UIColor?
 	let fillColor: UIColor?
