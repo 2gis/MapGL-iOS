@@ -102,9 +102,10 @@ class HelloVC: UIViewController {
 			self.cardView.onRemove = nil
 			self.hideCardView()
 		}
-
+		let apiKey = "apiKey"
+		assert(apiKey != "apiKey", "contact us mapgl@2gis.com if you need one")
 		self.map.show(
-			apiKey: "apiKey",
+			apiKey: apiKey,
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
 			zoom: 16
 		) { error in
@@ -189,7 +190,7 @@ class HelloVC: UIViewController {
 			self.map.add(marker)
 		}
 		let showCluster = UIAlertAction(title: "Show cluster", style: .default) { _ in
-			let cluster = Cluster(radius: 100, markers: [
+			let cluster = Cluster(radius: 50, markers: [
 				Marker(coordinates: self.map.mapCenter),
 				Marker(coordinates: CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878)),
 				Marker(coordinates: CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4978)),

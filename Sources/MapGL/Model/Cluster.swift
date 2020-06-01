@@ -9,11 +9,16 @@ open class Cluster: MapObject {
 			self.updateMarkers()
 		}
 	}
-	private let radius: CLLocationDistance
+	private let radius: CGFloat
 
+	/// Creates new cluster on map
+	/// - Parameters:
+	///   - id: Unique object id
+	///   - radius: Clustering radius in points.
+	///   - markers: Cluster markers
 	public init(
 		id: String = NSUUID().uuidString,
-		radius: CLLocationDistance,
+		radius: CGFloat,
 		markers: [Marker]
 	) {
 		self.radius = radius

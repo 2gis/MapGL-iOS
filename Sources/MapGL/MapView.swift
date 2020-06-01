@@ -2,6 +2,7 @@ import UIKit
 import WebKit
 import CoreLocation
 
+/// A MapView displays interactive 3d map.
 public class MapView : UIView {
 
 	enum Const {
