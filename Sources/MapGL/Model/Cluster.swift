@@ -1,5 +1,6 @@
 import CoreLocation
 
+/// A class that provides markers clustering functionality.
 open class Cluster: MapObject {
 
 	/// Markers in clusterer 

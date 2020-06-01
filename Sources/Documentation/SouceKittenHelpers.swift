@@ -55,6 +55,12 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 		if let objectType = self.kind?.objectType(),
 			let properties = self.objectProperties {
 			let object = Object(type: objectType, props: properties)
+			object.accessibility = self.accessibility
+			if let description = self.fullXMLDocs?.classDescription() {
+				properties.description = description
+			} else if object.accessibility?.isValidForExport == true {
+				print("Warning: \(object.props.name): \(objectType) missing description")
+			}
 			return object
 		}
 		return nil
@@ -141,7 +147,6 @@ extension Dictionary where Key == String, Value == SourceKitRepresentable {
 		let methods = self.methods
 		properties.methods = methods?.filter({ !$0.name.hasPrefix("init") })
 		properties.constructorMethods = methods?.filter({ $0.name.hasPrefix("init") })
-
 		return properties
 	}
 

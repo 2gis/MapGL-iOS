@@ -1,7 +1,9 @@
 import Foundation
 
-open class MapObject: NSObject {
+/// Base map object class
+open class MapObject: NSObject, IMapObject {
 
+	/// Unique object id
 	@objc public let id: String
 	weak var delegate: IObjectDelegate?
 

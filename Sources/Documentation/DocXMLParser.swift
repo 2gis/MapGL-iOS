@@ -55,6 +55,11 @@ extension String {
 		return xml.comment()
 	}
 
+	func classDescription() -> String? {
+		let xml = SWXMLHash.parse(self)["Class"]
+		return xml.comment()
+	}
+
 }
 
 extension Method {

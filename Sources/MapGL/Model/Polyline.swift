@@ -22,6 +22,7 @@ open class PolylineStyle {
 /// Polyline map object
 open class Polyline: MapObject {
 
+	/// An array of polyline coordinates
 	public let points: [CLLocationCoordinate2D]
 	/// Topmost line style
 	let style1: PolylineStyle?

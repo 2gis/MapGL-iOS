@@ -1,6 +1,7 @@
 import CoreLocation
 import UIKit.UIColor
 
+/// Class for creating a polygon on the map
 open class Polygon: MapObject {
 
 	/// Geographical coordinates of polygon points

@@ -1,3 +1,4 @@
+/// Defines hide functionality
 public protocol IHideable: AnyObject {
 
 	/// Hide object from map

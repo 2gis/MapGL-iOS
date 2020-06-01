@@ -13,7 +13,6 @@ class DocsParser {
 			if let substructures = doc.docsDictionary[.substructure]?.arrayOfDict {
 				for substructure in substructures {
 					if let object = substructure.object {
-						object.accessibility = substructure.accessibility
 						nameRefMap[object.props.name] = object.refMap()
 						self.allNameObjectMap.append(key: object.props.name, newValue: object)
 						if substructure.kind == .extension {
@@ -39,7 +38,7 @@ class DocsParser {
 					$0.value.applyExtension(ext)
 				}
 			}
-			if object.accessibility?.isValidForExport == true {
+			if object.isValidForExport {
 				if let implement = object.props.implement, !implement.isEmpty {
 					// удалим все непубличные протоколы
 					let validProtocols = implement.filter {

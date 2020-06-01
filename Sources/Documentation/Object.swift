@@ -85,6 +85,12 @@ class Object: Codable {
 		self.type = type
 		self.props = props
 	}
+
+	var isValidForExport: Bool {
+		return
+			self.accessibility?.isValidForExport == true &&
+			self.props.description != nil
+	}
 }
 
 struct Documentation: Codable {
