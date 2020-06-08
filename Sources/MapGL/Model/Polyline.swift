@@ -1,11 +1,17 @@
 import CoreLocation
 import UIKit.UIColor
 
+/// Style to draw a line
 open class PolylineStyle {
 	let color: UIColor
 	let width: CGFloat
 	let z: Int?
 
+	/// Represents line style
+	/// - Parameters:
+	///   - color: Line stroke color
+	///   - width: Stroke width in screen points.
+	///   - z: Draw order.
 	public init(color: UIColor, width: CGFloat, z: Int? = nil) {
 		self.color = color
 		self.width = width
@@ -16,6 +22,7 @@ open class PolylineStyle {
 /// Polyline map object
 open class Polyline: MapObject {
 
+	/// An array of polyline coordinates
 	public let points: [CLLocationCoordinate2D]
 	/// Topmost line style
 	let style1: PolylineStyle?
@@ -24,6 +31,14 @@ open class Polyline: MapObject {
 	/// Bottom line style, should be wider than style2
 	let style3: PolylineStyle?
 
+	/// Creates new polyline on map
+	/// Can be draw using 3 different styles
+	/// - Parameters:
+	///   - id: Unique object id
+	///   - points: An array of polyline coordinates
+	///   - style1: Top level style, if missing use default width and color do draw a line
+	///   - style2: Second level style if needed
+	///   - style3: Third level style if needed
 	public init(
 		id: String = UUID().uuidString,
 		points: [CLLocationCoordinate2D],

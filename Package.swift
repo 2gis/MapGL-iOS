@@ -37,6 +37,7 @@ let package = Package(
 		),
 	],
 	dependencies: [
+		.package(url: "https://github.com/jpsim/SourceKitten.git", .upToNextMinor(from: "0.29.0")),
 	],
 	targets: [
 		.target(
@@ -46,6 +47,12 @@ let package = Package(
 		.testTarget(
 			name: "MapGLTests",
 			dependencies: ["MapGL"]
+		),
+		.target(
+			name: "Documentation",
+			dependencies: [
+				.product(name: "SourceKittenFramework", package: "SourceKitten"),
+			]
 		),
 	],
 	swiftLanguageVersions: [.v5]

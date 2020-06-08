@@ -2,6 +2,7 @@ import UIKit
 import WebKit
 import CoreLocation
 
+/// A MapView displays interactive 3d map.
 public class MapView : UIView {
 
 	enum Const {
@@ -20,6 +21,7 @@ public class MapView : UIView {
 		static let mapDefaultCenter = CLLocationCoordinate2D(latitude: 55.750574, longitude: 37.618317)
 	}
 
+	/// Optional methods that you use to receive map-related update messages.
 	public weak var delegate: MapViewDelegate?
 
 	private var objects: [String: MapObject] = [:]
@@ -68,18 +70,20 @@ public class MapView : UIView {
 
 	/// Creates the new instance of the MapView object.
 	///
-	/// - Parameter jsExecutor: Custom JS executor
-	init(jsExecutor: JSExecutorProtocol) {
-		super.init(frame: .zero)
-		self.jsExecutor = jsExecutor
+	/// - Parameter frame: Initial view frame
+	public override init(
+		frame: CGRect
+	) {
+		super.init(frame: frame)
 		self.commonInit()
 	}
 
 	/// Creates the new instance of the MapView object.
 	///
-	/// - Parameter frame: Initial view frame
-	public override init(frame: CGRect) {
-		super.init(frame: frame)
+	/// - Parameter jsExecutor: Custom JS executor
+	init(jsExecutor: JSExecutorProtocol) {
+		super.init(frame: .zero)
+		self.jsExecutor = jsExecutor
 		self.commonInit()
 	}
 
@@ -98,14 +102,10 @@ public class MapView : UIView {
 		self.addSubview(self.webView)
 	}
 
-	/// Lays out subviews.
 	public override func layoutSubviews() {
 		super.layoutSubviews()
 		self.webView.frame = self.bounds
 	}
-}
-
-extension MapView : MapViewProtocol {
 
 	/// Gets or sets the geographical center of the map.
 	public var mapCenter: CLLocationCoordinate2D {
@@ -287,6 +287,7 @@ extension MapView : MapViewProtocol {
 			}
 		}
 	}
+
 }
 
 extension MapView: JSExecutorProtocol {

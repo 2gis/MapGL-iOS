@@ -1,15 +1,26 @@
 import CoreLocation
 import UIKit.UIColor
 
+/// Circle object on map
 open class Circle: MapObject {
 
+	/// Position on map
 	public let center: CLLocationCoordinate2D
-	public let radius: CLLocationDistance
+	let radius: CLLocationDistance
 	let strokeColor: UIColor?
 	let fillColor: UIColor?
 	let strokeWidth: CGFloat?
 	let z: Int?
 
+	/// Creates new circle on map
+	/// - Parameters:
+	///   - id: Unique object id
+	///   - center: Position on map
+	///   - radius: Radius in meters
+	///   - strokeColor: Stroke color of circle
+	///   - strokeWidth: Stroke width of circle
+	///   - fillColor: Circle fill color
+	///   - z: Draw order
 	public init(
 		id: String = UUID().uuidString,
 		center: CLLocationCoordinate2D,

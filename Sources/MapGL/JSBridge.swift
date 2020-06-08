@@ -151,8 +151,8 @@ class JSBridge : NSObject {
 	}
 
 	func evaluateJS(_ js: String, completion: Completion? = nil) {
-		self.executor.evaluateJavaScript(js) { (_, erorr) in
-			if let error = erorr {
+		self.executor.evaluateJavaScript(js) { (_, error) in
+			if let error = error {
 				completion?(.failure(error))
 			} else {
 				completion?(.success(()))

@@ -1,5 +1,6 @@
 import CoreLocation
 
+/// Optional methods that you use to receive map-related update messages.
 @objc public protocol MapViewDelegate: AnyObject {
 
 	/// Notifies when user select any object

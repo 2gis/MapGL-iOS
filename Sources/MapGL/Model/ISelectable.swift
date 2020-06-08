@@ -1,3 +1,4 @@
+/// Defines selection functionality
 public protocol ISelectable {
 
 	/// Select object on map

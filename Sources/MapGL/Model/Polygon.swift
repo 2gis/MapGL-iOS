@@ -1,14 +1,24 @@
 import CoreLocation
 import UIKit.UIColor
 
+/// Class for creating a polygon on the map
 open class Polygon: MapObject {
 
+	/// Geographical coordinates of polygon points
 	public let points: [CLLocationCoordinate2D]
 	let strokeColor: UIColor?
 	let fillColor: UIColor?
 	let strokeWidth: CGFloat?
 	let z: Int?
 
+	/// Creates new polygon on map
+	/// - Parameters:
+	///   - id: Unique object id
+	///   - points: Geographical coordinates of polygon points
+	///   - strokeColor: Stroke color
+	///   - strokeWidth: Stroke width in screen points.
+	///   - fillColor: Fill color
+	///   - z: Draw order.
 	public init(
 		id: String = UUID().uuidString,
 		points: [CLLocationCoordinate2D],

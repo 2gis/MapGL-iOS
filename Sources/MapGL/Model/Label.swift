@@ -4,11 +4,18 @@ import UIKit.UIColor
 /// Polyline map object
 open class Label: MapObject {
 
-	public let center: CLLocationCoordinate2D
-	public let text: String
+	let center: CLLocationCoordinate2D
+	let text: String
 	let color: UIColor
 	let fontSize: CGFloat
 
+	/// Creates new label on map
+	/// - Parameters:
+	///   - id: Unique object id
+	///   - center: Position on map
+	///   - color: Text color
+	///   - text: Label text
+	///   - fontSize: Label font size
 	public init(
 		id: String = UUID().uuidString,
 		center: CLLocationCoordinate2D,
