@@ -128,7 +128,7 @@ extension Marker: IJSValue {
 		\(self.coordinates.jsValue())
 		);
 		"""
-		self.delegate?.evaluateJS(js)
+		self.evaluateJS(js)
 	}
 
 }
