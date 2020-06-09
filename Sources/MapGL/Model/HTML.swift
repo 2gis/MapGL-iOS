@@ -1,5 +1,5 @@
 enum HTML {
-static let html = """
+	static let html = """
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,8 +24,10 @@ static let html = """
 	<div id="map"></div>
 	<script src="https://mapgl.2gis.com/api/js"></script>
 	<script src="https://unpkg.com/@2gis/mapgl-clusterer@^1/dist/clustering.js"></script>
+	<script src="https://unpkg.com/@2gis/mapgl-directions@^1/dist/directions.js"></script>
 	<script>
 		var objects = new Map();
+		var directionsMap = new Map();
 		let selectedIds = [];
 		const container = document.getElementById('map');
 
@@ -78,7 +80,6 @@ static let html = """
 				});
 			});
 		}
-
 		window.addMarker = function (options) {
 			const marker = new mapgl.Marker(window.map, options);
 			window.setupObject(options.id, marker);
@@ -160,6 +161,24 @@ static let html = """
 					value: id
 				});
 			})
+		}
+		window.directions = function (id, directionsApiKey) {
+			const direction = new mapgl.Directions(map, {
+				directionsApiKey: directionsApiKey,
+			});
+			directionsMap.set(id, direction);
+		}
+		window.carRoute = function (id, options) {
+			const direction = directionsMap.get(id);
+			direction.carRoute(options);
+		}
+		window.clearCarRoute = function (id) {
+			const direction = directionsMap.get(id);
+			direction.clear();
+		}
+		window.destroyDirections = function (id) {
+			window.clearCarRoute(id);
+			directionsMap.delete(id);
 		}
 		window.onerror = (msg, url, line, column, error) => {
 			const message = {

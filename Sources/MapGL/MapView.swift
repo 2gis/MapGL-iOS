@@ -387,4 +387,15 @@ extension MapView {
 		self.js.setSelectedObjects(objectsIds)
 	}
 
+	/// Create a class that provides driving direction functionality.
+	/// - Parameter apiKey: Your Directions API access key
+	/// - Returns: A class that provides driving direction functionality.
+	public func makeDirections(
+		with apiKey: String
+	) -> Directions {
+		let directions = Directions(apiKey: apiKey)
+		self.add(directions)
+		return directions
+	}
+
 }

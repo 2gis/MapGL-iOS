@@ -29,6 +29,11 @@ open class MapObject: NSObject, IMapObject {
 		return js
 	}
 
+	func evaluateJS(_ js: String) {
+		assert(self.delegate != nil)
+		self.delegate?.evaluateJS(js)
+	}
+
 }
 
 protocol IObjectDelegate: AnyObject {

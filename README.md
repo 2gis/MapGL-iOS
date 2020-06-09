@@ -3,6 +3,8 @@
 
 2GIS Maps SDK for iOS.
 
+- [Documentation](https://docs.2gis.com/en/ios/maps/reference/MapView)
+
 ## Usage
 
 ### Get Access
@@ -25,9 +27,9 @@ map.show(apiKey: "Your API access key")
 
 ```swift
 map.show(
-    apiKey: "Your API access key",
-    center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-    zoom: 16
+  apiKey: "Your API access key",
+  center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
+  zoom: 16
 )
 ```
 
@@ -36,8 +38,8 @@ All manipulations with the map is allowed after the `show(apiKey:)` method is co
 
 ```swift
 map.show(apiKey: "apiKey") { _ in
-    let marker = Marker(coordinates: map.mapCenter)
-    map.addMarker(marker)
+  let marker = Marker(coordinates: map.mapCenter)
+  map.addMarker(marker)
 }
 ```
 
@@ -45,9 +47,9 @@ map.show(apiKey: "apiKey") { _ in
 
 ```swift
 let marker = Marker(
-    coordinates: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-    image: UIImage(named: "pin")!,
-    anchor: .bottom
+  coordinates: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
+  image: UIImage(named: "pin")!,
+  anchor: .bottom
 )
 map.addMarker(marker)
 ```
@@ -56,11 +58,11 @@ map.addMarker(marker)
 
 ```swift
 let circle = Circle(
-    center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-    radius: 500,
-    strokeColor: .red,
-    strokeWidth: 5,
-    fillColor: UIColor.lightGray.withAlphaComponent(0.5)
+  center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
+  radius: 500,
+  strokeColor: .red,
+  strokeWidth: 5,
+  fillColor: UIColor.lightGray.withAlphaComponent(0.5)
 )
 map.add(circle)
 ```
@@ -70,14 +72,14 @@ map.add(circle)
 
 ```swift
 let polygon = Polygon(
-    points: [
-        CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4478),
-        CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
-        CLLocationCoordinate2D(latitude: 25.24584, longitude: 55.31878),
-    ],
-    strokeColor: .red,
-    strokeWidth: 5,
-    fillColor: UIColor.blue.withAlphaComponent(0.5)
+  points: [
+    CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4478),
+    CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
+    CLLocationCoordinate2D(latitude: 25.24584, longitude: 55.31878),
+  ],
+  strokeColor: .red,
+  strokeWidth: 5,
+  fillColor: UIColor.blue.withAlphaComponent(0.5)
 )
 map.add(polygon)
 ```
@@ -86,13 +88,13 @@ map.add(polygon)
 
 ```swift
 let polyline = Polyline(
-    points: [
-        CLLocationCoordinate2D(latitude: 25.30, longitude: 55.378),
-        CLLocationCoordinate2D(latitude: 25.20, longitude: 55.378),
-    ],
-    style1: PolylineStyle(color: .red, width: 5),
-    style2: PolylineStyle(color: .green, width: 9),
-    style3: PolylineStyle(color: .blue, width: 13)
+  points: [
+    CLLocationCoordinate2D(latitude: 25.30, longitude: 55.378),
+    CLLocationCoordinate2D(latitude: 25.20, longitude: 55.378),
+  ],
+  style1: PolylineStyle(color: .red, width: 5),
+  style2: PolylineStyle(color: .green, width: 9),
+  style3: PolylineStyle(color: .blue, width: 13)
 )
 map.add(polyline)
 ```
@@ -102,10 +104,10 @@ map.add(polyline)
 
 ```swift
 let label = Label(
-	center: CLLocationCoordinate2D(latitude: 25.30, longitude: 55.378),
-	color: .red,
-	text: "Demo label",
-	fontSize: 24
+  center: CLLocationCoordinate2D(latitude: 25.30, longitude: 55.378),
+  color: .red,
+  text: "Demo label",
+  fontSize: 24
 )
 map.add(label)
 ```
@@ -114,7 +116,7 @@ map.add(label)
 
 ```swift
 let entity = MapEntity(
-	id: "13933647002609599"
+  id: "13933647002609599"
 )
 map.add(entity)
 ```
@@ -123,7 +125,7 @@ map.add(entity)
 
 ```swift
 map.mapClick = { coordinates in
-    // Do smth with map click coordinates
+  // Do smth with map click coordinates
 }
 ```
 
@@ -131,8 +133,25 @@ map.mapClick = { coordinates in
 
 ```swift
 func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
-    // do smth with object
+  // do smth with object
 }
+```
+
+### Show route on map
+
+To get directions API key please visit 
+
+```swift
+let directions = map.makeDirections(with: "Your directions api key")
+directions.showCarRoute(points: [
+  CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
+  CLLocationCoordinate2D(latitude: 25.20, longitude: 55.5278),
+])
+```
+
+### Hide route from map
+```swift
+directions.clear()
 ```
 
 ### Hiding and showing objects

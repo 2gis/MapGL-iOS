@@ -14,14 +14,14 @@ extension IHideable where Self: MapObject {
 		let js = """
 		window.hideObject("\(self.id)");
 		"""
-		self.delegate?.evaluateJS(js)
+		self.evaluateJS(js)
 	}
 
 	public func show() {
 		let js = """
 		window.showObject("\(self.id)");
 		"""
-		self.delegate?.evaluateJS(js)
+		self.evaluateJS(js)
 	}
 
 }
