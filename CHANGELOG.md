@@ -6,6 +6,7 @@
 ### Added
 - Directions API support 
 - Documentation
+- Images
 
 ## 2020-05-25 - 0.1.5
 ### Added
