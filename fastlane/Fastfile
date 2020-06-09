@@ -9,7 +9,7 @@ platform :ios do
   end
 
   lane :rlz do |options|
-
+    skip_docs()
     cocoapods(
       try_repo_update_on_error: true,
       use_bundle_exec: true,
@@ -26,8 +26,9 @@ platform :ios do
     )
 
     run_tests(
-      project: "./MapGL-iOS.xcodeproj",
-      scheme: "MapGL-iOS-Package"
+      project: "./Pods/Pods.xcodeproj",
+      scheme: "MapGL-Unit-Tests",
+      sdk: "iphonesimulator13.5",
     )
     
     version = options[:version]
