@@ -43,7 +43,7 @@ extension Cluster {
 		\(self.markers.jsValue())
 		);
 		"""
-		self.delegate?.evaluateJS(js)
+		self.evaluateJS(js)
 	}
 
 }

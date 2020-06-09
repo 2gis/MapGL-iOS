@@ -2,7 +2,12 @@
 
 ## [Unreleased]
 
+## 2020-06-09 - 0.1.6
+### Added
+- Directions API support 
+- Documentation
 
+## 2020-05-25 - 0.1.5
 ### Added
 - MapEntity selection support 
 
@@ -49,6 +54,8 @@
 ### Changed
 - Nothing.
 
+[0.1.6]: https://github.com/2gis/MapGL-iOS/compare/v0.1.5...v0.1.6
+[0.1.5]: https://github.com/2gis/MapGL-iOS/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/2gis/MapGL-iOS/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/2gis/MapGL-iOS/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/2gis/MapGL-iOS/compare/0.0.8...v0.1.2

@@ -28,11 +28,11 @@ extension MapEntity: ISelectable {
 extension MapEntity: IHideable {
 
 	public func show() {
-		self.delegate?.evaluateJS(self.createJSCode())
+		self.evaluateJS(self.createJSCode())
 	}
 
 	public func hide() {
-		self.delegate?.evaluateJS(self.destroyJSCode())
+		self.evaluateJS(self.destroyJSCode())
 	}
 
 }
