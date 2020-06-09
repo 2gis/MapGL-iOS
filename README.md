@@ -144,7 +144,7 @@ func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
 
 ### Show route on map
 
-[To get directions API key please visit](http://partner.api.2gis.ru)
+[To get directions API key please visit](http://partner.api.2gis.ru) or contact [content@2gis.ru]()
 
 ```swift
 let directions = map.makeDirections(with: "Your directions api key")
