@@ -119,13 +119,21 @@ extension XMLIndexer {
 	}
 
 	func type(with key: String) -> String? {
-		guard let modifier = self[key].element?.text else { return nil }
-		if let typeName = self[key]["ref.struct"].element?.text{
+		let element = self[key]
+		guard let modifier = self.elementText(key: key) else { return nil }
+
+		if let typeName = element.elementText(key: "ref.struct") {
 			return typeName + modifier
-		} else if let typeName = self[key]["ref.class"].element?.text{
+		} else if let typeName = element.elementText(key: "ref.class") {
+			return typeName + modifier
+		} else if let typeName = element.elementText(key: "ref.typealias") {
 			return typeName + modifier
 		}
 		return nil
+	}
+
+	func elementText(key: String) -> String? {
+		self[key].element?.text
 	}
 
 }

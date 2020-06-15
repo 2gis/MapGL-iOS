@@ -501,15 +501,15 @@
       "OBJ_157" = {
          isa = "PBXGroup";
          children = (
-            "SourceKitten::SourceKittenFramework::Product",
-            "Yams::Yams::Product",
-            "SWXMLHash::SWXMLHash::Product",
             "MapGL-iOS::MapGLTests::Product",
+            "SourceKitten::Clang_C::Product",
+            "MapGL-iOS::MapGL::Product",
+            "SourceKitten::SourceKittenFramework::Product",
+            "SWXMLHash::SWXMLHash::Product",
             "MapGL-iOS::Documentation::Product",
             "SourceKitten::SourceKit::Product",
-            "Yams::CYaml::Product",
-            "MapGL-iOS::MapGL::Product",
-            "SourceKitten::Clang_C::Product"
+            "Yams::Yams::Product",
+            "Yams::CYaml::Product"
          );
          name = "Products";
          path = "";
@@ -523,10 +523,7 @@
             "OBJ_23",
             "OBJ_24",
             "OBJ_25",
-            "OBJ_26",
-            "OBJ_27",
-            "OBJ_28",
-            "OBJ_45",
+            "OBJ_39",
             "OBJ_47"
          );
          name = "MapGL";
@@ -1169,7 +1166,7 @@
       };
       "OBJ_23" = {
          isa = "PBXFileReference";
-         path = "JSBridgeDelegate.swift";
+         path = "MapGLError.swift";
          sourceTree = "<group>";
       };
       "OBJ_230" = {
@@ -1198,7 +1195,7 @@
       };
       "OBJ_24" = {
          isa = "PBXFileReference";
-         path = "JSExecutorProtocol.swift";
+         path = "MapView.swift";
          sourceTree = "<group>";
       };
       "OBJ_241" = {
@@ -1345,8 +1342,23 @@
          fileRef = "OBJ_22";
       };
       "OBJ_25" = {
-         isa = "PBXFileReference";
-         path = "MapGLError.swift";
+         isa = "PBXGroup";
+         children = (
+            "OBJ_26",
+            "OBJ_27",
+            "OBJ_28",
+            "OBJ_29",
+            "OBJ_31",
+            "OBJ_32",
+            "OBJ_33",
+            "OBJ_34",
+            "OBJ_35",
+            "OBJ_36",
+            "OBJ_37",
+            "OBJ_38"
+         );
+         name = "Model";
+         path = "Model";
          sourceTree = "<group>";
       };
       "OBJ_250" = {
@@ -1359,27 +1371,27 @@
       };
       "OBJ_252" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_25";
+         fileRef = "OBJ_26";
       };
       "OBJ_253" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_26";
+         fileRef = "OBJ_27";
       };
       "OBJ_254" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_27";
+         fileRef = "OBJ_28";
       };
       "OBJ_255" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_29";
+         fileRef = "OBJ_30";
       };
       "OBJ_256" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_30";
+         fileRef = "OBJ_31";
       };
       "OBJ_257" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_31";
+         fileRef = "OBJ_32";
       };
       "OBJ_258" = {
          isa = "PBXBuildFile";
@@ -1391,7 +1403,7 @@
       };
       "OBJ_26" = {
          isa = "PBXFileReference";
-         path = "MapView.swift";
+         path = "Building.swift";
          sourceTree = "<group>";
       };
       "OBJ_260" = {
@@ -1412,31 +1424,31 @@
       };
       "OBJ_264" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_39";
+         fileRef = "OBJ_40";
       };
       "OBJ_265" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_40";
+         fileRef = "OBJ_41";
       };
       "OBJ_266" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_41";
+         fileRef = "OBJ_42";
       };
       "OBJ_267" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_42";
+         fileRef = "OBJ_43";
       };
       "OBJ_268" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_43";
+         fileRef = "OBJ_44";
       };
       "OBJ_269" = {
          isa = "PBXBuildFile";
-         fileRef = "OBJ_44";
+         fileRef = "OBJ_45";
       };
       "OBJ_27" = {
          isa = "PBXFileReference";
-         path = "MapViewDelegate.swift";
+         path = "Circle.swift";
          sourceTree = "<group>";
       };
       "OBJ_270" = {
@@ -1512,26 +1524,8 @@
          fileRef = "OBJ_6";
       };
       "OBJ_28" = {
-         isa = "PBXGroup";
-         children = (
-            "OBJ_29",
-            "OBJ_30",
-            "OBJ_31",
-            "OBJ_32",
-            "OBJ_34",
-            "OBJ_35",
-            "OBJ_36",
-            "OBJ_37",
-            "OBJ_38",
-            "OBJ_39",
-            "OBJ_40",
-            "OBJ_41",
-            "OBJ_42",
-            "OBJ_43",
-            "OBJ_44"
-         );
-         name = "Model";
-         path = "Model";
+         isa = "PBXFileReference";
+         path = "Cluster.swift";
          sourceTree = "<group>";
       };
       "OBJ_280" = {
@@ -1660,8 +1654,12 @@
          fileRef = "OBJ_50";
       };
       "OBJ_29" = {
-         isa = "PBXFileReference";
-         path = "Building.swift";
+         isa = "PBXGroup";
+         children = (
+            "OBJ_30"
+         );
+         name = "Directions";
+         path = "Directions";
          sourceTree = "<group>";
       };
       "OBJ_290" = {
@@ -1825,7 +1823,7 @@
       };
       "OBJ_30" = {
          isa = "PBXFileReference";
-         path = "Circle.swift";
+         path = "Directions.swift";
          sourceTree = "<group>";
       };
       "OBJ_300" = {
@@ -1906,7 +1904,7 @@
       };
       "OBJ_31" = {
          isa = "PBXFileReference";
-         path = "Cluster.swift";
+         path = "HTML.swift";
          sourceTree = "<group>";
       };
       "OBJ_310" = {
@@ -2054,12 +2052,8 @@
          defaultConfigurationName = "Release";
       };
       "OBJ_32" = {
-         isa = "PBXGroup";
-         children = (
-            "OBJ_33"
-         );
-         name = "Directions";
-         path = "Directions";
+         isa = "PBXFileReference";
+         path = "Label.swift";
          sourceTree = "<group>";
       };
       "OBJ_320" = {
@@ -2232,7 +2226,7 @@
       };
       "OBJ_33" = {
          isa = "PBXFileReference";
-         path = "Directions.swift";
+         path = "MapClickEvent.swift";
          sourceTree = "<group>";
       };
       "OBJ_330" = {
@@ -2277,7 +2271,7 @@
       };
       "OBJ_34" = {
          isa = "PBXFileReference";
-         path = "HTML.swift";
+         path = "MapEntity.swift";
          sourceTree = "<group>";
       };
       "OBJ_340" = {
@@ -2322,7 +2316,7 @@
       };
       "OBJ_35" = {
          isa = "PBXFileReference";
-         path = "IHideable.swift";
+         path = "MapObject.swift";
          sourceTree = "<group>";
       };
       "OBJ_350" = {
@@ -2367,7 +2361,7 @@
       };
       "OBJ_36" = {
          isa = "PBXFileReference";
-         path = "ISelectable.swift";
+         path = "Marker.swift";
          sourceTree = "<group>";
       };
       "OBJ_360" = {
@@ -2412,7 +2406,7 @@
       };
       "OBJ_37" = {
          isa = "PBXFileReference";
-         path = "Label.swift";
+         path = "Polygon.swift";
          sourceTree = "<group>";
       };
       "OBJ_370" = {
@@ -2463,7 +2457,7 @@
       };
       "OBJ_38" = {
          isa = "PBXFileReference";
-         path = "MapClickEvent.swift";
+         path = "Polyline.swift";
          sourceTree = "<group>";
       };
       "OBJ_380" = {
@@ -2623,8 +2617,18 @@
          name = "Release";
       };
       "OBJ_39" = {
-         isa = "PBXFileReference";
-         path = "MapEntity.swift";
+         isa = "PBXGroup";
+         children = (
+            "OBJ_40",
+            "OBJ_41",
+            "OBJ_42",
+            "OBJ_43",
+            "OBJ_44",
+            "OBJ_45",
+            "OBJ_46"
+         );
+         name = "Protocols";
+         path = "Protocols";
          sourceTree = "<group>";
       };
       "OBJ_390" = {
@@ -2724,7 +2728,7 @@
       };
       "OBJ_40" = {
          isa = "PBXFileReference";
-         path = "MapObject.swift";
+         path = "IHideable.swift";
          sourceTree = "<group>";
       };
       "OBJ_400" = {
@@ -2771,7 +2775,7 @@
       };
       "OBJ_41" = {
          isa = "PBXFileReference";
-         path = "Marker.swift";
+         path = "IMapObject.swift";
          sourceTree = "<group>";
       };
       "OBJ_411" = {
@@ -2835,31 +2839,27 @@
       };
       "OBJ_42" = {
          isa = "PBXFileReference";
-         path = "MarkerDelegate.swift";
+         path = "ISelectable.swift";
          sourceTree = "<group>";
       };
       "OBJ_43" = {
          isa = "PBXFileReference";
-         path = "Polygon.swift";
+         path = "JSBridgeDelegate.swift";
          sourceTree = "<group>";
       };
       "OBJ_44" = {
          isa = "PBXFileReference";
-         path = "Polyline.swift";
+         path = "JSExecutorProtocol.swift";
          sourceTree = "<group>";
       };
       "OBJ_45" = {
-         isa = "PBXGroup";
-         children = (
-            "OBJ_46"
-         );
-         name = "Protocols";
-         path = "Protocols";
+         isa = "PBXFileReference";
+         path = "MapViewDelegate.swift";
          sourceTree = "<group>";
       };
       "OBJ_46" = {
          isa = "PBXFileReference";
-         path = "IMapObject.swift";
+         path = "MarkerDelegate.swift";
          sourceTree = "<group>";
       };
       "OBJ_47" = {
