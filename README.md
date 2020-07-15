@@ -3,7 +3,7 @@
 
 2GIS Maps SDK for iOS.
 
-- [Documentation](https://docs.2gis.com/en/ios/maps/reference/MapView)
+- [Documentation](https://docs.2gis.com/en/ios/webgl/maps/reference/MapView)
 
 <p float="left">
   <img src="https://github.com/2gis/MapGL-iOS/raw/master/Example/Screenshots/example.jpg" width="300" />
