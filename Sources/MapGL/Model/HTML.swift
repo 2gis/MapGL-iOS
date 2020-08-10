@@ -42,7 +42,8 @@ enum HTML {
 				pitch: pitch,
 				rotation: rotation,
 				zoomControl: false,
-				key: apiKey
+				key: apiKey,
+				interactiveCopyright: false
 			});
 
 			window.map.on('click', (ev) => {
