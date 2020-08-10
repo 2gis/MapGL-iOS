@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+## 2020-08-10 - 0.1.8
+### Added
+- Added the ability to use a stretchable image as background for the marker label.
+- Added the option autoHideOSMCopyright to the Map. If true, the OSM copyright will be hidden after 5 seconds from the map initialization.
 
 ## 2020-06-09 - 0.1.6
 ### Added

@@ -56,24 +56,21 @@ open class Polyline: MapObject {
 
 }
 
-extension Polyline: IJSValue {
-
-	func jsValue() -> String {
-		return """
-		{
-		id: "\(self.id)",
-		coordinates: \(self.points.jsValue()),
-		color: \((self.style1?.color).jsValue()),
-		width: \((self.style1?.width).jsValue()),
-		zIndex: \((self.style1?.z).jsValue()),
-		color2: \((self.style2?.color).jsValue()),
-		width2: \((self.style2?.width).jsValue()),
-		zIndex2: \((self.style2?.z).jsValue()),
-		color3: \((self.style3?.color).jsValue()),
-		width3: \((self.style3?.width).jsValue()),
-		zIndex3: \((self.style3?.z).jsValue()),
-		}
-		"""
+extension Polyline: IJSOptions {
+	func jsKeyValue() -> [String : IJSValue] {
+		[
+			"id": self.id,
+			"coordinates": self.points,
+			"color": self.style1?.color,
+			"width": self.style1?.width,
+			"zIndex": self.style1?.z,
+			"color2": self.style2?.color,
+			"width2": self.style2?.width,
+			"zIndex2": self.style2?.z,
+			"color3": self.style3?.color,
+			"width3": self.style3?.width,
+			"zIndex3": self.style3?.z,
+		]
 	}
 
 	override func createJSCode() -> String {

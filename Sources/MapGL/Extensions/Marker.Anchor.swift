@@ -9,27 +9,27 @@ extension Marker.Anchor {
 
 		switch self {
 			case .bottom:
-				return "[\(0.5 * width), \(height)]"
+				return "[\(0.5 * width),\(height)]"
 			case .center:
-				return "[\(0.5 * width), \(0.5 * height)]"
+				return "[\(0.5 * width),\(0.5 * height)]"
 			case .left:
-				return "[0, \(0.5 * height)]"
+				return "[0,\(0.5 * height)]"
 			case .leftBotton:
-				return "[0, \(height)]"
+				return "[0,\(height)]"
 			case .leftTop:
-				return "[0, 0]"
+				return "[0,0]"
 			case .right:
-				return "[\(width), \(0.5 * height)]"
+				return "[\(width),\(0.5 * height)]"
 			case .rightBottom:
-				return "[\(width), \(height)]"
+				return "[\(width),\(height)]"
 			case .rightTop:
-				return "[\(width), 0]"
+				return "[\(width),0]"
 			case .top:
-				return "[\(0.5 * width), 0]"
+				return "[\(0.5 * width),0]"
 			case .relative(let x, let y):
-				return "[\(x * width), \(y * height)]"
+				return "[\(x * width),\(y * height)]"
 			case .absolute(let x, let y):
-				return "[\(x), \(y)]"
+				return "[\(x),\(y)]"
 
 		}
 	}

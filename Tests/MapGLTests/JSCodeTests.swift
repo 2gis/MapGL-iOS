@@ -30,11 +30,11 @@ class JSCodeTests: XCTestCase {
 		var c: CLLocationCoordinate2D?
 		XCTAssertEqual(c.jsValue(), "undefined")
 		c = CLLocationCoordinate2D(latitude: 123.567, longitude: -123.456)
-		XCTAssertEqual(c.jsValue(), "[-123.456, 123.567]")
+		XCTAssertEqual(c.jsValue(), "[-123.456,123.567]")
 		var coordinates = [CLLocationCoordinate2D]()
 		XCTAssertEqual(coordinates.jsValue(), "[]")
 		coordinates.append(c!)
-		XCTAssertEqual(coordinates.jsValue(), "[[-123.456, 123.567]]")
+		XCTAssertEqual(coordinates.jsValue(), "[[-123.456,123.567]]")
 	}
 
 	func testColor() {
@@ -53,7 +53,7 @@ class JSCodeTests: XCTestCase {
 			CGFloat(2.2),
 		]
 		let str = #"""
-		[undefined,"",1,[2.0, 1.0],"#FFFF00",2.2]
+		[undefined,"",1,[2.0,1.0],"#FFFF00",2.2]
 		"""#
 		XCTAssertEqual(array.jsValue(), str)
 	}
@@ -65,6 +65,22 @@ class JSCodeTests: XCTestCase {
 		XCTAssertEqual(style.jsValue(), """
 		"#FF0000",5.0,5
 		""")
+	}
+
+	struct JSOptions: IJSOptions {
+		let dict: [String : IJSValue]
+		init(_ dict: [String : IJSValue]) {
+			self.dict = dict
+		}
+		func jsKeyValue() -> [String : IJSValue] { self.dict }
+	}
+
+	func testJSMap() {
+		let a = JSOptions(["a": 1])
+		XCTAssertEqual(a.jsValue(), "{a:1}")
+
+		let b = JSOptions(["b": "b"])
+		XCTAssertEqual(b.jsValue(), "{b:\"b\"}")
 	}
 
 }

@@ -242,11 +242,19 @@ class HelloVC: UIViewController {
 			self.map.add(circle)
 		}
 		let showLabel = UIAlertAction(title: "Show label, hide in 5 sec", style: .default) { _ in
+			let image = UIImage(named: "stretchable")!.resizableImage(
+				withCapInsets: UIEdgeInsets(top: 50, left: 10, bottom: 5, right: 10)
+			)
+			let bgImage = LabelImage(
+				image: image,
+				padding: UIEdgeInsets(top: 30, left: 15, bottom: 10, right: 25)
+			)
 			let label = Label(
 				center: self.map.mapCenter,
 				color: .red,
 				text: "Demo label",
-				fontSize: 24
+				fontSize: 24,
+				backgroundImage: bgImage
 			)
 			self.map.add(label)
 			DispatchQueue.main.asyncAfter(deadline: .now() + 5) {

@@ -84,34 +84,27 @@ open class Marker: MapObject {
 
 extension Marker: IHideable {}
 
-extension Marker: IJSValue {
+extension Marker: IJSOptions {
 
-	func jsValue() -> String {
-		let js: String
-		if let image = self.image, let imageData = image.pngData() {
-			let imageString = imageData.base64EncodedString()
-			let markerImage = "data:image/png;base64,\(imageString)"
-			js = """
-			{
-			id: "\(self.id)",
-			coordinates: \(self.coordinates.jsValue()),
-			icon: "\(markerImage)",
-			anchor: \(self.anchor.stringify(with: image)),
-			size: [\(image.size.width), \(image.size.height)],
-			}
-			"""
-		} else {
-			js = """
-			{
-			id: "\(self.id)",
-			coordinates: \(self.coordinates.jsValue()),
-			icon: undefined,
-			anchor: undefined,
-			size: undefined,
-			}
-			"""
+	struct AnchoredImage: IJSValue {
+		let image: UIImage
+		let anchor: Marker.Anchor
+		func jsValue() -> String {
+			self.anchor.stringify(with: self.image)
 		}
-		return js
+	}
+
+	func jsKeyValue() -> [String : IJSValue] {
+		var options: [String : IJSValue] = [
+			"id": self.id,
+			"coordinates": self.coordinates,
+		]
+		if let image = self.image {
+			options["icon"] = image
+			options["size"] = image.size
+			options["anchor"] = AnchoredImage(image: image, anchor: self.anchor)
+		}
+		return options
 	}
 
 	override func createJSCode() -> String {

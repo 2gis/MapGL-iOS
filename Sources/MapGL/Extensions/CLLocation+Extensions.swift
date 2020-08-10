@@ -10,6 +10,10 @@ extension CLLocationCoordinate2D: Equatable {
 
 extension CLLocationCoordinate2D: IJSValue {
 	func jsValue() -> String {
-		"[\(self.longitude), \(self.latitude)]"
+		"[\(self.longitude),\(self.latitude)]"
 	}
+}
+
+extension CLLocationDistance: IJSValue {
+	func jsValue() -> String { "\(self)" }
 }

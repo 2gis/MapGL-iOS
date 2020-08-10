@@ -41,20 +41,18 @@ open class Circle: MapObject {
 
 }
 
-extension Circle: IJSValue {
+extension Circle: IJSOptions {
 
-	func jsValue() -> String {
-		return """
-		{
-		id: "\(self.id)",
-		coordinates: \(self.center.jsValue()),
-		radius: \(self.radius),
-		color: \(self.fillColor.jsValue()),
-		strokeWidth: \(self.strokeWidth.jsValue()),
-		strokeColor: \(self.strokeColor.jsValue()),
-		zIndex: \(self.z.jsValue()),
-		}
-		"""
+	func jsKeyValue() -> [String : IJSValue] {
+		[
+			"id": self.id,
+			"coordinates": self.center,
+			"radius": self.radius,
+			"color": self.fillColor,
+			"strokeWidth": self.strokeWidth,
+			"strokeColor": self.strokeColor,
+			"zIndex": self.z,
+		]
 	}
 
 	override func createJSCode() -> String {

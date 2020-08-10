@@ -38,25 +38,22 @@ open class Polygon: MapObject {
 
 }
 
-extension Polygon: IJSValue {
+extension Polygon: IJSOptions {
 
-	func jsValue() -> String {
+	func jsKeyValue() -> [String : IJSValue] {
 		var polygonPoints = self.points
 		// Polygon should end with same point as starts
 		if !polygonPoints.isEmpty, polygonPoints.first != polygonPoints.last {
 			polygonPoints.append(polygonPoints[0])
 		}
-		let points = polygonPoints.jsValue()
-		return """
-		{
-			id: "\(self.id)",
-			coordinates: [\(points)],
-			strokeWidth: \(self.strokeWidth.jsValue()),
-			color: \(self.fillColor.jsValue()),
-			strokeColor: \(self.strokeColor.jsValue()),
-			zIndex: \(self.z.jsValue()),
-		}
-		"""
+		return [
+			"id": self.id,
+			"coordinates": [polygonPoints],
+			"strokeWidth": self.strokeWidth,
+			"color": self.fillColor,
+			"strokeColor": self.strokeColor,
+			"zIndex": self.z,
+		]
 	}
 
 	override func createJSCode() -> String {
