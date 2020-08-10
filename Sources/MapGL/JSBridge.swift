@@ -23,11 +23,12 @@ class JSBridge : NSObject {
 		pitch: Double,
 		rotation: Double,
 		apiKey: String,
+		autoHideOSMCopyright: Bool = false,
 		completion: Completion? = nil
 	) {
 		let js = """
 		window.initializeMap(
-		[\(center.longitude), \(center.latitude)],
+		\(center.jsValue()),
 		\(maxZoom),
 		\(minZoom),
 		\(zoom),
@@ -36,6 +37,7 @@ class JSBridge : NSObject {
 		\(pitch),
 		\(rotation),
 		"\(apiKey)",
+		\(autoHideOSMCopyright.jsValue())
 		);
 		"""
 		self.evaluateJS(js, completion: completion)
@@ -62,7 +64,7 @@ class JSBridge : NSObject {
 	}
 
 	func setMapCenter(_ center: CLLocationCoordinate2D, completion: Completion? = nil) {
-		let js = "window.map.setCenter([\(center.longitude), \(center.latitude)]);"
+		let js = "window.map.setCenter(\(center.jsValue()));"
 		self.evaluateJS(js, completion: completion)
 	}
 

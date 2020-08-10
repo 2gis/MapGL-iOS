@@ -31,7 +31,7 @@ enum HTML {
 		let selectedIds = [];
 		const container = document.getElementById('map');
 
-		window.initializeMap = function(center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey) {
+		window.initializeMap = function(center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey, autoHideOSMCopyright) {
 			window.map = new mapgl.Map(container, {
 				center: center,
 				maxZoom: maxZoom,
@@ -43,7 +43,8 @@ enum HTML {
 				rotation: rotation,
 				zoomControl: false,
 				key: apiKey,
-				interactiveCopyright: false
+				interactiveCopyright: false,
+				autoHideOSMCopyright: autoHideOSMCopyright
 			});
 
 			window.map.on('click', (ev) => {

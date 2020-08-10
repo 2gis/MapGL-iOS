@@ -29,6 +29,10 @@ extension Array where Element == IJSValue {
 	}
 }
 
+extension Bool: IJSValue {
+	func jsValue() -> String { self ? "true" : "false" }
+}
+
 extension Int: IJSValue {
 	func jsValue() -> String { "\(self)" }
 }

@@ -211,12 +211,14 @@ public class MapView : UIView {
 	///   - rotation: Initial map rotation angle
 	///   - pitch: Initial map pinch angle
 	///   - completion: Completion handler with the error information
+	///   - autoHideOSMCopyright: If true, the OSM copyright will be hidden after 5 seconds from the map initialization.
 	public func show(
 		apiKey: String,
 		center: CLLocationCoordinate2D? = nil,
 		zoom: Double? = nil,
 		rotation: Double? = nil,
 		pitch: Double? = nil,
+		autoHideOSMCopyright: Bool = false,
 		completion: ((Error?) -> Void)? = nil
 	) {
 		if let center = center {
@@ -238,8 +240,10 @@ public class MapView : UIView {
 		}
 
 		self.loadHtml { [weak self] in
-			self?.initializeMap(apiKey: apiKey) {
-				error in
+			self?.initializeMap(
+				apiKey: apiKey,
+				autoHideOSMCopyright: autoHideOSMCopyright
+			) { error in
 				completion?(error)
 			}
 		}
@@ -262,7 +266,11 @@ public class MapView : UIView {
 		}
 	}
 
-	private func initializeMap(apiKey: String, completion: @escaping ((Error?) -> Void)) {
+	private func initializeMap(
+		apiKey: String,
+		autoHideOSMCopyright: Bool = false,
+		completion: @escaping ((Error?) -> Void)
+	) {
 		self.js.initializeMap(
 			center: self.mapCenter,
 			maxZoom: self.mapMaxZoom,
@@ -272,7 +280,8 @@ public class MapView : UIView {
 			minPitch: self.mapMinPitch,
 			pitch: self.mapPitch,
 			rotation: self.mapRotation,
-			apiKey: apiKey
+			apiKey: apiKey,
+			autoHideOSMCopyright: autoHideOSMCopyright
 		) {
 			result in
 			switch result {

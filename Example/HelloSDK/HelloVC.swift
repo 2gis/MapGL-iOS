@@ -112,7 +112,8 @@ class HelloVC: UIViewController {
 		self.map.show(
 			apiKey: Constants.apiKey,
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-			zoom: 16
+			zoom: 16,
+			autoHideOSMCopyright: true
 		) { error in
 			print(error ?? "Map initialized")
 		}
