@@ -18,7 +18,7 @@ class ReferenceVisitor {
 extension Object {
 
 	func refMap() -> String {
-		"/en/ios/maps/reference/\(self.props.name)"
+		"/en/ios/webgl/maps/reference/\(self.props.name)"
 	}
 
 	func addMissingRefs(_ visitor: ReferenceVisitor) {

@@ -7,6 +7,8 @@ open class MapObject: NSObject, IMapObject {
 	@objc public let id: String
 	weak var delegate: IObjectDelegate?
 
+	/// Creates the new instance of the map object.
+	/// - Parameter id: Unique object id
 	public init(
 		id: String = UUID().uuidString
 	) {

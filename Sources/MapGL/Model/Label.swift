@@ -43,7 +43,9 @@ open class Label: MapObject {
 /// Label background image
 public class LabelImage {
 
+	/// Background image
 	public let image: UIImage
+	/// space in pixels between the label text box and the edge of the stretched image
 	public let padding: UIEdgeInsets
 
 	/// Source image for text label background.

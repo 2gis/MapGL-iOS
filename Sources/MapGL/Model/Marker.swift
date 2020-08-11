@@ -64,10 +64,10 @@ open class Marker: MapObject {
 	/// Creates the new instance of the marker object.
 	///
 	/// - Parameters:
+	///   - id: Marker uid
 	///   - coordinates: Marker geographical coordinates
 	///   - image: Marker image
 	///   - anchor: Marker anchor
-	///   - uid: Marker uid
 	public init(
 		id: String = NSUUID().uuidString,
 		coordinates: CLLocationCoordinate2D,
