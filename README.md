@@ -1,6 +1,5 @@
-[![Version](https://img.shields.io/cocoapods/v/MapGL.svg?style=flat)](https://cocoapods.org/pods/MapGL)
-
 # 2GIS iOS MapGL
+[![Version](https://img.shields.io/cocoapods/v/MapGL.svg?style=flat)](https://cocoapods.org/pods/MapGL)
 
 2GIS iOS MapGL is an SDK that allows you to add a [2GIS](https://2gis.ae/) map to your iOS application. It can be used to display the map in your interface, add custom markers and labels to it, draw routes and custom shapes, and highlight various objects on the map, such as buildings, roads, and others.
 
