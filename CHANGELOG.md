@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+## 2020-09-22 - 0.1.9
+### Fixed
+- iOS 14 rendering issue
+- JS error handling
+
 ## 2020-08-10 - 0.1.8
 ### Added
 - Added the ability to use a stretchable image as background for the marker label.
@@ -59,6 +64,8 @@
 ### Changed
 - Nothing.
 
+[0.1.8]: https://github.com/2gis/MapGL-iOS/compare/v0.1.7...v0.1.8
+[0.1.7]: https://github.com/2gis/MapGL-iOS/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/2gis/MapGL-iOS/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/2gis/MapGL-iOS/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/2gis/MapGL-iOS/compare/v0.1.3...v0.1.4

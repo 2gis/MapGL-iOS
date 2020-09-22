@@ -22,6 +22,22 @@ enum HTML {
 
 <body>
 	<div id="map"></div>
+	<script>
+		window.onerror = (msg, url, line, column, error) => {
+			const message = {
+				message: msg,
+				url: url,
+				line: line,
+				column: column,
+				error: JSON.stringify(error)
+			}
+			if (window.webkit) {
+				window.webkit.messageHandlers.error.postMessage(message);
+			} else {
+				console.log("Error:", message);
+			}
+		};
+	</script>
 	<script src="https://mapgl.2gis.com/api/js"></script>
 	<script src="https://unpkg.com/@2gis/mapgl-clusterer@^1/dist/clustering.js"></script>
 	<script src="https://unpkg.com/@2gis/mapgl-directions@^1/dist/directions.js"></script>
@@ -30,7 +46,6 @@ enum HTML {
 		var directionsMap = new Map();
 		let selectedIds = [];
 		const container = document.getElementById('map');
-
 		window.initializeMap = function(center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey, autoHideOSMCopyright) {
 			window.map = new mapgl.Map(container, {
 				center: center,
@@ -44,7 +59,8 @@ enum HTML {
 				zoomControl: false,
 				key: apiKey,
 				interactiveCopyright: false,
-				autoHideOSMCopyright: autoHideOSMCopyright
+				autoHideOSMCopyright: autoHideOSMCopyright,
+				preserveDrawingBuffer: true
 			});
 
 			window.map.on('click', (ev) => {
@@ -182,20 +198,6 @@ enum HTML {
 			window.clearCarRoute(id);
 			directionsMap.delete(id);
 		}
-		window.onerror = (msg, url, line, column, error) => {
-			const message = {
-				message: msg,
-				url: url,
-				line: line,
-				column: column,
-				error: JSON.stringify(error)
-			}
-			if (window.webkit) {
-				window.webkit.messageHandlers.error.postMessage(message);
-			} else {
-				console.log("Error:", message);
-			}
-		};
 		window.addEventListener('resize', () => window.map.invalidateSize());
 
 	</script>
