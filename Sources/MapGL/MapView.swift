@@ -269,9 +269,10 @@ public class MapView : UIView {
 	private func initializeMap(
 		apiKey: String,
 		autoHideOSMCopyright: Bool = false,
+		disableRotationByUserInteraction: Bool = false,
 		completion: @escaping ((Error?) -> Void)
 	) {
-		self.js.initializeMap(
+		let options = JSBridge.MapOptions(
 			center: self.mapCenter,
 			maxZoom: self.mapMaxZoom,
 			minZoom: self.mapMinZoom,
@@ -281,8 +282,10 @@ public class MapView : UIView {
 			pitch: self.mapPitch,
 			rotation: self.mapRotation,
 			apiKey: apiKey,
-			autoHideOSMCopyright: autoHideOSMCopyright
-		) {
+			autoHideOSMCopyright: autoHideOSMCopyright,
+			disableRotationByUserInteraction: disableRotationByUserInteraction
+		)
+		self.js.initializeMap(options: options) {
 			result in
 			switch result {
 				case .success:

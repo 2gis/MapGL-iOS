@@ -46,23 +46,8 @@ enum HTML {
 		var directionsMap = new Map();
 		let selectedIds = [];
 		const container = document.getElementById('map');
-		window.initializeMap = function(center, maxZoom, minZoom, zoom, maxPitch, minPitch, pitch, rotation, apiKey, autoHideOSMCopyright) {
-			window.map = new mapgl.Map(container, {
-				center: center,
-				maxZoom: maxZoom,
-				minZoom: minZoom,
-				zoom: zoom,
-				maxPitch: maxPitch,
-				minPitch: minPitch,
-				pitch: pitch,
-				rotation: rotation,
-				zoomControl: false,
-				key: apiKey,
-				interactiveCopyright: false,
-				autoHideOSMCopyright: autoHideOSMCopyright,
-				preserveDrawingBuffer: true
-			});
-
+		window.initializeMap = function(options) {
+			window.map = new mapgl.Map(container, options);
 			window.map.on('click', (ev) => {
 				window.webkit.messageHandlers.dgsMessage.postMessage({
 					type: "mapClick",
