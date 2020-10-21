@@ -205,13 +205,15 @@ public class MapView : UIView {
 	/// after the completion handler of this method is executed.
 	///
 	/// - Parameters:
-	///   - apiKey: Secret key
-	///   - center: Initial coordinates of the map center
-	///   - zoom: Initial map zoom level
-	///   - rotation: Initial map rotation angle
-	///   - pitch: Initial map pinch angle
-	///   - completion: Completion handler with the error information
+	///   - apiKey: Secret key.
+	///   - center: Initial coordinates of the map center.
+	///   - zoom: Initial map zoom level.
+	///   - rotation: Initial map rotation angle.
+	///   - pitch: Initial map pinch angle.
 	///   - autoHideOSMCopyright: If true, the OSM copyright will be hidden after 5 seconds from the map initialization.
+	///   - disableRotationByUserInteraction: Prevent users from rotating a map.
+	///   - disablePitchByUserInteraction: Prevent users from pitching a map.
+	///   - completion: Completion handler.
 	public func show(
 		apiKey: String,
 		center: CLLocationCoordinate2D? = nil,
@@ -219,6 +221,8 @@ public class MapView : UIView {
 		rotation: Double? = nil,
 		pitch: Double? = nil,
 		autoHideOSMCopyright: Bool = false,
+		disableRotationByUserInteraction: Bool = false,
+		disablePitchByUserInteraction: Bool = false,
 		completion: ((Error?) -> Void)? = nil
 	) {
 		if let center = center {
@@ -242,7 +246,9 @@ public class MapView : UIView {
 		self.loadHtml { [weak self] in
 			self?.initializeMap(
 				apiKey: apiKey,
-				autoHideOSMCopyright: autoHideOSMCopyright
+				autoHideOSMCopyright: autoHideOSMCopyright,
+				disableRotationByUserInteraction: disableRotationByUserInteraction,
+				disablePitchByUserInteraction: disablePitchByUserInteraction
 			) { error in
 				completion?(error)
 			}
@@ -269,9 +275,11 @@ public class MapView : UIView {
 	private func initializeMap(
 		apiKey: String,
 		autoHideOSMCopyright: Bool = false,
+		disableRotationByUserInteraction: Bool = false,
+		disablePitchByUserInteraction: Bool = false,
 		completion: @escaping ((Error?) -> Void)
 	) {
-		self.js.initializeMap(
+		let options = JSBridge.MapOptions(
 			center: self.mapCenter,
 			maxZoom: self.mapMaxZoom,
 			minZoom: self.mapMinZoom,
@@ -281,8 +289,11 @@ public class MapView : UIView {
 			pitch: self.mapPitch,
 			rotation: self.mapRotation,
 			apiKey: apiKey,
-			autoHideOSMCopyright: autoHideOSMCopyright
-		) {
+			autoHideOSMCopyright: autoHideOSMCopyright,
+			disableRotationByUserInteraction: disableRotationByUserInteraction,
+			disablePitchByUserInteraction: disablePitchByUserInteraction
+		)
+		self.js.initializeMap(options: options) {
 			result in
 			switch result {
 				case .success:
