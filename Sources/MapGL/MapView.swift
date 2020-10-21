@@ -247,8 +247,8 @@ public class MapView : UIView {
 			self?.initializeMap(
 				apiKey: apiKey,
 				autoHideOSMCopyright: autoHideOSMCopyright,
-                disableRotationByUserInteraction: disableRotationByUserInteraction,
-                disablePitchByUserInteraction: disablePitchByUserInteraction
+				disableRotationByUserInteraction: disableRotationByUserInteraction,
+				disablePitchByUserInteraction: disablePitchByUserInteraction
 			) { error in
 				completion?(error)
 			}
