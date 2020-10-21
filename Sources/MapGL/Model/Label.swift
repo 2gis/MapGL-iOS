@@ -10,6 +10,8 @@ open class Label: MapObject {
 	let fontSize: CGFloat
 	let anchor: CGPoint
 	let backgroundImage: LabelImage?
+	let relativeAnchor: CGPoint
+	let offset: CGPoint
 
 	/// Creates new label on map
 	/// - Parameters:
@@ -20,6 +22,12 @@ open class Label: MapObject {
 	///   - fontSize: Label font size
 	///   - anchor: The position in pixels of the "tip" of the label relative to its center.
 	///   - backgroundImage: Image background for the label
+	///   - relativeAnchor: The relative, from 0 to 1 in each dimension, coordinates of the text box "tip".
+	///   Relative to its top left corner, for example: [0, 0] value is the top left corner,
+	///    [0.5, 0.5] — center point, and [1, 1] is the bottom right corner of the box. The label will be
+	///    placed so that this point is at geographical coordinates respects the absolute `offset`.
+	///   - offset: The offset distance of text box from its `relativeAnchor`.
+	///   Positive values indicate right and down, while negative values indicate left and up.
 	public init(
 		id: String = UUID().uuidString,
 		center: CLLocationCoordinate2D,
@@ -27,7 +35,9 @@ open class Label: MapObject {
 		text: String,
 		fontSize: CGFloat,
 		anchor: CGPoint = .zero,
-		backgroundImage: LabelImage? = nil
+		backgroundImage: LabelImage? = nil,
+		relativeAnchor: CGPoint = CGPoint(x: 0.5, y: 0.5),
+		offset: CGPoint = .zero
 	) {
 		self.center = center
 		self.color = color
@@ -35,6 +45,8 @@ open class Label: MapObject {
 		self.fontSize = fontSize
 		self.anchor = anchor
 		self.backgroundImage = backgroundImage
+		self.relativeAnchor = relativeAnchor
+		self.offset = offset
 		super.init(id: id)
 	}
 
@@ -97,6 +109,8 @@ extension Label: IJSOptions {
 			"fontSize": self.fontSize,
 			"image": self.backgroundImage,
 			"anchor": self.anchor,
+			"relativeAnchor": self.relativeAnchor,
+			"offset": self.offset,
 		]
 	}
 
