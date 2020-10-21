@@ -16,6 +16,7 @@ class JSBridge : NSObject {
 		let apiKey: String
 		let autoHideOSMCopyright: Bool
 		let disableRotationByUserInteraction: Bool
+		let disablePitchByUserInteraction: Bool
 	}
 
 	typealias Completion = (Result<Void, Error>) -> Void
@@ -31,9 +32,7 @@ class JSBridge : NSObject {
 		options: MapOptions,
 		completion: Completion? = nil
 	) {
-		let js = """
-		window.initializeMap(\(options.jsValue());
-		"""
+		let js = "window.initializeMap(\(options.jsValue()));"
 		self.evaluateJS(js, completion: completion)
 	}
 
@@ -254,15 +253,18 @@ extension JSBridge.MapOptions: IJSOptions {
 			"center": self.center,
 			"maxZoom": self.maxZoom,
 			"minZoom": self.minZoom,
+			"zoom": self.zoom,
 			"maxPitch": self.maxPitch,
 			"minPitch": self.minPitch,
 			"pitch": self.pitch,
 			"rotation": self.rotation,
-			"apiKey": self.apiKey,
-			"autoHideOSMCopyright": self.autoHideOSMCopyright,
 			"zoomControl": false,
+			"key": self.apiKey,
 			"interactiveCopyright": false,
+			"autoHideOSMCopyright": self.autoHideOSMCopyright,
+			"preserveDrawingBuffer": true,
+			"disableRotationByUserInteraction": self.disableRotationByUserInteraction,
+			"disablePitchByUserInteraction": self.disablePitchByUserInteraction,
 		]
 	}
-
 }
