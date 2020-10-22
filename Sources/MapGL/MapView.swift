@@ -265,6 +265,12 @@ public class MapView : UIView {
 		self.mapZoom = max(self.mapZoom - 1, self.mapMinZoom)
 	}
 
+	/// Returns the geographical bounds visible in the current map view.
+	/// - Parameter completion: Completion handler.
+	public func fetchGeographicalBounds(completion: @escaping (Result<GeographicalBounds, Error>) -> Void) {
+		self.js.fetchGeographicalBounds(completion: completion)
+	}
+
 	private func loadHtml(completion: @escaping () -> Void) {
 		self.webView.loadHTMLString(HTML.html, baseURL: nil)
 		self.wkDelegate.onInitializeMap = {
