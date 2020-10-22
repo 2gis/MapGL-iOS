@@ -39,6 +39,9 @@ open class Marker: MapObject {
 	/// Gets the marker anchor.
 	public let anchor: Anchor
 
+	/// Defines the draw order of the marker.
+	public let zIndex: CGFloat?
+
 	/// Gets or sets the marker coordinates.
 	public var coordinates: CLLocationCoordinate2D {
 		didSet {
@@ -68,15 +71,18 @@ open class Marker: MapObject {
 	///   - coordinates: Marker geographical coordinates
 	///   - image: Marker image
 	///   - anchor: Marker anchor
+	///   - zIndex: Draw order.
 	public init(
 		id: String = NSUUID().uuidString,
 		coordinates: CLLocationCoordinate2D,
 		image: UIImage? = nil,
-		anchor: Anchor = .center
+		anchor: Anchor = .center,
+		zIndex: CGFloat? = nil
 	) {
 		self.coordinates = coordinates
 		self.image = image
 		self.anchor = anchor
+		self.zIndex = zIndex
 		super.init(id: id)
 	}
 
@@ -103,6 +109,9 @@ extension Marker: IJSOptions {
 			options["icon"] = image
 			options["size"] = image.size
 			options["anchor"] = AnchoredImage(image: image, anchor: self.anchor)
+		}
+		if let zIndex = self.zIndex {
+			options["zIndex"] = zIndex
 		}
 		return options
 	}
