@@ -190,11 +190,19 @@ class HelloVC: UIViewController {
 		let showRoute = UIAlertAction(title: "Show Route, hide in 10 sec", style: .default) { _ in
 			assert(!Constants.directionsApiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
 			let directions = self.map.makeDirections(with: Constants.directionsApiKey)
-			directions.showCarRoute(points: [
+			let points = [
 				self.map.mapCenter,
 				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
 				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.5278),
-			])
+			]
+			directions.showCarRoute(points: points) { [weak self] result in
+				switch result {
+				case .success:
+					break
+				case .failure(let error):
+					self?.showError(error)
+				}
+			}
 			DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
 				directions.clear()
 			}
@@ -300,6 +308,13 @@ class HelloVC: UIViewController {
 		alert.addAction(removeMarkersAction)
 		alert.addAction(delesectAllObjects)
 		alert.addAction(cancelAction)
+		self.present(alert, animated: true, completion: nil)
+	}
+
+	private func showError(_ error: Error) {
+		let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+		let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+		alert.addAction(okAction)
 		self.present(alert, animated: true, completion: nil)
 	}
 

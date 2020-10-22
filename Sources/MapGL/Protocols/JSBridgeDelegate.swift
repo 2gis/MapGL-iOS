@@ -10,5 +10,6 @@ protocol JSBridgeDelegate : AnyObject {
 	func js(_ js: JSBridge, didClickMapWithEvent event: MapClickEvent)
 	func js(_ js: JSBridge, didClickObjectWithId objectId: String)
 	func js(_ js: JSBridge, didClickClusterWithId clusterId: String, markerIds: [String])
+	func js(_ js: JSBridge, carRouteDidFinishWithId directionId: String, completionId: String, error: MapGLError?)
 
 }

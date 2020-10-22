@@ -42,6 +42,12 @@ enum HTML {
 	<script src="https://unpkg.com/@2gis/mapgl-clusterer@^1/dist/clustering.js"></script>
 	<script src="https://unpkg.com/@2gis/mapgl-directions@^1/dist/directions.js"></script>
 	<script>
+		const postMessage = (name, args) => {
+			window.webkit.messageHandlers.dgsMessage.postMessage({
+				type: name,
+				value: args
+			});
+		};
 		var objects = new Map();
 		var directionsMap = new Map();
 		let selectedIds = [];
@@ -171,9 +177,20 @@ enum HTML {
 			});
 			directionsMap.set(id, direction);
 		}
-		window.carRoute = function (id, options) {
-			const direction = directionsMap.get(id);
-			direction.carRoute(options);
+		window.carRoute = function (directionId, completionId, options) {
+			const direction = directionsMap.get(directionId);
+			direction.carRoute(options).then(
+				(value) => { postMessage("carRouteCompletion", {
+					directionId: directionId,
+					completionId: completionId,
+					error: ""
+				})},
+				(reason) => { postMessage("carRouteCompletion", {
+					directionId: directionId,
+					completionId: completionId,
+					error: reason.toString()
+				})}
+			);
 		}
 		window.clearCarRoute = function (id) {
 			const direction = directionsMap.get(id);

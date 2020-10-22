@@ -254,7 +254,17 @@ extension JSBridge: WKScriptMessageHandler {
 				} else {
 					assertionFailure()
 				}
+			case "carRouteCompletion":
+				guard let data = body["value"] as? [String: String],
+					  let directionId = data["directionId"],
+					  let completionId = data["completionId"],
+					  let error = data["error"] else {
 
+					assertionFailure()
+					return
+				}
+				let mapglError: MapGLError? = error.isEmpty ? nil : MapGLError(text: error)
+				delegate.js(self, carRouteDidFinishWithId: directionId, completionId: completionId, error: mapglError)
 			default:
 				assertionFailure()
 		}

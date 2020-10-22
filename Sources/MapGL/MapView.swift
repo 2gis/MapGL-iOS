@@ -370,6 +370,21 @@ extension MapView: JSBridgeDelegate {
 		}
 	}
 
+	func js(_ js: JSBridge, carRouteDidFinishWithId directionId: String, completionId: String, error: MapGLError?) {
+		guard let direction = objects[directionId] as? Directions else {
+			assertionFailure()
+			return
+		}
+		var result: Result<Void, MapGLError> {
+			if let error = error {
+				return .failure(error)
+			} else {
+				return .success(())
+			}
+		}
+		direction.invokeCompletion(with: completionId, result: result)
+	}
+
 }
 
 extension MapView: IObjectDelegate {
