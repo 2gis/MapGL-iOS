@@ -93,6 +93,10 @@ enum HTML {
 			const marker = new mapgl.Marker(window.map, options);
 			window.setupObject(options.id, marker);
 		}
+		window.addCircleMarker = function (options) {
+			const marker = new mapgl.CircleMarker(window.map, options);
+			window.setupObject(options.id, marker);
+		}
 		window.addCluster = function (id, radius, markers) {
 			const clusterer = new mapgl.Clusterer(window.map, {
 				radius: radius,

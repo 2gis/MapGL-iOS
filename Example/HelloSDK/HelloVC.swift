@@ -133,8 +133,11 @@ class HelloVC: UIViewController {
 	}
 
 	@objc private func showLocation() {
-		self.map.mapCenter = CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878)
-		self.map.mapZoom = 16
+		self.map.enableUserLocation()
+		if let location = self.map.userLocation {
+			self.map.mapCenter = location.coordinate
+			self.map.mapZoom = 16
+		}
 	}
 
 	private func showCardView(object: MapObject) {

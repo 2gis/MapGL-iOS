@@ -38,6 +38,7 @@ public class MapView : UIView {
 	private var _mapPitch: Double = Const.mapDefaultPitch
 	private var _mapMinPitch: Double = Const.mapDefaultMinPitch
 	private var _mapMaxPitch: Double = Const.mapDefaultMaxPitch
+
 	// swiftlint:disable:next weak_delegate
 	private let wkDelegate = WKDelegate()
 
@@ -55,6 +56,12 @@ public class MapView : UIView {
 		webView.navigationDelegate = self.wkDelegate
 		webView.uiDelegate = self.wkDelegate
 		return webView
+	}()
+
+	private lazy var locationManager: UserLocationManager = {
+		let manager = UserLocationManager()
+		manager.map = self
+		return manager
 	}()
 
 	/// Notifies of the map geographical center change.
@@ -316,12 +323,16 @@ public class MapView : UIView {
 
 }
 
+// MARK: - JSExecutorProtocol
+
 extension MapView: JSExecutorProtocol {
 
 	func evaluateJavaScript(_ javaScriptString: String, completion: ((Any?, Error?) -> Void)?) {
 		self.webView.evaluateJavaScript(javaScriptString, completionHandler: completion)
 	}
 }
+
+// MARK: - JSBridgeDelegate
 
 extension MapView: JSBridgeDelegate {
 
@@ -387,6 +398,8 @@ extension MapView: JSBridgeDelegate {
 
 }
 
+// MARK: - IObjectDelegate
+
 extension MapView: IObjectDelegate {
 	func evaluateJS(_ js: String) {
 		self.js.evaluateJS(js)
@@ -394,6 +407,7 @@ extension MapView: IObjectDelegate {
 }
 
 // MARK: - Objects
+
 extension MapView {
 
 	/// Adds the given object to the map.
@@ -438,5 +452,29 @@ extension MapView {
 		self.add(directions)
 		return directions
 	}
+}
 
+// MARK: - User Location
+
+extension MapView {
+
+	func addUserLocationMarker(_ marker: MapObject) {
+		self.js.add(marker, completion: nil)
+	}
+
+	/// Gets the last location received.
+	public var userLocation: CLLocation? {
+		return locationManager.userLocation
+	}
+
+	/// Shows the user location on the map.
+	/// - Parameter options: Options for location services.
+	public func enableUserLocation(options: UserLocationOptions = UserLocationOptions()) {
+		locationManager.enableUserLocation(options: options)
+	}
+
+	/// Stops displaying and updating the user location.
+	public func disableUserLocation() {
+		locationManager.disableUserLocation()
+	}
 }
