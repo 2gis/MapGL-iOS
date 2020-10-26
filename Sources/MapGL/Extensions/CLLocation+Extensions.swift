@@ -17,3 +17,12 @@ extension CLLocationCoordinate2D: IJSValue {
 extension CLLocationDistance: IJSValue {
 	func jsValue() -> String { "\(self)" }
 }
+
+extension CLLocationCoordinate2D: Decodable {
+	 public init(from decoder: Decoder) throws {
+		 var container = try decoder.unkeyedContainer()
+		 let longitude = try container.decode(CLLocationDegrees.self)
+		 let latitude = try container.decode(CLLocationDegrees.self)
+		 self.init(latitude: latitude, longitude: longitude)
+	 }
+ }

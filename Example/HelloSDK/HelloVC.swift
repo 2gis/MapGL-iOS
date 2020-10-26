@@ -11,6 +11,7 @@ enum Constants {
 class HelloVC: UIViewController {
 
 	private static let cardViewHeight: CGFloat = 100
+	private var waitForUserLocation: Bool = false
 
 	private lazy var map: MapView = {
 		return MapView(frame: .zero)
@@ -133,8 +134,13 @@ class HelloVC: UIViewController {
 	}
 
 	@objc private func showLocation() {
-		self.map.mapCenter = CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878)
-		self.map.mapZoom = 16
+		self.map.enableUserLocation()
+		if let location = self.map.userLocation {
+			self.map.mapCenter = location.coordinate
+			self.map.mapZoom = 16
+		} else {
+			waitForUserLocation = true
+		}
 	}
 
 	private func showCardView(object: MapObject) {
@@ -190,11 +196,19 @@ class HelloVC: UIViewController {
 		let showRoute = UIAlertAction(title: "Show Route, hide in 10 sec", style: .default) { _ in
 			assert(!Constants.directionsApiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
 			let directions = self.map.makeDirections(with: Constants.directionsApiKey)
-			directions.showCarRoute(points: [
+			let points = [
 				self.map.mapCenter,
 				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
 				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.5278),
-			])
+			]
+			directions.showCarRoute(points: points) { [weak self] result in
+				switch result {
+				case .success:
+					break
+				case .failure(let error):
+					self?.showError(error)
+				}
+			}
 			DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
 				directions.clear()
 			}
@@ -303,6 +317,13 @@ class HelloVC: UIViewController {
 		self.present(alert, animated: true, completion: nil)
 	}
 
+	private func showError(_ error: Error) {
+		let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+		let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+		alert.addAction(okAction)
+		self.present(alert, animated: true, completion: nil)
+	}
+
 	private func loadUI() {
 
 		self.map.delegate = self
@@ -407,6 +428,14 @@ extension HelloVC: MapViewDelegate {
 		if let entity = object as? MapEntity {
 			self.map.add(entity)
 		}
+	}
+
+	func mapView(_ mapView: MapView, didUpdateUserLocation location: CLLocation?) {
+		if waitForUserLocation, let location = location {
+			self.map.mapCenter = location.coordinate
+			self.map.mapZoom = 16
+		}
+		waitForUserLocation = false
 	}
 
 }

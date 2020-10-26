@@ -41,6 +41,22 @@ class JSBridge : NSObject {
 		self.evaluateJS(js, completion: completion)
 	}
 
+	func fetchGeographicalBounds(completion: @escaping (Result<GeographicalBounds, Error>) -> Void) {
+		let js = "window.map.getBounds();"
+		self.executor.evaluateJavaScript(js) { result, erorr in
+			if let error = erorr {
+				completion(.failure(error))
+			} else {
+				let dictionary = result as? [String: Any]
+				if let bounds = GeographicalBounds(dictionary: dictionary) {
+					completion(.success(bounds))
+				} else {
+					completion(.failure(MapGLError(text: "Parsing error")))
+				}
+			}
+		}
+	}
+
 	func fetchMapCenter(completion: ((Result<CLLocationCoordinate2D, Error>) -> Void)?) {
 		let js = "window.map.getCenter();"
 		self.executor.evaluateJavaScript(js) { (result, erorr) in
@@ -238,7 +254,17 @@ extension JSBridge: WKScriptMessageHandler {
 				} else {
 					assertionFailure()
 				}
+			case "carRouteCompletion":
+				guard let data = body["value"] as? [String: String],
+					  let directionId = data["directionId"],
+					  let completionId = data["completionId"],
+					  let error = data["error"] else {
 
+					assertionFailure()
+					return
+				}
+				let mapglError: MapGLError? = error.isEmpty ? nil : MapGLError(text: error)
+				delegate.js(self, carRouteDidFinishWithId: directionId, completionId: completionId, error: mapglError)
 			default:
 				assertionFailure()
 		}

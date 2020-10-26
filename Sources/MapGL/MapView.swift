@@ -38,6 +38,7 @@ public class MapView : UIView {
 	private var _mapPitch: Double = Const.mapDefaultPitch
 	private var _mapMinPitch: Double = Const.mapDefaultMinPitch
 	private var _mapMaxPitch: Double = Const.mapDefaultMaxPitch
+
 	// swiftlint:disable:next weak_delegate
 	private let wkDelegate = WKDelegate()
 
@@ -55,6 +56,12 @@ public class MapView : UIView {
 		webView.navigationDelegate = self.wkDelegate
 		webView.uiDelegate = self.wkDelegate
 		return webView
+	}()
+
+	private lazy var locationManager: UserLocationManager = {
+		let manager = UserLocationManager()
+		manager.delegate = self
+		return manager
 	}()
 
 	/// Notifies of the map geographical center change.
@@ -265,6 +272,12 @@ public class MapView : UIView {
 		self.mapZoom = max(self.mapZoom - 1, self.mapMinZoom)
 	}
 
+	/// Returns the geographical bounds visible in the current map view.
+	/// - Parameter completion: Completion handler.
+	public func fetchGeographicalBounds(completion: @escaping (Result<GeographicalBounds, Error>) -> Void) {
+		self.js.fetchGeographicalBounds(completion: completion)
+	}
+
 	private func loadHtml(completion: @escaping () -> Void) {
 		self.webView.loadHTMLString(HTML.html, baseURL: nil)
 		self.wkDelegate.onInitializeMap = {
@@ -310,12 +323,16 @@ public class MapView : UIView {
 
 }
 
+// MARK: - JSExecutorProtocol
+
 extension MapView: JSExecutorProtocol {
 
 	func evaluateJavaScript(_ javaScriptString: String, completion: ((Any?, Error?) -> Void)?) {
 		self.webView.evaluateJavaScript(javaScriptString, completionHandler: completion)
 	}
 }
+
+// MARK: - JSBridgeDelegate
 
 extension MapView: JSBridgeDelegate {
 
@@ -364,7 +381,24 @@ extension MapView: JSBridgeDelegate {
 		}
 	}
 
+	func js(_ js: JSBridge, carRouteDidFinishWithId directionId: String, completionId: String, error: MapGLError?) {
+		guard let direction = objects[directionId] as? Directions else {
+			assertionFailure()
+			return
+		}
+		var result: Result<Void, MapGLError> {
+			if let error = error {
+				return .failure(error)
+			} else {
+				return .success(())
+			}
+		}
+		direction.invokeCompletion(with: completionId, result: result)
+	}
+
 }
+
+// MARK: - IObjectDelegate
 
 extension MapView: IObjectDelegate {
 	func evaluateJS(_ js: String) {
@@ -373,6 +407,7 @@ extension MapView: IObjectDelegate {
 }
 
 // MARK: - Objects
+
 extension MapView {
 
 	/// Adds the given object to the map.
@@ -417,5 +452,41 @@ extension MapView {
 		self.add(directions)
 		return directions
 	}
+}
 
+// MARK: - User Location
+
+extension MapView {
+
+	/// Gets the last location received.
+	public var userLocation: CLLocation? {
+		return self.locationManager.userLocation
+	}
+
+	/// Shows the user location on the map.
+	/// - Parameter options: Options for location services.
+	public func enableUserLocation(options: UserLocationOptions = UserLocationOptions()) {
+		locationManager.enableUserLocation(options: options)
+	}
+
+	/// Stops displaying and updating the user location.
+	public func disableUserLocation() {
+		locationManager.disableUserLocation()
+	}
+}
+
+// MARK: - UserLocationManagerDelegate
+
+extension MapView: UserLocationManagerDelegate {
+	func userLocationManager(_ manager: UserLocationManager, addUserLocationMarker marker: MapObject) {
+		self.js.add(marker, completion: nil)
+	}
+
+	func userLocationManager(_ manager: UserLocationManager, removeUserLocationMarker marker: MapObject) {
+		self.remove(marker)
+	}
+
+	func userLocationManager(_ manager: UserLocationManager, didUpdateUserLocation location: CLLocation?) {
+		self.delegate?.mapView?(self, didUpdateUserLocation: location)
+	}
 }
