@@ -15,13 +15,21 @@ public struct UserLocationOptions {
 
 }
 
+// MARK: - UserLocationManagerDelegate
+
+protocol UserLocationManagerDelegate: AnyObject {
+	func userLocationManager(_ manager: UserLocationManager, addUserLocationMarker marker: MapObject)
+	func userLocationManager(_ manager: UserLocationManager, removeUserLocationMarker marker: MapObject)
+	func userLocationManager(_ manager: UserLocationManager, didUpdateUserLocation location: CLLocation?)
+}
+
 // MARK: - UserLocationManager
 
 class UserLocationManager: NSObject {
 
 	private let locationManager = CLLocationManager()
 	private var locationMarker: CircleMarker?
-	weak var map: MapView?
+	weak var delegate: UserLocationManagerDelegate?
 
 	var userLocation: CLLocation? {
 		return locationManager.location
@@ -55,6 +63,7 @@ extension UserLocationManager: CLLocationManagerDelegate {
 		if let location = manager.location {
 			addLocationMarker(location: location)
 		}
+		delegate?.userLocationManager(self, didUpdateUserLocation: manager.location)
 	}
 
 	func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -70,13 +79,13 @@ extension UserLocationManager: CLLocationManagerDelegate {
 
 	private func addLocationMarker(location: CLLocation) {
 		let marker = CircleMarker(coordinates: location.coordinate)
-		self.map?.addUserLocationMarker(marker)
+		self.delegate?.userLocationManager(self, addUserLocationMarker: marker)
 		self.locationMarker = marker
 	}
 
 	private func removeLocationMarker() {
 		if let marker = self.locationMarker {
-			self.map?.remove(marker)
+			self.delegate?.userLocationManager(self, removeUserLocationMarker: marker)
 			self.locationMarker = nil
 		}
 	}

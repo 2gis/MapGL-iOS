@@ -22,4 +22,10 @@ import CoreLocation
 	///   - coordnates: coordnates of click event
 	@objc optional func mapView(_ mapView: MapView, didSelectCoordnates coordnates: CLLocationCoordinate2D)
 
+	/// Notifies of the user location update.
+	/// - Parameters:
+	///   - mapView: Map view
+	///   - location: User location
+	@objc optional func mapView(_ mapView: MapView, didUpdateUserLocation location: CLLocation?)
+
 }

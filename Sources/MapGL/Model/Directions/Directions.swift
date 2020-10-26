@@ -25,7 +25,7 @@ public class Directions: MapObject {
 		)
 		let completionid = UUID().uuidString
 		let options = "{ points: \(points.jsValue()) }"
-		let js = "window.carRoute(\(self.id.jsValue()), \"\(completionid)\", \(options));"
+		let js = "window.carRoute(\(self.id.jsValue()), \(completionid.jsValue()), \(options));"
 		self.completions[completionid] = completion
 		self.evaluateJS(js)
 	}

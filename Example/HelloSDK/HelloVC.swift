@@ -11,6 +11,7 @@ enum Constants {
 class HelloVC: UIViewController {
 
 	private static let cardViewHeight: CGFloat = 100
+	private var waitForUserLocation: Bool = false
 
 	private lazy var map: MapView = {
 		return MapView(frame: .zero)
@@ -137,6 +138,8 @@ class HelloVC: UIViewController {
 		if let location = self.map.userLocation {
 			self.map.mapCenter = location.coordinate
 			self.map.mapZoom = 16
+		} else {
+			waitForUserLocation = true
 		}
 	}
 
@@ -425,6 +428,14 @@ extension HelloVC: MapViewDelegate {
 		if let entity = object as? MapEntity {
 			self.map.add(entity)
 		}
+	}
+
+	func mapView(_ mapView: MapView, didUpdateUserLocation location: CLLocation?) {
+		if waitForUserLocation, let location = location {
+			self.map.mapCenter = location.coordinate
+			self.map.mapZoom = 16
+		}
+		waitForUserLocation = false
 	}
 
 }

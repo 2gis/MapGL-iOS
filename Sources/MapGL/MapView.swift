@@ -60,7 +60,7 @@ public class MapView : UIView {
 
 	private lazy var locationManager: UserLocationManager = {
 		let manager = UserLocationManager()
-		manager.map = self
+		manager.delegate = self
 		return manager
 	}()
 
@@ -458,13 +458,9 @@ extension MapView {
 
 extension MapView {
 
-	func addUserLocationMarker(_ marker: MapObject) {
-		self.js.add(marker, completion: nil)
-	}
-
 	/// Gets the last location received.
 	public var userLocation: CLLocation? {
-		return locationManager.userLocation
+		return self.locationManager.userLocation
 	}
 
 	/// Shows the user location on the map.
@@ -476,5 +472,21 @@ extension MapView {
 	/// Stops displaying and updating the user location.
 	public func disableUserLocation() {
 		locationManager.disableUserLocation()
+	}
+}
+
+// MARK: - UserLocationManagerDelegate
+
+extension MapView: UserLocationManagerDelegate {
+	func userLocationManager(_ manager: UserLocationManager, addUserLocationMarker marker: MapObject) {
+		self.js.add(marker, completion: nil)
+	}
+
+	func userLocationManager(_ manager: UserLocationManager, removeUserLocationMarker marker: MapObject) {
+		self.remove(marker)
+	}
+
+	func userLocationManager(_ manager: UserLocationManager, didUpdateUserLocation location: CLLocation?) {
+		self.delegate?.mapView?(self, didUpdateUserLocation: location)
 	}
 }
