@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 ## 2020-09-22 - 0.1.9
+### Added
+- disable map rotation option
+- disable map pitch option
+- label anchor option
+- marker z index support
+- map bounds support
+- route search completion block
+- user location
+
 ### Fixed
 - iOS 14 rendering issue
 - JS error handling

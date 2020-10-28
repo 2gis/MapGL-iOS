@@ -7,7 +7,7 @@ let module = Module(
 	xcodeBuildArguments: [
 		"-project", "MapGL-iOS.xcodeproj",
 		"-target", "MapGL",
-		"-sdk", "iphoneos13.6",
+		"-sdk", "iphoneos",
 		"-verbose",
 	],
 	inPath: "/Users/teanet/Documents/projects/MapGL-iOS"

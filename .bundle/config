@@ -1,2 +1,3 @@
 ---
 BUNDLE_PATH: "build"
+BUNDLE_WITH: "deploy"
