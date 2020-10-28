@@ -203,10 +203,10 @@ class HelloVC: UIViewController {
 			]
 			directions.showCarRoute(points: points) { [weak self] result in
 				switch result {
-				case .success:
-					break
-				case .failure(let error):
-					self?.showError(error)
+					case .success:
+						break
+					case .failure(let error):
+						self?.showError(error)
 				}
 			}
 			DispatchQueue.main.asyncAfter(deadline: .now() + 10) {

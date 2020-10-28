@@ -29,6 +29,7 @@ platform :ios do
       project: "./Pods/Pods.xcodeproj",
       scheme: "MapGL-Unit-Tests",
       sdk: "iphonesimulator",
+      device: "iPhone 8"
     )
     
     version = options[:version]

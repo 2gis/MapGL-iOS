@@ -68,12 +68,12 @@ extension UserLocationManager: CLLocationManagerDelegate {
 
 	func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
 		switch status {
-		case .authorizedAlways, .authorizedWhenInUse:
-			break
-		case .denied, .notDetermined, .restricted:
-			self.removeLocationMarker()
-		@unknown default:
-			self.removeLocationMarker()
+			case .authorizedAlways, .authorizedWhenInUse:
+				break
+			case .denied, .notDetermined, .restricted:
+				self.removeLocationMarker()
+			@unknown default:
+				self.removeLocationMarker()
 		}
 	}
 
