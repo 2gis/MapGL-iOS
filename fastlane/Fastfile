@@ -28,7 +28,7 @@ platform :ios do
     run_tests(
       project: "./Pods/Pods.xcodeproj",
       scheme: "MapGL-Unit-Tests",
-      sdk: "iphonesimulator13.6",
+      sdk: "iphonesimulator",
     )
     
     version = options[:version]
