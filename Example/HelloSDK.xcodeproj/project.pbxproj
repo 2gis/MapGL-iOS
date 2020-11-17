@@ -15,6 +15,7 @@
 		0FE65D50230D958C007E3585 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE65D4F230D958C007E3585 /* CardView.swift */; };
 		6D8B35C9222890F2866F574D /* libPods-HelloSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 369C2DE07B8A0A54FC39382F /* libPods-HelloSDK.a */; };
 		714FB5319642F37EB73310FB /* libPods-HelloSDK-HelloSDKTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BFC5BC2536FE0441FD2AA5E /* libPods-HelloSDK-HelloSDKTests.a */; };
+		737489A62563F48E00890404 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737489A52563F48E00890404 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		276AEDAF5EC433ED25BC7895 /* Pods-HelloSDK-HelloSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK-HelloSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-HelloSDK-HelloSDKTests/Pods-HelloSDK-HelloSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 		369C2DE07B8A0A54FC39382F /* libPods-HelloSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloSDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		437C9F6E2BA611CA80277878 /* Pods-HelloSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloSDK.debug.xcconfig"; path = "Target Support Files/Pods-HelloSDK/Pods-HelloSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		737489A52563F48E00890404 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		737E1A542457BF89006D5087 /* HelloSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		737E1A582457BF89006D5087 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		739E320B2473EB9F00820C75 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../../CHANGELOG.md; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				739E320D2473EBAF00820C75 /* README.md */,
 				0F0CEC702305437A0084161C /* AppDelegate.swift */,
 				0F0CEC722305437A0084161C /* HelloVC.swift */,
+				737489A52563F48E00890404 /* Constants.swift */,
 				0FE65D4F230D958C007E3585 /* CardView.swift */,
 				0FDE18D9232679EB00ADD5AF /* Extensions.swift */,
 				0F0CEC772305437C0084161C /* Assets.xcassets */,
@@ -294,6 +297,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				737489A62563F48E00890404 /* Constants.swift in Sources */,
 				0F0CEC732305437A0084161C /* HelloVC.swift in Sources */,
 				0FE65D50230D958C007E3585 /* CardView.swift in Sources */,
 				0F0CEC712305437A0084161C /* AppDelegate.swift in Sources */,

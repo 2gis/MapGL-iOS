@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+## 2020-09-22 - 0.1.10
+### Added
+- pedestrian navigation support
+
 ## 2020-09-22 - 0.1.9
 ### Added
 - disable map rotation option

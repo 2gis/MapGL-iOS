@@ -2,13 +2,7 @@ import UIKit
 import CoreLocation
 import MapGL
 
-/// contact us mapgl@2gis.com if you need one
-enum Constants {
-	static let apiKey = ""
-	static let directionsApiKey = ""
-}
-
-class HelloVC: UIViewController {
+final class HelloVC: UIViewController {
 
 	private static let cardViewHeight: CGFloat = 100
 	private var waitForUserLocation: Bool = false
@@ -193,26 +187,6 @@ class HelloVC: UIViewController {
 		alert.popoverPresentationController?.sourceView = self.menuButton
 		alert.popoverPresentationController?.sourceRect = CGRect(x: self.menuButton.bounds.midX, y: -16, width: 0, height: 0)
 
-		let showRoute = UIAlertAction(title: "Show Route, hide in 10 sec", style: .default) { _ in
-			assert(!Constants.directionsApiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
-			let directions = self.map.makeDirections(with: Constants.directionsApiKey)
-			let points = [
-				self.map.mapCenter,
-				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
-				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.5278),
-			]
-			directions.showCarRoute(points: points) { [weak self] result in
-				switch result {
-					case .success:
-						break
-					case .failure(let error):
-						self?.showError(error)
-				}
-			}
-			DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-				directions.clear()
-			}
-		}
 		let showMarkerAction = UIAlertAction(title: "Add Marker", style: .default) { _ in
 			let marker = Marker(
 				coordinates: self.map.mapCenter,
@@ -303,7 +277,8 @@ class HelloVC: UIViewController {
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
-		alert.addAction(showRoute)
+		alert.addAction(self.routeAction())
+		alert.addAction(self.pedestrianRouteAction())
 		alert.addAction(showBuilding)
 		alert.addAction(showLabel)
 		alert.addAction(showCluster)
@@ -436,6 +411,58 @@ extension HelloVC: MapViewDelegate {
 			self.map.mapZoom = 16
 		}
 		waitForUserLocation = false
+	}
+
+}
+
+extension HelloVC {
+
+	func routeAction() -> UIAlertAction {
+		let showRoute = UIAlertAction(title: "Show Route, hide in 10 sec", style: .default) { _ in
+			assert(!Constants.directionsApiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
+			let directions = self.map.makeDirections(with: Constants.directionsApiKey)
+			let points = [
+				self.map.mapCenter,
+				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
+				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.5278),
+			]
+			directions.showCarRoute(points: points) { [weak self] result in
+				switch result {
+					case .success:
+						break
+					case .failure(let error):
+						self?.showError(error)
+				}
+			}
+			DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+				directions.clear()
+			}
+		}
+		return showRoute
+	}
+	func pedestrianRouteAction() -> UIAlertAction {
+		let showRoute = UIAlertAction(title: "Show pedestrian route, hide in 10 sec", style: .default) { _ in
+			assert(!Constants.directionsApiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
+			let directions = self.map.makeDirections(with: Constants.directionsApiKey)
+			let points = [
+				self.map.mapCenter,
+				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.4878),
+				CLLocationCoordinate2D(latitude: 25.20, longitude: 55.5278),
+			]
+			let options = PedestrianRouteOptions(points: points)
+			directions.showPedestrianRoute(options: options) { [weak self] result in
+				switch result {
+					case .success:
+						break
+					case .failure(let error):
+						self?.showError(error)
+				}
+			}
+			DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+				directions.clear()
+			}
+		}
+		return showRoute
 	}
 
 }

@@ -196,6 +196,21 @@ enum HTML {
 				})}
 			);
 		}
+		window.pedestrianRoute = function (directionId, completionId, options) {
+			const direction = directionsMap.get(directionId);
+			direction.pedestrianRoute(options).then(
+				(value) => { postMessage("carRouteCompletion", {
+					directionId: directionId,
+					completionId: completionId,
+					error: ""
+				})},
+				(reason) => { postMessage("carRouteCompletion", {
+					directionId: directionId,
+					completionId: completionId,
+					error: reason.toString()
+				})}
+			);
+		}
 		window.clearCarRoute = function (id) {
 			const direction = directionsMap.get(id);
 			direction.clear();
