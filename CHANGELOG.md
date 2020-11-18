@@ -1,7 +1,8 @@
 # Changelog
 
 ## [Unreleased]
-## 2020-09-22 - 0.1.10
+
+## 2020-11-17 - 0.1.10
 ### Added
 - pedestrian navigation support
 
