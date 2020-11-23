@@ -90,9 +90,18 @@ class JSBridge : NSObject {
 		}
 	}
 
-	func setMapZoom(_ zoom: Double, completion: Completion? = nil) {
-		let js = "window.map.setZoom(\(zoom));"
+	func setMapZoom(
+		_ zoom: Double,
+		options: AnimationOptions? = nil,
+		completion: Completion? = nil
+	) {
+		let js = "window.map.setZoom(\(zoom), \(options.jsValue()));"
 		self.evaluateJS(js, completion: completion)
+	}
+
+	func setStyleZoom(_ zoom: Double, options: AnimationOptions? = nil) {
+		let js = "window.map.setStyleZoom(\(zoom), \(options.jsValue()));"
+		self.evaluateJS(js)
 	}
 
 	func setMapMaxZoom(_ maxZoom: Double, completion: Completion? = nil) {
@@ -213,23 +222,23 @@ extension JSBridge: WKScriptMessageHandler {
 					delegate.js(self, mapCenterDidChange: CLLocationCoordinate2D(latitude: lat, longitude: lon))
 			}
 			case "zoomChanged":
-				let data = body["value"] as? Double
-				if let zoom = data {
+				if let zoom = body["value"] as? Double {
 					delegate.js(self, mapZoomDidChange: zoom)
-			}
+				}
+			case "styleZoomChanged":
+				if let zoom = body["value"] as? Double {
+					delegate.js(self, mapStyleZoomChanged: zoom)
+				}
 			case "rotationChanged":
-				let data = body["value"] as? Double
-				if let rotation = data {
+				if let rotation = body["value"] as? Double {
 					delegate.js(self, mapRotationDidChange: rotation)
-			}
+				}
 			case "pitchChanged":
-				let data = body["value"] as? Double
-				if let pitch = data {
+				if let pitch = body["value"] as? Double {
 					delegate.js(self, mapPitchDidChange: pitch)
-			}
+				}
 			case "mapClick":
-				let data = body["value"] as? String
-				if let event = MapClickEvent(string: data) {
+				if let data = body["value"] as? String, let event = MapClickEvent(string: data) {
 					delegate.js(self, didClickMapWithEvent: event)
 				}
 			case "objectClick":

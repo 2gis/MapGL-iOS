@@ -276,19 +276,21 @@ final class HelloVC: UIViewController {
 		}
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
-		alert.addAction(self.routeAction())
-		alert.addAction(self.pedestrianRouteAction())
-		alert.addAction(showBuilding)
-		alert.addAction(showLabel)
-		alert.addAction(showCluster)
-		alert.addAction(showPolyline)
-		alert.addAction(showPolygon)
-		alert.addAction(showCircle)
-		alert.addAction(showMarkerAction)
-		alert.addAction(removeMarkersAction)
-		alert.addAction(delesectAllObjects)
-		alert.addAction(cancelAction)
+		alert.add(actions: [
+			self.routeAction(),
+			self.pedestrianRouteAction(),
+			showBuilding,
+			showLabel,
+			showCluster,
+			showPolyline,
+			showPolygon,
+			showCircle,
+			showMarkerAction,
+			self.styleZoom(),
+			removeMarkersAction,
+			delesectAllObjects,
+			cancelAction,
+		])
 		self.present(alert, animated: true, completion: nil)
 	}
 
@@ -416,9 +418,13 @@ extension HelloVC: MapViewDelegate {
 }
 
 extension HelloVC {
-
+	func styleZoom() -> UIAlertAction {
+		return UIAlertAction(title: "Style zoom 10", style: .default) { _ in
+			self.map.setStyleZoom(10, options: AnimationOptions(animate: true, duration: 4, easing: .easeOutSine))
+		}
+	}
 	func routeAction() -> UIAlertAction {
-		let showRoute = UIAlertAction(title: "Show Route, hide in 10 sec", style: .default) { _ in
+		return UIAlertAction(title: "Show Route, hide in 10 sec", style: .default) { _ in
 			assert(!Constants.directionsApiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
 			let directions = self.map.makeDirections(with: Constants.directionsApiKey)
 			let points = [
@@ -438,10 +444,9 @@ extension HelloVC {
 				directions.clear()
 			}
 		}
-		return showRoute
 	}
 	func pedestrianRouteAction() -> UIAlertAction {
-		let showRoute = UIAlertAction(title: "Show pedestrian route, hide in 10 sec", style: .default) { _ in
+		return UIAlertAction(title: "Show pedestrian route, hide in 10 sec", style: .default) { _ in
 			assert(!Constants.directionsApiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
 			let directions = self.map.makeDirections(with: Constants.directionsApiKey)
 			let points = [
@@ -462,7 +467,6 @@ extension HelloVC {
 				directions.clear()
 			}
 		}
-		return showRoute
 	}
 
 }
@@ -492,6 +496,16 @@ extension CLLocationCoordinate2D {
 
 	func toCard() -> String {
 		"Lat: \(self.latitude) Lon: \(self.longitude)"
+	}
+
+}
+
+extension UIAlertController {
+
+	func add(actions: [UIAlertAction]) {
+		for action in actions {
+			self.addAction(action)
+		}
 	}
 
 }

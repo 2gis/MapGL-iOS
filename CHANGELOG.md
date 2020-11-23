@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+## 2020-11-23 - 0.1.11
+### Added
+- setStyleZoom
+- getStyleZoom
+- zoom animation
 
 ## 2020-11-17 - 0.1.10
 ### Added

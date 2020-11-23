@@ -1,0 +1,32 @@
+/// https://easings.net/en
+public enum Easing: String {
+	case linear
+	case easeInQuad
+	case easeOutQuad
+	case easeInOutQuad
+	case easeInCubic
+	case easeOutCubic
+	case easeInOutCubic
+	case easeInQuart
+	case easeOutQuart
+	case easeInOutQuart
+	case easeInQuint
+	case easeOutQuint
+	case easeInOutQuint
+	case easeInSine
+	case easeOutSine
+	case easeInOutSine
+	case easeInExpo
+	case easeOutExpo
+	case easeInOutExpo
+	case easeInCirc
+	case easeOutCirc
+	case easeInOutCirc
+	case easeInElastic
+	case easeOutElastic
+	case easeInOutElastic
+	case easeInBack
+	case easeOutBack
+	case easeInOutBack
+	case easeOutBounce
+}

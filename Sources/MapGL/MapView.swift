@@ -32,6 +32,7 @@ public class MapView : UIView {
 	private var _mapRotation: Double = Const.mapDefaultRotation
 
 	private var _mapZoom: Double = Const.mapDefaultZoom
+	private var _styleZoom: Double = Const.mapDefaultZoom
 	private var _mapMinZoom: Double = Const.mapDefaultMinZoom
 	private var _mapMaxZoom: Double = Const.mapDefaultMaxZoom
 
@@ -144,8 +145,13 @@ public class MapView : UIView {
 		set {
 			_mapZoom = max(newValue, _mapMinZoom)
 			_mapZoom = min(_mapZoom, _mapMaxZoom)
-			self.js.setMapZoom(_mapZoom, completion: nil)
+			self.js.setMapZoom(_mapZoom)
 		}
+	}
+
+	/// Returns the current map style zoom.
+	public func getStyleZoom() -> Double {
+		_styleZoom
 	}
 
 	/// Gets or sets the mininal zoom level of the map. This value can not be less than 2.
@@ -267,6 +273,30 @@ public class MapView : UIView {
 		self.mapZoom = min(self.mapZoom + 1, self.mapMaxZoom)
 	}
 
+	/// Sets the map style zoom.
+	/// - Parameters:
+	///   - zoom: The desired style zoom.
+	///   - options: Zoom animation options.
+	public func setStyleZoom(
+		_ zoom: Double,
+		options: MapGL.AnimationOptions? = nil
+	) {
+		_styleZoom = zoom
+		self.js.setStyleZoom(zoom, options: options)
+	}
+
+	/// Sets the map style zoom.
+	/// - Parameters:
+	///   - zoom: The desired style zoom.
+	///   - options: Zoom animation options.
+	public func setZoom(
+		_ zoom: Double,
+		options: MapGL.AnimationOptions? = nil
+	) {
+		_mapZoom = zoom
+		self.js.setMapZoom(zoom, options: options)
+	}
+
 	/// Zoomes the map out.
 	public func zoomOut() {
 		self.mapZoom = max(self.mapZoom - 1, self.mapMinZoom)
@@ -344,6 +374,10 @@ extension MapView: JSBridgeDelegate {
 	func js(_ js: JSBridge, mapZoomDidChange mapZoom: Double) {
 		_mapZoom = mapZoom
 		self.zoomDidChange?(mapZoom)
+	}
+
+	func js(_ js: JSBridge, mapStyleZoomChanged mapZoom: Double) {
+		_styleZoom = mapZoom
 	}
 
 	func js(_ js: JSBridge, mapRotationDidChange mapRotation: Double) {

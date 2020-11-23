@@ -73,6 +73,10 @@ enum HTML {
 					type: "zoomChanged",
 					value: window.map.getZoom()
 				});
+				window.webkit.messageHandlers.dgsMessage.postMessage({
+					type: "styleZoomChanged",
+					value: window.map.getStyleZoom()
+				});
 			});
 
 			window.map.on('rotationend', (ev) => {
