@@ -7,9 +7,9 @@ private enum JS {
 protocol IJSValue {
 	func jsValue() -> String
 }
-
+typealias JSOptionsDictionary = [String: IJSValue]
 protocol IJSOptions: IJSValue {
-	func jsKeyValue() -> [String: IJSValue]
+	func jsKeyValue() -> JSOptionsDictionary
 }
 
 extension IJSOptions {

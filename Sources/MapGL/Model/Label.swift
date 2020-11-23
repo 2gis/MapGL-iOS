@@ -82,7 +82,7 @@ extension LabelImage: IJSOptions {
 		func jsValue() -> String { "[[\(self.from),\(self.to)]]" }
 	}
 
-	func jsKeyValue() -> [String : IJSValue] {
+	func jsKeyValue() -> JSOptionsDictionary {
 		let insets = self.image.capInsets
 		let size = self.image.size
 		return [
@@ -100,8 +100,8 @@ extension Label: IHideable {}
 
 extension Label: IJSOptions {
 
-	func jsKeyValue() -> [String : IJSValue] {
-		[
+	func jsKeyValue() -> JSOptionsDictionary {
+		return [
 			"id": self.id,
 			"coordinates": self.center,
 			"text": self.text,

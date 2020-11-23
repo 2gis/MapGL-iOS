@@ -43,8 +43,8 @@ open class Circle: MapObject {
 
 extension Circle: IJSOptions {
 
-	func jsKeyValue() -> [String : IJSValue] {
-		[
+	func jsKeyValue() -> JSOptionsDictionary {
+		return [
 			"id": self.id,
 			"coordinates": self.center,
 			"radius": self.radius,

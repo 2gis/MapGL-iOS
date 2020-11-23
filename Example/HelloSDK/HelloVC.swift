@@ -108,7 +108,11 @@ final class HelloVC: UIViewController {
 			apiKey: Constants.apiKey,
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
 			zoom: 16,
-			autoHideOSMCopyright: true
+			autoHideOSMCopyright: true,
+			maxBounds: GeographicalBounds(
+				northEast: CLLocationCoordinate2D(latitude: 36, longitude: 57),
+				southWest: CLLocationCoordinate2D(latitude: 10, longitude: 22)
+			)
 		) { error in
 			print(error ?? "Map initialized")
 		}

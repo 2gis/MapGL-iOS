@@ -31,8 +31,8 @@ class CircleMarker: MapObject {
 
 extension CircleMarker: IJSOptions {
 
-	func jsKeyValue() -> [String : IJSValue] {
-		var options: [String : IJSValue] = [
+	func jsKeyValue() -> JSOptionsDictionary {
+		var options: JSOptionsDictionary = [
 			"id": self.id,
 			"coordinates": self.coordinates,
 		]

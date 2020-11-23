@@ -23,7 +23,7 @@ public struct AnimationOptions {
 }
 
 extension AnimationOptions: IJSOptions {
-	func jsKeyValue() -> [String : IJSValue] {
+	func jsKeyValue() -> JSOptionsDictionary {
 		return [
 			"animate": self.animate.jsValue(),
 			"duration": (self.duration * 1000).jsValue(),

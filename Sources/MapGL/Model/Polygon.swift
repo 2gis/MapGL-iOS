@@ -40,7 +40,7 @@ open class Polygon: MapObject {
 
 extension Polygon: IJSOptions {
 
-	func jsKeyValue() -> [String : IJSValue] {
+	func jsKeyValue() -> JSOptionsDictionary {
 		var polygonPoints = self.points
 		// Polygon should end with same point as starts
 		if !polygonPoints.isEmpty, polygonPoints.first != polygonPoints.last {

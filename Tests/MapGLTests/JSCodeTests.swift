@@ -68,11 +68,11 @@ class JSCodeTests: XCTestCase {
 	}
 
 	struct JSOptions: IJSOptions {
-		let dict: [String : IJSValue]
-		init(_ dict: [String : IJSValue]) {
+		let dict: JSOptionsDictionary
+		init(_ dict: JSOptionsDictionary) {
 			self.dict = dict
 		}
-		func jsKeyValue() -> [String : IJSValue] { self.dict }
+		func jsKeyValue() -> JSOptionsDictionary { self.dict }
 	}
 
 	func testJSMap() {

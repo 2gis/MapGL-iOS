@@ -57,8 +57,8 @@ open class Polyline: MapObject {
 }
 
 extension Polyline: IJSOptions {
-	func jsKeyValue() -> [String : IJSValue] {
-		[
+	func jsKeyValue() -> JSOptionsDictionary {
+		return [
 			"id": self.id,
 			"coordinates": self.points,
 			"color": self.style1?.color,

@@ -6,6 +6,7 @@
 - setStyleZoom
 - getStyleZoom
 - zoom animation
+- maxBounds
 
 ## 2020-11-17 - 0.1.10
 ### Added

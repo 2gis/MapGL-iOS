@@ -91,7 +91,7 @@ class Tests: XCTestCase {
 
 	func test_execute_js_on_zoom_change() {
 		self.map.mapZoom = 10
-		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.map.setZoom(10.0);")
+		XCTAssertEqual(self.jsExecutor.javaScriptString, "window.map.setZoom(10.0, undefined);")
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 1)
 	}
 

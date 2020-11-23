@@ -227,6 +227,7 @@ public class MapView : UIView {
 	///   - disableRotationByUserInteraction: Prevent users from rotating a map.
 	///   - disablePitchByUserInteraction: Prevent users from pitching a map.
 	///   - completion: Completion handler.
+	///   - maxBounds: The map will be constrained to the given bounds, if set.
 	public func show(
 		apiKey: String,
 		center: CLLocationCoordinate2D? = nil,
@@ -236,6 +237,7 @@ public class MapView : UIView {
 		autoHideOSMCopyright: Bool = false,
 		disableRotationByUserInteraction: Bool = false,
 		disablePitchByUserInteraction: Bool = false,
+		maxBounds: GeographicalBounds? = nil,
 		completion: ((Error?) -> Void)? = nil
 	) {
 		if let center = center {
@@ -261,7 +263,8 @@ public class MapView : UIView {
 				apiKey: apiKey,
 				autoHideOSMCopyright: autoHideOSMCopyright,
 				disableRotationByUserInteraction: disableRotationByUserInteraction,
-				disablePitchByUserInteraction: disablePitchByUserInteraction
+				disablePitchByUserInteraction: disablePitchByUserInteraction,
+				maxBounds: maxBounds
 			) { error in
 				completion?(error)
 			}
@@ -320,22 +323,28 @@ public class MapView : UIView {
 		autoHideOSMCopyright: Bool = false,
 		disableRotationByUserInteraction: Bool = false,
 		disablePitchByUserInteraction: Bool = false,
+		maxBounds: GeographicalBounds? = nil,
 		completion: @escaping ((Error?) -> Void)
 	) {
-		let options = JSBridge.MapOptions(
-			center: self.mapCenter,
-			maxZoom: self.mapMaxZoom,
-			minZoom: self.mapMinZoom,
-			zoom: self.mapZoom,
-			maxPitch: self.mapMaxPitch,
-			minPitch: self.mapMinPitch,
-			pitch: self.mapPitch,
-			rotation: self.mapRotation,
-			apiKey: apiKey,
-			autoHideOSMCopyright: autoHideOSMCopyright,
-			disableRotationByUserInteraction: disableRotationByUserInteraction,
-			disablePitchByUserInteraction: disablePitchByUserInteraction
-		)
+		let options: JSOptionsDictionary = [
+			"center": self.mapCenter,
+			"maxZoom": self.mapMaxZoom,
+			"minZoom": self.mapMinZoom,
+			"zoom": self.mapZoom,
+			"maxPitch": self.mapMaxPitch,
+			"minPitch": self.mapMinPitch,
+			"pitch": self.mapPitch,
+			"rotation": self.mapRotation,
+			"zoomControl": false,
+			"key": apiKey,
+			"interactiveCopyright": false,
+			"autoHideOSMCopyright": autoHideOSMCopyright,
+			"preserveDrawingBuffer": true,
+			"disableRotationByUserInteraction": disableRotationByUserInteraction,
+			"disablePitchByUserInteraction": disablePitchByUserInteraction,
+			"maxBounds": maxBounds,
+		]
+
 		self.js.initializeMap(options: options) {
 			result in
 			switch result {

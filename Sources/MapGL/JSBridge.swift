@@ -2,22 +2,15 @@ import Foundation
 import CoreLocation
 import WebKit
 
-class JSBridge : NSObject {
+private struct JSOptions: IJSOptions {
+	let options: JSOptionsDictionary
 
-	struct MapOptions {
-		let center: CLLocationCoordinate2D
-		let maxZoom: Double
-		let minZoom: Double
-		let zoom: Double
-		let maxPitch: Double
-		let minPitch: Double
-		let pitch: Double
-		let rotation: Double
-		let apiKey: String
-		let autoHideOSMCopyright: Bool
-		let disableRotationByUserInteraction: Bool
-		let disablePitchByUserInteraction: Bool
+	func jsKeyValue() -> JSOptionsDictionary {
+		self.options
 	}
+}
+
+class JSBridge : NSObject {
 
 	typealias Completion = (Result<Void, Error>) -> Void
 
@@ -29,10 +22,11 @@ class JSBridge : NSObject {
 	}
 
 	func initializeMap(
-		options: MapOptions,
+		options: JSOptionsDictionary,
 		completion: Completion? = nil
 	) {
-		let js = "window.initializeMap(\(options.jsValue()));"
+		let value = JSOptions(options: options)
+		let js = "window.initializeMap(\(value.jsValue()));"
 		self.evaluateJS(js, completion: completion)
 	}
 
@@ -279,27 +273,4 @@ extension JSBridge: WKScriptMessageHandler {
 		}
 	}
 
-}
-
-extension JSBridge.MapOptions: IJSOptions {
-
-	func jsKeyValue() -> [String : IJSValue] {
-		[
-			"center": self.center,
-			"maxZoom": self.maxZoom,
-			"minZoom": self.minZoom,
-			"zoom": self.zoom,
-			"maxPitch": self.maxPitch,
-			"minPitch": self.minPitch,
-			"pitch": self.pitch,
-			"rotation": self.rotation,
-			"zoomControl": false,
-			"key": self.apiKey,
-			"interactiveCopyright": false,
-			"autoHideOSMCopyright": self.autoHideOSMCopyright,
-			"preserveDrawingBuffer": true,
-			"disableRotationByUserInteraction": self.disableRotationByUserInteraction,
-			"disablePitchByUserInteraction": self.disablePitchByUserInteraction,
-		]
-	}
 }
