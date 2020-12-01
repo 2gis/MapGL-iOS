@@ -1,3 +1,5 @@
+import Foundation
+
 /// Common options for map animations. Used by methods such as setCenter, setZoom, etc.
 public struct AnimationOptions {
 

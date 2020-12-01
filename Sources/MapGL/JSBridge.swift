@@ -86,14 +86,14 @@ class JSBridge : NSObject {
 
 	func setMapZoom(
 		_ zoom: Double,
-		options: AnimationOptions? = nil,
+		options: MapGL.AnimationOptions? = nil,
 		completion: Completion? = nil
 	) {
 		let js = "window.map.setZoom(\(zoom), \(options.jsValue()));"
 		self.evaluateJS(js, completion: completion)
 	}
 
-	func setStyleZoom(_ zoom: Double, options: AnimationOptions? = nil) {
+	func setStyleZoom(_ zoom: Double, options: MapGL.AnimationOptions? = nil) {
 		let js = "window.map.setStyleZoom(\(zoom), \(options.jsValue()));"
 		self.evaluateJS(js)
 	}
