@@ -12,6 +12,10 @@ open class Label: MapObject {
 	let backgroundImage: LabelImage?
 	let relativeAnchor: CGPoint
 	let offset: CGPoint
+	let haloColor: UIColor?
+	let haloRadius: CGFloat?
+	let lineHeight: CGFloat?
+	let letterSpacing: CGFloat?
 
 	/// Creates new label on map
 	/// - Parameters:
@@ -28,6 +32,10 @@ open class Label: MapObject {
 	///    placed so that this point is at geographical coordinates respects the absolute `offset`.
 	///   - offset: The offset distance of text box from its `relativeAnchor`.
 	///   Positive values indicate right and down, while negative values indicate left and up.
+	///   - haloColor: Color of letters background (when haloRadius is specified).
+	///   - haloRadius: Use haloRadius to add background behind each letter.
+	///   - lineHeight: For multiline label lineHeight specify how far lines between each other.(percent)
+	///   - letterSpacing: Space between each letter.(percent)
 	public init(
 		id: String = UUID().uuidString,
 		center: CLLocationCoordinate2D,
@@ -36,7 +44,11 @@ open class Label: MapObject {
 		fontSize: CGFloat,
 		anchor: CGPoint = .zero,
 		backgroundImage: LabelImage? = nil,
+		haloColor: UIColor? = nil,
+		haloRadius: CGFloat? = nil,
 		relativeAnchor: CGPoint = CGPoint(x: 0.5, y: 0.5),
+		lineHeight: CGFloat? = nil,
+		letterSpacing: CGFloat? = nil,
 		offset: CGPoint = .zero
 	) {
 		self.center = center
@@ -47,6 +59,10 @@ open class Label: MapObject {
 		self.backgroundImage = backgroundImage
 		self.relativeAnchor = relativeAnchor
 		self.offset = offset
+		self.haloColor = haloColor
+		self.haloRadius = haloRadius
+		self.lineHeight = lineHeight
+		self.letterSpacing = letterSpacing
 		super.init(id: id)
 	}
 
@@ -101,7 +117,7 @@ extension Label: IHideable {}
 extension Label: IJSOptions {
 
 	func jsKeyValue() -> JSOptionsDictionary {
-		return [
+		var values: JSOptionsDictionary = [
 			"id": self.id,
 			"coordinates": self.center,
 			"text": self.text,
@@ -111,7 +127,14 @@ extension Label: IJSOptions {
 			"anchor": self.anchor,
 			"relativeAnchor": self.relativeAnchor,
 			"offset": self.offset,
+			"letterSpacing": self.letterSpacing,
+			"lineHeight": self.lineHeight,
 		]
+		if let radius = self.haloRadius, let color = self.haloColor {
+			values["haloRadius"] = radius
+			values["haloColor"] = color
+		}
+		return values
 	}
 
 	override func createJSCode() -> String {

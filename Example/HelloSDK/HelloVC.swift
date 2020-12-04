@@ -195,7 +195,17 @@ final class HelloVC: UIViewController {
 			let marker = Marker(
 				coordinates: self.map.mapCenter,
 				image: UIImage(named: "pin")!,
-				anchor: .bottom
+				anchor: .bottom,
+				label: Label(
+					center: .init(),
+					color: .red,
+					text: "Demo label",
+					fontSize: 20,
+					haloColor: .green,
+					haloRadius: 1,
+					lineHeight: 1,
+					letterSpacing: 0.5
+				)
 			)
 			self.map.add(marker)
 		}

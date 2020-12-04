@@ -51,6 +51,9 @@ open class Marker: MapObject {
 		}
 	}
 
+	/// Marker label
+	public let label: Label?
+
 	/// Gets or sets the value indicating whether the marker is hidden.
 	public var isHidden: Bool = false {
 		didSet {
@@ -71,17 +74,20 @@ open class Marker: MapObject {
 	///   - coordinates: Marker geographical coordinates
 	///   - image: Marker image
 	///   - anchor: Marker anchor
+	///   - label: Initialization options of the marker's label. coordinate is ignored
 	///   - zIndex: Draw order.
 	public init(
 		id: String = NSUUID().uuidString,
 		coordinates: CLLocationCoordinate2D,
 		image: UIImage? = nil,
 		anchor: Anchor = .center,
+		label: Label? = nil,
 		zIndex: CGFloat? = nil
 	) {
 		self.coordinates = coordinates
 		self.image = image
 		self.anchor = anchor
+		self.label = label
 		self.zIndex = zIndex
 		super.init(id: id)
 	}
@@ -112,6 +118,9 @@ extension Marker: IJSOptions {
 		}
 		if let zIndex = self.zIndex {
 			options["zIndex"] = zIndex
+		}
+		if let label = self.label {
+			options["label"] = label
 		}
 		return options
 	}
