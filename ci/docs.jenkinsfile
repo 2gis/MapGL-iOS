@@ -1,0 +1,113 @@
+pipeline {
+    agent { label 'macos' }
+
+    stages {
+        stage('Prepare') {
+            steps {
+                ws("${env.WORKSPACE}/ios-docgen") {
+                    withCredentials([string(credentialsId: 'STASH_URL', variable: 'STASH_URL')]) {
+                        git url: "${env.STASH_URL}/scm/software/ios-docgen.git"
+                    }
+                }
+            }
+        }
+        stage('Prepare Xcode project') {
+            steps {
+                sh 'swift package generate-xcodeproj'
+            }
+        }
+        stage('Generate docs') {
+            steps {
+                script {
+                    def languages = ['ru', 'en']
+                    languages.each({ lang ->
+                        sh (
+                            label: "Assemble ${lang} documentation",
+                            script: """
+                                swift run \
+                                    --package-path \$(pwd)/ios-docgen docgen \
+                                    --module-name MapGL \
+                                    --project \$(pwd)/MapGL-iOS.xcodeproj \
+                                    --scheme MapGL \
+                                    --sdk iphoneos \
+                                    --reference-root /${lang}/ios/webgl/maps/reference  > ${lang}.json
+                            """
+                        )
+                    })
+                }
+            }
+        }
+
+        stage("Deploy documentation") {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'NSDK_GITLAB_PRIVATE_TOKEN', variable: 'GITLAB_PRIVATE_TOKEN'),
+                    string(credentialsId: 'NSDK_GITLAB_PROJECT_ID', variable: 'GITLAB_PROJECT_ID'),
+                    string(credentialsId: 'GITLAB_URL', variable: 'GITLAB_URL')
+                ]) {
+                    retry(5) {
+                        sh(
+                            label: "Retrieve json schema file",
+                            script: """
+                                curl \
+                                    --location \
+                                    --header "PRIVATE-TOKEN: ${env.GITLAB_PRIVATE_TOKEN}" \
+                                    "${env.GITLAB_URL}/api/v4/projects/${env.GITLAB_PROJECT_ID}/repository/files/src%2Ftools%2Fautoreferance%2FautoreferenceSchema.json/raw?ref=master" \
+                                    > schema.json
+                            """
+                        )
+                    }
+                }
+
+                script {
+                    def languages = ['ru', 'en']
+                    def isStable = env.GIT_BRANCH == 'master' ? '' : 'unstable/'
+
+                    languages.each({lang ->
+                        sh(
+                            label: "${lang} reference validation",
+                            script: """
+                                jsonschema -i ${lang}.json schema.json
+                            """
+                        )
+                    })
+
+                    languages.each({lang ->
+                        withCredentials([
+                            file(credentialsId: 'web-nginx-node', variable: 'NGINX_PRIVATE_KEY'),
+                            string(credentialsId: 'WEB_NODE_SSH_PATH', variable: 'WEB_NODE_SSH_PATH')
+                        ]) {
+                            sh(
+                                label: "Deploying ${lang} documentation",
+                                script: """
+                                    scp \
+                                        -i ${env.NGINX_PRIVATE_KEY} \
+                                        -o StrictHostKeyChecking=no \
+                                        ${lang}.json ${env.WEB_NODE_SSH_PATH}:/mnt/web/nginx/references/webgl/ios/${isStable}/${lang}/reference.json
+                                """
+                            )
+                        }
+                    })
+                }
+
+                withCredentials([
+                    string(credentialsId: 'NSDK_GITLAB_PROJECT_TOKEN', variable: 'GITLAB_PROJECT_TOKEN'),
+                    string(credentialsId: 'NSDK_GITLAB_PROJECT_ID', variable: 'GITLAB_PROJECT_ID'),
+                    string(credentialsId: 'GITLAB_URL', variable: 'GITLAB_URL')
+                ]) {
+                    sh(
+                        label: 'Запуск регенерации документации',
+                        script: """
+                            curl --location \
+                            -X POST \
+                            -F token=${env.GITLAB_PROJECT_TOKEN} \
+                            -F ref=master \
+                            -F "variables[Android_SDK_CI]=true" \
+                            ${env.GILAB_URL}/api/v4/projects/${env.GITLAB_PROJECT_ID}/trigger/pipeline
+                        """
+                    )
+                }
+            }
+        }
+    }
+}
