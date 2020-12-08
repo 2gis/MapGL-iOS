@@ -83,7 +83,7 @@ pipeline {
                                     scp \
                                         -i ${env.NGINX_PRIVATE_KEY} \
                                         -o StrictHostKeyChecking=no \
-                                        ${lang}.json ${env.WEB_NODE_SSH_PATH}:/mnt/web/nginx/references/webgl/ios/${isStable}/${lang}/reference.json
+                                        ${lang}.json ${env.WEB_NODE_SSH_PATH}:/mnt/web/nginx/references/webgl/ios/${isStable}${lang}/reference.json
                                 """
                             )
                         }
@@ -103,7 +103,7 @@ pipeline {
                             -F token=${env.GITLAB_PROJECT_TOKEN} \
                             -F ref=master \
                             -F "variables[Android_SDK_CI]=true" \
-                            ${env.GILAB_URL}/api/v4/projects/${env.GITLAB_PROJECT_ID}/trigger/pipeline
+                            ${env.GITLAB_URL}/api/v4/projects/${env.GITLAB_PROJECT_ID}/trigger/pipeline
                         """
                     )
                 }
