@@ -61,7 +61,7 @@ pipeline {
 
                 script {
                     def languages = ['ru', 'en']
-                    def isStable = env.GIT_BRANCH == 'master' ? '' : 'unstable/'
+                    def isStable = env.GIT_BRANCH == 'master' ? 'stable/' : 'unstable/'
 
                     languages.each({lang ->
                         sh(
