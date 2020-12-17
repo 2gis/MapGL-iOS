@@ -98,6 +98,11 @@ class JSBridge : NSObject {
 		self.evaluateJS(js)
 	}
 
+	func setStyle(by id: String, completion: Completion? = nil) {
+		let js = #"window.map.setStyleById("\#(id)");"#
+		self.evaluateJS(js, completion: completion)
+	}
+
 	func setMapMaxZoom(_ maxZoom: Double, completion: Completion? = nil) {
 		let js = "window.map.setMaxZoom(\(maxZoom));"
 		self.evaluateJS(js, completion: completion)
