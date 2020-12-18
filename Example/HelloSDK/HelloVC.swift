@@ -6,6 +6,7 @@ final class HelloVC: UIViewController {
 
 	private static let cardViewHeight: CGFloat = 100
 	private var waitForUserLocation: Bool = false
+	private var mapStyle: MapStyle = .dark
 
 	private lazy var map: MapView = {
 		return MapView(frame: .zero)
@@ -112,7 +113,8 @@ final class HelloVC: UIViewController {
 			maxBounds: GeographicalBounds(
 				northEast: CLLocationCoordinate2D(latitude: 36, longitude: 57),
 				southWest: CLLocationCoordinate2D(latitude: 10, longitude: 22)
-			)
+			),
+			mapStyleId: self.mapStyle.rawValue
 		) { error in
 			print(error ?? "Map initialized")
 		}
@@ -191,6 +193,13 @@ final class HelloVC: UIViewController {
 		alert.popoverPresentationController?.sourceView = self.menuButton
 		alert.popoverPresentationController?.sourceRect = CGRect(x: self.menuButton.bounds.midX, y: -16, width: 0, height: 0)
 
+		let changeTheme = UIAlertAction(
+			title: "Change theme to \(self.mapStyle.inversedStyle.description)",
+			style: .default
+		) { _ in
+			self.mapStyle.toggle()
+			self.map.setStyle(by: self.mapStyle.rawValue)
+		}
 		let showMarkerAction = UIAlertAction(title: "Add Marker", style: .default) { _ in
 			let marker = Marker(
 				coordinates: self.map.mapCenter,
@@ -291,6 +300,7 @@ final class HelloVC: UIViewController {
 
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 		alert.add(actions: [
+			changeTheme,
 			self.routeAction(),
 			self.pedestrianRouteAction(),
 			showBuilding,
@@ -522,4 +532,25 @@ extension UIAlertController {
 		}
 	}
 
+}
+
+extension MapStyle {
+
+	var description: String {
+		switch self {
+			case .dark: return "Dark"
+			case .light: return "Light"
+		}
+	}
+
+	var inversedStyle: MapStyle {
+		switch self {
+			case .dark: return .light
+			case .light: return .dark
+		}
+	}
+
+	mutating func toggle() {
+		self = self.inversedStyle
+	}
 }

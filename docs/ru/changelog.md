@@ -1,5 +1,9 @@
 # Release Notes
 
+## v0.1.13
+**Release Date:** 16.12.2020
+- setStyleById
+
 ## v0.1.12
 **Release Date:** 04.12.2020
 - Marker label

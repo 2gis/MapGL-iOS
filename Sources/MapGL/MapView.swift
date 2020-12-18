@@ -226,8 +226,9 @@ public class MapView : UIView {
 	///   - autoHideOSMCopyright: If true, the OSM copyright will be hidden after 5 seconds from the map initialization.
 	///   - disableRotationByUserInteraction: Prevent users from rotating a map.
 	///   - disablePitchByUserInteraction: Prevent users from pitching a map.
-	///   - completion: Completion handler.
 	///   - maxBounds: The map will be constrained to the given bounds, if set.
+	///   - mapStyleId: The map style identifier. Use "c080bb6a-8134-4993-93a1-5b4d8c36a59b" for day, "e05ac437-fcc2-4845-ad74-b1de9ce07555" for night.
+	///   - completion: Completion handler.
 	public func show(
 		apiKey: String,
 		center: CLLocationCoordinate2D? = nil,
@@ -238,6 +239,7 @@ public class MapView : UIView {
 		disableRotationByUserInteraction: Bool = false,
 		disablePitchByUserInteraction: Bool = false,
 		maxBounds: GeographicalBounds? = nil,
+		mapStyleId: String? = nil,
 		completion: ((Error?) -> Void)? = nil
 	) {
 		if let center = center {
@@ -264,7 +266,8 @@ public class MapView : UIView {
 				autoHideOSMCopyright: autoHideOSMCopyright,
 				disableRotationByUserInteraction: disableRotationByUserInteraction,
 				disablePitchByUserInteraction: disablePitchByUserInteraction,
-				maxBounds: maxBounds
+				maxBounds: maxBounds,
+				mapStyleId: mapStyleId
 			) { error in
 				completion?(error)
 			}
@@ -286,6 +289,15 @@ public class MapView : UIView {
 	) {
 		_styleZoom = zoom
 		self.js.setStyleZoom(zoom, options: options)
+	}
+
+	/// Sets the map style by identifier and apply it to the map.
+	/// - Parameters:
+	///   - id: uuid of the style.
+	public func setStyle(
+		by id: String
+	) {
+		self.js.setStyle(by: id)
 	}
 
 	/// Sets the map style zoom.
@@ -324,6 +336,7 @@ public class MapView : UIView {
 		disableRotationByUserInteraction: Bool = false,
 		disablePitchByUserInteraction: Bool = false,
 		maxBounds: GeographicalBounds? = nil,
+		mapStyleId: String? = nil,
 		completion: @escaping ((Error?) -> Void)
 	) {
 		let options: JSOptionsDictionary = [
@@ -343,6 +356,7 @@ public class MapView : UIView {
 			"disableRotationByUserInteraction": disableRotationByUserInteraction,
 			"disablePitchByUserInteraction": disablePitchByUserInteraction,
 			"maxBounds": maxBounds,
+			"style": mapStyleId,
 		]
 
 		self.js.initializeMap(options: options) {
