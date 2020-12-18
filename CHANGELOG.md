@@ -1,6 +1,9 @@
 # Changelog
 
-## [Unreleased]
+## 2020-12-16 - 0.1.13
+### Added
+- setStyleById
+
 ## 2020-12-04 - 0.1.12
 ### Added
 - Marker label

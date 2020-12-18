@@ -291,7 +291,7 @@ public class MapView : UIView {
 		self.js.setStyleZoom(zoom, options: options)
 	}
 
-	/// Sets the map style by identifie and apply it to the map.
+	/// Sets the map style by identifier and apply it to the map.
 	/// - Parameters:
 	///   - id: uuid of the style.
 	public func setStyle(

@@ -255,3 +255,19 @@ To hide the route, call the `clear()` method:
 ```swift
 directions.clear()
 ```
+
+## Change style
+
+You can change map style using `setStyle (by:)` where first argument is map style string identifier. By default, light style is used, identical to `c080bb6a-8134-4993-93a1-5b4d8c36a59b` identifier. New styles may appear in future.
+
+Light theme setting example:
+```swift
+map.setStyle (by: "c080bb6a-8134-4993-93a1-5b4d8c36a59b")
+```
+
+Dark theme setting example:
+```swift
+map.setStyle (by: "e05ac437-fcc2-4845-ad74-b1de9ce07555")
+```
+
+It is also possible to set style during map initialization (see Creating a map widget). Use additional argument `mapStyleId` for this.
