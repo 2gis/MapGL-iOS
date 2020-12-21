@@ -277,7 +277,7 @@ public class MapView : UIView {
 			_mapPitch = max(pitch, _mapMinPitch)
 			_mapPitch = min(_mapPitch, _mapMaxPitch)
 		}
-		let shouldFetchZoom = styleZoom != nil && zoom == nil
+		let shouldFetchZoom = zoom == nil
 
 		self.loadHtml { [weak self] in
 			self?.initializeMap(
