@@ -277,6 +277,7 @@ public class MapView : UIView {
 			_mapPitch = max(pitch, _mapMinPitch)
 			_mapPitch = min(_mapPitch, _mapMaxPitch)
 		}
+		let shouldFetchZoom = styleZoom != nil && zoom == nil
 
 		self.loadHtml { [weak self] in
 			self?.initializeMap(
@@ -285,7 +286,8 @@ public class MapView : UIView {
 				disableRotationByUserInteraction: disableRotationByUserInteraction,
 				disablePitchByUserInteraction: disablePitchByUserInteraction,
 				maxBounds: maxBounds,
-				mapStyleId: mapStyleId
+				mapStyleId: mapStyleId,
+				shouldFetchZoom: shouldFetchZoom
 			) { error in
 				completion?(error)
 			}
@@ -355,6 +357,7 @@ public class MapView : UIView {
 		disablePitchByUserInteraction: Bool = false,
 		maxBounds: GeographicalBounds? = nil,
 		mapStyleId: String? = nil,
+		shouldFetchZoom: Bool,
 		completion: @escaping ((Error?) -> Void)
 	) {
 		let options: JSOptionsDictionary = [
@@ -378,14 +381,23 @@ public class MapView : UIView {
 			"style": mapStyleId,
 		]
 
-		self.js.initializeMap(options: options) {
-			result in
+		self.js.initializeMap(options: options) { [weak self] result in
+			guard let self = self else { return }
 			switch result {
 				case .success:
 					self.centerDidChange?(self.mapCenter)
-					self.zoomDidChange?(self.mapZoom)
 					self.rotationDidChange?(self.mapRotation)
 					self.pitchDidChange?(self.mapPitch)
+					if shouldFetchZoom {
+						self.js.fetchMapZoom {
+							if case .success(let zoom) = $0 {
+								self._mapZoom = zoom
+								self.zoomDidChange?(self.mapZoom)
+							}
+						}
+					} else {
+						self.zoomDidChange?(self.mapZoom)
+					}
 					completion(nil)
 				case .failure(let error):
 					completion(error)

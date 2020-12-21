@@ -10,4 +10,3 @@ target 'HelloSDK' do
     pod 'MapGL', :path => './', :testspecs => ['Tests']
   end
 end
-
