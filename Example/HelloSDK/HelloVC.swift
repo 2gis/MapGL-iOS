@@ -108,7 +108,7 @@ final class HelloVC: UIViewController {
 		self.map.show(
 			apiKey: Constants.apiKey,
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-			zoom: 16,
+			styleZoom: 16,
 			autoHideOSMCopyright: true,
 			maxBounds: GeographicalBounds(
 				northEast: CLLocationCoordinate2D(latitude: 36, longitude: 57),

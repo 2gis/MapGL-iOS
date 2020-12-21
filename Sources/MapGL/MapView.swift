@@ -137,6 +137,17 @@ public class MapView : UIView {
 		}
 	}
 
+	/// Gets or sets the style zoom level of the map. Have priority over mapZoom
+	public var styleZoom: Double {
+		get {
+			return _styleZoom
+		}
+		set {
+			_styleZoom = newValue
+			self.js.setStyleZoom(newValue)
+		}
+	}
+
 	/// Gets or sets the zoom level of the map.
 	public var mapZoom: Double {
 		get {
@@ -221,6 +232,7 @@ public class MapView : UIView {
 	///   - apiKey: Secret key.
 	///   - center: Initial coordinates of the map center.
 	///   - zoom: Initial map zoom level.
+	///   - styleZoom: Initial map zoom level. Have priority over zoom and different. Formula: styleZoom = zoom + log2(1 / (2 * cos(latitude))
 	///   - rotation: Initial map rotation angle.
 	///   - pitch: Initial map pinch angle.
 	///   - autoHideOSMCopyright: If true, the OSM copyright will be hidden after 5 seconds from the map initialization.
@@ -233,6 +245,7 @@ public class MapView : UIView {
 		apiKey: String,
 		center: CLLocationCoordinate2D? = nil,
 		zoom: Double? = nil,
+		styleZoom: Double? = nil,
 		rotation: Double? = nil,
 		pitch: Double? = nil,
 		autoHideOSMCopyright: Bool = false,
@@ -249,6 +262,11 @@ public class MapView : UIView {
 		if let zoom = zoom {
 			_mapZoom = max(zoom, _mapMinZoom)
 			_mapZoom = min(_mapZoom, _mapMaxZoom)
+		}
+
+		if let styleZoom = styleZoom {
+			_styleZoom = max(styleZoom, _mapMinZoom)
+			_styleZoom = min(_styleZoom, _mapMaxZoom)
 		}
 
 		if let rotation = rotation {
@@ -344,6 +362,7 @@ public class MapView : UIView {
 			"maxZoom": self.mapMaxZoom,
 			"minZoom": self.mapMinZoom,
 			"zoom": self.mapZoom,
+			"styleZoom": self.styleZoom,
 			"maxPitch": self.mapMaxPitch,
 			"minPitch": self.mapMinPitch,
 			"pitch": self.mapPitch,

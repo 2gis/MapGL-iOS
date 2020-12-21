@@ -1,5 +1,9 @@
 # Release Notes
 
+## v0.1.14
+**Release Date:** 16.12.2020
+- styleZoom with map initialization
+
 ## v0.1.13
 **Release Date:** 16.12.2020
 - setStyleById

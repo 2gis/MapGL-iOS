@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-12-16 - 0.1.14
+### Added
+- styleZoom with map initialization
+
 ## 2020-12-16 - 0.1.13
 ### Added
 - setStyleById
