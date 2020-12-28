@@ -26,6 +26,13 @@ final class HelloVC: UIViewController {
 		return label
 	}()
 
+	private lazy var mapStyleZoomLabel: UILabel = {
+		let label = UILabel()
+		label.font = UIFont.systemFont(ofSize: 8)
+		label.textColor = .black
+		return label
+	}()
+
 	private lazy var mapRotationLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.systemFont(ofSize: 8)
@@ -90,6 +97,10 @@ final class HelloVC: UIViewController {
 			self?.mapZoomLabel.text = "Map zoom: \(zoom)"
 		}
 
+		self.map.styleZoomDidChange = { [weak self] styleZoom in
+			self?.mapStyleZoomLabel.text = "Map style zoom: \(styleZoom)"
+		}
+
 		self.map.rotationDidChange = { [weak self] rotation in
 			self?.mapRotationLabel.text = "Map rotation: \(rotation)"
 		}
@@ -105,6 +116,7 @@ final class HelloVC: UIViewController {
 			self.hideCardView()
 		}
 		assert(!Constants.apiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
+
 		self.map.show(
 			apiKey: Constants.apiKey,
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
@@ -311,6 +323,7 @@ final class HelloVC: UIViewController {
 			showCircle,
 			showMarkerAction,
 			self.styleZoom(),
+			self.zoom(),
 			removeMarkersAction,
 			delesectAllObjects,
 			cancelAction,
@@ -331,6 +344,7 @@ final class HelloVC: UIViewController {
 		self.view.addSubview(self.map)
 		self.view.addSubview(self.mapCenterLabel)
 		self.view.addSubview(self.mapZoomLabel)
+		self.view.addSubview(self.mapStyleZoomLabel)
 		self.view.addSubview(self.mapRotationLabel)
 		self.view.addSubview(self.mapPitchLabel)
 		self.view.addSubview(self.zoomInButton)
@@ -341,6 +355,7 @@ final class HelloVC: UIViewController {
 
 		self.mapCenterLabel.translatesAutoresizingMaskIntoConstraints = false
 		self.mapZoomLabel.translatesAutoresizingMaskIntoConstraints = false
+		self.mapStyleZoomLabel.translatesAutoresizingMaskIntoConstraints = false
 		self.mapRotationLabel.translatesAutoresizingMaskIntoConstraints = false
 		self.mapPitchLabel.translatesAutoresizingMaskIntoConstraints = false
 		self.zoomInButton.translatesAutoresizingMaskIntoConstraints = false
@@ -360,8 +375,13 @@ final class HelloVC: UIViewController {
 			])
 
 		NSLayoutConstraint.activate([
+			self.mapStyleZoomLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
+			self.mapStyleZoomLabel.topAnchor.constraint(equalTo: self.mapZoomLabel.bottomAnchor, constant: 4),
+			])
+
+		NSLayoutConstraint.activate([
 			self.mapRotationLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
-			self.mapRotationLabel.topAnchor.constraint(equalTo: self.mapZoomLabel.bottomAnchor, constant: 4),
+			self.mapRotationLabel.topAnchor.constraint(equalTo: self.mapStyleZoomLabel.bottomAnchor, constant: 4),
 			])
 
 		NSLayoutConstraint.activate([
@@ -445,6 +465,11 @@ extension HelloVC {
 	func styleZoom() -> UIAlertAction {
 		return UIAlertAction(title: "Style zoom 10", style: .default) { _ in
 			self.map.setStyleZoom(10, options: AnimationOptions(animate: true, duration: 4, easing: .easeOutSine))
+		}
+	}
+	func zoom() -> UIAlertAction {
+		return UIAlertAction(title: "Zoom 10", style: .default) { _ in
+			self.map.setZoom(10, options: AnimationOptions(animate: true, duration: 4, easing: .easeOutSine))
 		}
 	}
 	func routeAction() -> UIAlertAction {
