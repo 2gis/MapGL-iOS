@@ -342,51 +342,35 @@ final class HelloVC: UIViewController {
 
 		self.map.delegate = self
 		self.view.addSubview(self.map)
-		self.view.addSubview(self.mapCenterLabel)
-		self.view.addSubview(self.mapZoomLabel)
-		self.view.addSubview(self.mapStyleZoomLabel)
-		self.view.addSubview(self.mapRotationLabel)
-		self.view.addSubview(self.mapPitchLabel)
 		self.view.addSubview(self.zoomInButton)
 		self.view.addSubview(self.zoomOutButton)
 		self.view.addSubview(self.locationButton)
 		self.view.addSubview(self.menuButton)
 		self.view.addSubview(self.cardView)
 
-		self.mapCenterLabel.translatesAutoresizingMaskIntoConstraints = false
-		self.mapZoomLabel.translatesAutoresizingMaskIntoConstraints = false
-		self.mapStyleZoomLabel.translatesAutoresizingMaskIntoConstraints = false
-		self.mapRotationLabel.translatesAutoresizingMaskIntoConstraints = false
-		self.mapPitchLabel.translatesAutoresizingMaskIntoConstraints = false
 		self.zoomInButton.translatesAutoresizingMaskIntoConstraints = false
 		self.zoomOutButton.translatesAutoresizingMaskIntoConstraints = false
 		self.menuButton.translatesAutoresizingMaskIntoConstraints = false
 		self.locationButton.translatesAutoresizingMaskIntoConstraints = false
 		self.cardView.translatesAutoresizingMaskIntoConstraints = false
 
+		let labelStack = UIStackView(arrangedSubviews: [
+			self.mapCenterLabel,
+			self.mapZoomLabel,
+			self.mapStyleZoomLabel,
+			self.mapRotationLabel,
+			self.mapPitchLabel,
+		])
+		labelStack.distribution = .equalSpacing
+		labelStack.layer.backgroundColor = UIColor.white.withAlphaComponent(0.2).cgColor
+		labelStack.axis = .vertical
+		labelStack.spacing = 8
+		labelStack.translatesAutoresizingMaskIntoConstraints = false
+		labelStack.isUserInteractionEnabled = false
+		self.view.addSubview(labelStack)
 		NSLayoutConstraint.activate([
-			self.mapCenterLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
-			self.mapCenterLabel.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor, constant: 8),
-			])
-
-		NSLayoutConstraint.activate([
-			self.mapZoomLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
-			self.mapZoomLabel.topAnchor.constraint(equalTo: self.mapCenterLabel.bottomAnchor, constant: 4),
-			])
-
-		NSLayoutConstraint.activate([
-			self.mapStyleZoomLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
-			self.mapStyleZoomLabel.topAnchor.constraint(equalTo: self.mapZoomLabel.bottomAnchor, constant: 4),
-			])
-
-		NSLayoutConstraint.activate([
-			self.mapRotationLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
-			self.mapRotationLabel.topAnchor.constraint(equalTo: self.mapStyleZoomLabel.bottomAnchor, constant: 4),
-			])
-
-		NSLayoutConstraint.activate([
-			self.mapPitchLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
-			self.mapPitchLabel.topAnchor.constraint(equalTo: self.mapRotationLabel.bottomAnchor, constant: 4),
+			labelStack.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
+			labelStack.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor, constant: 8),
 			])
 
 		NSLayoutConstraint.activate([

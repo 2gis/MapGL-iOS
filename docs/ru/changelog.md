@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.1.15
+**Release Date:** 28.12.2020
+* initial styleZoom
+
 ## v0.1.14
 **Release Date:** 16.12.2020
 * styleZoom with map initialization

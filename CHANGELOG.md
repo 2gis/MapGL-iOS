@@ -1,6 +1,12 @@
 # Changelog
 
-## 2020-12-16 - 0.1.14
+## [Unreleased]
+
+## 2020-12-28 - 0.1.15
+### Fixed
+- initial styleZoom
+
+## 2020-12-21 - 0.1.14
 ### Added
 - styleZoom with map initialization
 

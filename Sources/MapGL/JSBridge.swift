@@ -72,29 +72,11 @@ class JSBridge : NSObject {
 	}
 
 	func fetchMapZoom(completion: ((Result<Double, Error>) -> Void)?) {
-		let js = "window.map.getZoom();"
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
-			if let error = erorr {
-				completion?(.failure(error))
-			} else if let result = result as? Double {
-				completion?(.success(result))
-			} else {
-				completion?(.failure(MapGLError(text: "Parsing error")))
-			}
-		}
+		self.fetch(js: "window.map.getZoom();", completion: completion)
 	}
 
 	func fetchMapStyleZoom(completion: ((Result<Double, Error>) -> Void)?) {
-		let js = "window.map.getStyleZoom();"
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
-			if let error = erorr {
-				completion?(.failure(error))
-			} else if let result = result as? Double {
-				completion?(.success(result))
-			} else {
-				completion?(.failure(MapGLError(text: "Parsing error")))
-			}
-		}
+		self.fetch(js: "window.map.getStyleZoom();", completion: completion)
 	}
 
 	func setMapZoom(
@@ -127,16 +109,7 @@ class JSBridge : NSObject {
 	}
 
 	func fetchMapRotation(completion: ((Result<Double, Error>) -> Void)? = nil) {
-		let js = "window.map.getRotation();"
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
-			if let error = erorr {
-				completion?(.failure(error))
-			} else if let result = result as? Double {
-				completion?(.success(result))
-			} else {
-				completion?(.failure(MapGLError(text: "Parsing error")))
-			}
-		}
+		self.fetch(js: "window.map.getRotation();", completion: completion)
 	}
 
 	func setMapRotation(_ rotation: Double, completion: Completion? = nil) {
@@ -145,16 +118,7 @@ class JSBridge : NSObject {
 	}
 
 	func fetchMapPitch(completion: ((Result<Double, Error>) -> Void)?) {
-		let js = "window.map.getPitch();"
-		self.executor.evaluateJavaScript(js) { (result, erorr) in
-			if let error = erorr {
-				completion?(.failure(error))
-			} else if let result = result as? Double {
-				completion?(.success(result))
-			} else {
-				completion?(.failure(MapGLError(text: "Parsing error")))
-			}
-		}
+		self.fetch(js: "window.map.getPitch();", completion: completion)
 	}
 
 	func setMapPitch(_ pitch: Double, completion: Completion? = nil) {
@@ -197,6 +161,18 @@ class JSBridge : NSObject {
 		window.setSelectedObjects(\(objectsIds.jsValue()));
 		"""
 		self.evaluateJS(js)
+	}
+
+	private func fetch<T>(js: String, completion: ((Result<T, Error>) -> Void)?) {
+		self.executor.evaluateJavaScript(js) { (result, erorr) in
+			if let error = erorr {
+				completion?(.failure(error))
+			} else if let result = result as? T {
+				completion?(.success(result))
+			} else {
+				completion?(.failure(MapGLError(text: "Parsing error")))
+			}
+		}
 	}
 
 }
