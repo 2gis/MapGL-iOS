@@ -84,6 +84,19 @@ class JSBridge : NSObject {
 		}
 	}
 
+	func fetchMapStyleZoom(completion: ((Result<Double, Error>) -> Void)?) {
+		let js = "window.map.getStyleZoom();"
+		self.executor.evaluateJavaScript(js) { (result, erorr) in
+			if let error = erorr {
+				completion?(.failure(error))
+			} else if let result = result as? Double {
+				completion?(.success(result))
+			} else {
+				completion?(.failure(MapGLError(text: "Parsing error")))
+			}
+		}
+	}
+
 	func setMapZoom(
 		_ zoom: Double,
 		options: MapGL.AnimationOptions? = nil,

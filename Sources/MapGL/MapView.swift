@@ -69,6 +69,8 @@ public class MapView : UIView {
 	public var centerDidChange: ((CLLocationCoordinate2D) -> Void)?
 	/// Notifies of the map zoom level change.
 	public var zoomDidChange: ((Double) -> Void)?
+	/// Notifies of the map style zoom level change.
+	public var styleZoomDidChange: ((Double) -> Void)?
 	/// Notifies of the map rotation angle change.
 	public var rotationDidChange: ((Double) -> Void)?
 	/// Notifies of the map pitch angle change.
@@ -278,6 +280,7 @@ public class MapView : UIView {
 			_mapPitch = min(_mapPitch, _mapMaxPitch)
 		}
 		let shouldFetchZoom = zoom == nil
+		let shouldFetchStyleZoom = styleZoom == nil
 
 		self.loadHtml { [weak self] in
 			self?.initializeMap(
@@ -287,7 +290,8 @@ public class MapView : UIView {
 				disablePitchByUserInteraction: disablePitchByUserInteraction,
 				maxBounds: maxBounds,
 				mapStyleId: mapStyleId,
-				shouldFetchZoom: shouldFetchZoom
+				shouldFetchZoom: shouldFetchZoom,
+				shouldFetchStyleZoom: shouldFetchStyleZoom
 			) { error in
 				completion?(error)
 			}
@@ -358,14 +362,14 @@ public class MapView : UIView {
 		maxBounds: GeographicalBounds? = nil,
 		mapStyleId: String? = nil,
 		shouldFetchZoom: Bool,
+		shouldFetchStyleZoom: Bool,
 		completion: @escaping ((Error?) -> Void)
 	) {
-		let options: JSOptionsDictionary = [
+		var options: JSOptionsDictionary = [
 			"center": self.mapCenter,
 			"maxZoom": self.mapMaxZoom,
 			"minZoom": self.mapMinZoom,
 			"zoom": self.mapZoom,
-			"styleZoom": self.styleZoom,
 			"maxPitch": self.mapMaxPitch,
 			"minPitch": self.mapMinPitch,
 			"pitch": self.mapPitch,
@@ -381,6 +385,10 @@ public class MapView : UIView {
 			"style": mapStyleId,
 		]
 
+		if !shouldFetchStyleZoom {
+			options["styleZoom"] = self.styleZoom
+		}
+
 		self.js.initializeMap(options: options) { [weak self] result in
 			guard let self = self else { return }
 			switch result {
@@ -388,6 +396,7 @@ public class MapView : UIView {
 					self.centerDidChange?(self.mapCenter)
 					self.rotationDidChange?(self.mapRotation)
 					self.pitchDidChange?(self.mapPitch)
+
 					if shouldFetchZoom {
 						self.js.fetchMapZoom {
 							if case .success(let zoom) = $0 {
@@ -398,6 +407,18 @@ public class MapView : UIView {
 					} else {
 						self.zoomDidChange?(self.mapZoom)
 					}
+
+					if shouldFetchStyleZoom {
+						self.js.fetchMapStyleZoom {
+							if case .success(let styleZoom) = $0 {
+								self._styleZoom = styleZoom
+								self.styleZoomDidChange?(self.styleZoom)
+							}
+						}
+					} else {
+						self.styleZoomDidChange?(self.styleZoom)
+					}
+
 					completion(nil)
 				case .failure(let error):
 					completion(error)
@@ -432,6 +453,7 @@ extension MapView: JSBridgeDelegate {
 
 	func js(_ js: JSBridge, mapStyleZoomChanged mapZoom: Double) {
 		_styleZoom = mapZoom
+		self.styleZoomDidChange?(mapZoom)
 	}
 
 	func js(_ js: JSBridge, mapRotationDidChange mapRotation: Double) {
