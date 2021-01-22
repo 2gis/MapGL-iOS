@@ -1,20 +1,22 @@
-# Overview
+# Обзор
 
-## Introduction
+## Введение
 
-2GIS iOS MapGL is an SDK that allows you to add a [2GIS](https://2gis.ae/) map to your iOS application. It can be used to display the map in your interface, add custom markers and labels to it, draw routes and custom shapes, and highlight various objects on the map, such as buildings, roads, and others.
+iOS MapGL SDK от 2GIS позволяет добавить карту [2GIS](https://2gis.ru/) в ваше приложение под iOS. Вы можете использовать его для отображения карты на экране, добавления на неё пользовательских маркеров и меток, отрисовки маршрутов и фигур, а также выделения на карте различных объектов, таких как здания, дороги и т. д.
 
-This SDK uses [WebKit](https://developer.apple.com/documentation/webkit) to render the map. If you need a more native solution (for example, if you don't want to display web content inside your app), take a look at `iOS Native SDK`.
+Для рендера карты этот SDK использует [WebKit](https://developer.apple.com/documentation/webkit). Если вам нужно более нативное решение, например, если вы не хотите отображать веб-контент внутри вашего приложения, обратите внимание на `iOS Native SDK`.
 
-## Getting an access key
+## Получение ключа доступа
 
-Usage of this SDK requires an `API key` to connect to 2GIS servers and retrieve the geographical data. This `API key` is unique to the SDK and cannot be used with other 2GIS SDKs. To obtain the key, contact us at [mapgl@2gis.com](mailto:mapgl@2gis.com).
+Использование этого SDK требует наличия ключа API для подключения к серверам 2GIS и получения географических данных. Этот ключ доступа API уникален для конкретного SDK и не может быть использован с другими SDK от 2GIS.
 
-Additionally, if you plan to draw routes on the map, you will need a separate key - a [Directions API](/ru/api/navigation/directions/overview) key - to calculate and display an optimal route. To get it, fill the form at [partner.api.2gis.ru](https://partner.api.2gis.ru/) or contact us at [content@2gis.ru](mailto:content@2gis.ru).
+Кроме того, если вы планируете прокладывать маршруты на карте, то для вычисления и отображения оптимального маршрута вам понадобится отдельный ключ API - для [Directions API](/ru/api/navigation/directions/overview).
 
-## Installation
+Чтобы получить любой из этих ключей API, заполните форму на [dev.2gis.ru](dev.2gis.ru/order). 
 
-2GIS iOS MapGL is available through [CocoaPods](https://cocoapods.org/). To install it, add the following line to your Podfile:
+## Установка
+
+iOS MapGL от 2GIS доступен через менеджер зависимостей [CocoaPods](https://cocoapods.org/). Для его установки добавьте следующую строку в ваш Podfile:
 
 ```
 pod 'MapGL'
@@ -22,8 +24,8 @@ pod 'MapGL'
 
 [![Version](https://img.shields.io/cocoapods/v/MapGL.svg?style=social&logo=cocoapods&label=version)](https://cocoapods.org/pods/MapGL)
 
-After that, you should be good to go. Check the [Examples](/ru/ios/webgl/maps/examples) section to see how to display the map in your application. Alternatively, check the [API Reference](/ru/ios/webgl/maps/reference) to learn more about specific classes and methods.
+После этого всё должно быть готово к работе. В разделе [Примеры](/ru/ios/webgl/maps/examples) вы можете посмотреть, как добавить карту к вашему приложению. Или загляните в [описание API](/en/ios/webgl/maps/reference), чтобы узнать больше о конкретных классах и методах.
 
-## License
+## Лицензия
 
-2GIS iOS MapGL is licensed under the BSD 2-Clause "Simplified" License. See the [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE) file for more information.
+2GIS iOS MapGL распространяется под упрощённой лицензией BSD 2-Clause. Дополнительную информацию можно найти в файле [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE).
