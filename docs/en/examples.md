@@ -231,7 +231,7 @@ map.setSelectedObjects([])
 
 ## Routes
 
-If you have a [Directions API key](#getting-an-access-key), you can draw routes on a map.
+If you have a [Directions API key](/en/ios/webgl/maps/overview#getting-an-access-key), you can draw routes on a map.
 
 To draw a route, first create a [Directions](/en/ios/webgl/maps/reference/Directions) object by calling the [makeDirections()](/en/ios/webgl/maps/reference/MapView#nav-lvl2--makeDirections) method and passing your key:
 
@@ -270,4 +270,4 @@ Dark theme setting example:
 map.setStyle (by: "e05ac437-fcc2-4845-ad74-b1de9ce07555")
 ```
 
-It is also possible to set style during map initialization (see Creating a map widget). Use additional argument `mapStyleId` for this.
+It is also possible to set style during map initialization (see [Creating a map widget](#creating-a-map-widget)). Use additional argument `mapStyleId` for this.

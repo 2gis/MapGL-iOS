@@ -8,9 +8,11 @@ This SDK uses [WebKit](https://developer.apple.com/documentation/webkit) to rend
 
 ## Getting an access key
 
-Usage of this SDK requires an `API key` to connect to 2GIS servers and retrieve the geographical data. This `API key` is unique to the SDK and cannot be used with other 2GIS SDKs. To obtain the key, contact us at [mapgl@2gis.com](mailto:mapgl@2gis.com).
+Usage of this SDK requires an `API key` to connect to 2GIS servers and retrieve the geographical data. This `API key` is unique to the SDK and cannot be used with other 2GIS SDKs.
 
-Additionally, if you plan to draw routes on the map, you will need a separate key - a [Directions API](/en/api/navigation/directions/overview) key - to calculate and display an optimal route. To get it, fill the form at [partner.api.2gis.ru](https://partner.api.2gis.ru/) or contact us at [content@2gis.ru](mailto:content@2gis.ru).
+Additionally, if you plan to draw routes on the map, you will need a separate key - a [Directions API](/en/api/navigation/directions/overview) key - to calculate and display an optimal route.
+
+To obtain either of these API keys, fill in the form at [dev.2gis.ae](dev.2gis.ae/order).
 
 ## Installation
 
