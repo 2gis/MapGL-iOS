@@ -347,6 +347,21 @@ public class MapView : UIView {
 		self.js.fetchGeographicalBounds(completion: completion)
 	}
 
+	/// Pans and zooms the map to contain its visible area within the specified geographical bounds.
+	/// This method also resets the map pitch and rotation to 0.
+	/// But the map rotation can be saved by option considerRotation
+	/// - Parameters:
+	///   - bounds: The geographical bounds to fit in
+	///   - options: Options
+	///   - completion: Completion handler
+	public func fitBounds(
+		_ bounds: GeographicalBounds,
+		options: FitBoundsOptions? = nil,
+		completion: ((Result<Void, Error>) -> Void)? = nil
+	) {
+		self.js.fitBounds(bounds, options: options, completion: completion)
+	}
+
 	private func loadHtml(completion: @escaping () -> Void) {
 		self.webView.loadHTMLString(HTML.html, baseURL: nil)
 		self.wkDelegate.onInitializeMap = {
@@ -561,6 +576,28 @@ extension MapView {
 		let directions = Directions(apiKey: apiKey)
 		self.add(directions)
 		return directions
+	}
+}
+
+// MARK: - Projections
+
+extension MapView {
+
+	/// Returns pixel coordinates relative to the map's container,
+	/// that correspond to the specified geographical coordinates
+	/// - Parameters:
+	///   - location: The geographical coordinates to project
+	///   - completion: Completion handler
+	public func project(location: CLLocationCoordinate2D, completion: @escaping (Result<CGPoint, Error>) -> Void) {
+		self.js.project(location: location, completion: completion)
+	}
+
+	/// Returns geographical coordinates that correspond to the specified pixel coordinates
+	/// - Parameters:
+	///   - point: The pixel coordinates of the map's container to unproject
+	///   - completion: Completion handler
+	public func unproject(point: CGPoint, completion: @escaping (Result<CLLocationCoordinate2D, Error>) -> Void) {
+		self.js.unproject(point: point, completion: completion)
 	}
 }
 
