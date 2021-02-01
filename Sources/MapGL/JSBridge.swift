@@ -51,10 +51,10 @@ class JSBridge : NSObject {
 		}
 	}
 
-    func fitBounds(_ bounds: GeographicalBounds, options: FitBoundsOptions? = nil, completion: Completion?) {
-        let js = "window.map.fitBounds(\(bounds.jsValue()), \(options.jsValue()));"
-        self.evaluateJS(js, completion: completion)
-    }
+	func fitBounds(_ bounds: GeographicalBounds, options: FitBoundsOptions? = nil, completion: Completion?) {
+		let js = "window.map.fitBounds(\(bounds.jsValue()), \(options.jsValue()));"
+		self.evaluateJS(js, completion: completion)
+	}
 
 	func fetchMapCenter(completion: ((Result<CLLocationCoordinate2D, Error>) -> Void)?) {
 		let js = "window.map.getCenter();"
@@ -154,13 +154,13 @@ class JSBridge : NSObject {
 	func evaluateJS(_ js: String, completion: Completion? = nil) {
 		self.executor.evaluateJavaScript(js) { (_, error) in
 			if let error = error {
-                // Then js returns the map object itself we have an error:
-                // 'JavaScript execution returned a result of an unsupported type'. Ignore it.
-                if (error as? WKError)?.code == .javaScriptResultTypeIsUnsupported {
-                    completion?(.success(()))
-                } else {
-                    completion?(.failure(error))
-                }
+				// Then js returns the map object itself we have an error:
+				// 'JavaScript execution returned a result of an unsupported type'. Ignore it.
+				if (error as? WKError)?.code == .javaScriptResultTypeIsUnsupported {
+					completion?(.success(()))
+				} else {
+					completion?(.failure(error))
+				}
 			} else {
 				completion?(.success(()))
 			}
@@ -174,35 +174,35 @@ class JSBridge : NSObject {
 		self.evaluateJS(js)
 	}
 
-    func project(location: CLLocationCoordinate2D, completion: @escaping (Result<CGPoint, Error>) -> Void) {
-        let js = "window.map.project(\(location.jsValue()));"
-        self.executor.evaluateJavaScript(js) { (result, erorr) in
-            if let error = erorr {
-                completion(.failure(error))
-            } else if let result = result as? [CGFloat], result.count >= 2 {
-                let x = result[0]
-                let y = result[1]
-                completion(.success(CGPoint(x: x, y: y)))
-            } else {
-                completion(.failure(MapGLError(text: "Parsing error")))
-            }
-        }
-    }
+	func project(location: CLLocationCoordinate2D, completion: @escaping (Result<CGPoint, Error>) -> Void) {
+		let js = "window.map.project(\(location.jsValue()));"
+		self.executor.evaluateJavaScript(js) { (result, erorr) in
+			if let error = erorr {
+				completion(.failure(error))
+			} else if let result = result as? [CGFloat], result.count >= 2 {
+				let x = result[0]
+				let y = result[1]
+				completion(.success(CGPoint(x: x, y: y)))
+			} else {
+				completion(.failure(MapGLError(text: "Parsing error")))
+			}
+		}
+	}
 
-    func unproject(point: CGPoint, completion: @escaping (Result<CLLocationCoordinate2D, Error>) -> Void) {
-        let js = "window.map.unproject(\(point.jsValue()));"
-        self.executor.evaluateJavaScript(js) { (result, erorr) in
-            if let error = erorr {
-                completion(.failure(error))
-            } else if let result = result as? [Double], result.count == 2 {
-                let lon = result[0]
-                let lat = result[1]
-                completion(.success(CLLocationCoordinate2D(latitude: lat, longitude: lon)))
-            } else {
-                completion(.failure(MapGLError(text: "Parsing error")))
-            }
-        }
-    }
+	func unproject(point: CGPoint, completion: @escaping (Result<CLLocationCoordinate2D, Error>) -> Void) {
+		let js = "window.map.unproject(\(point.jsValue()));"
+		self.executor.evaluateJavaScript(js) { (result, erorr) in
+			if let error = erorr {
+				completion(.failure(error))
+			} else if let result = result as? [Double], result.count == 2 {
+				let lon = result[0]
+				let lat = result[1]
+				completion(.success(CLLocationCoordinate2D(latitude: lat, longitude: lon)))
+			} else {
+				completion(.failure(MapGLError(text: "Parsing error")))
+			}
+		}
+	}
 
 	private func fetch<T>(js: String, completion: ((Result<T, Error>) -> Void)?) {
 		self.executor.evaluateJavaScript(js) { (result, erorr) in
