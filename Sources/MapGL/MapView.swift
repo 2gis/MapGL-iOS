@@ -21,6 +21,19 @@ public class MapView : UIView {
 		static let mapDefaultCenter = CLLocationCoordinate2D(latitude: 55.750574, longitude: 37.618317)
 	}
 
+	/// Notifies of the map geographical center change.
+	public var centerDidChange: ((CLLocationCoordinate2D) -> Void)?
+	/// Notifies of the map zoom level change.
+	public var zoomDidChange: ((Double) -> Void)?
+	/// Notifies of the map style zoom level change.
+	public var styleZoomDidChange: ((Double) -> Void)?
+	/// Notifies of the map rotation angle change.
+	public var rotationDidChange: ((Double) -> Void)?
+	/// Notifies of the map pitch angle change.
+	public var pitchDidChange: ((Double) -> Void)?
+	/// Notifies of the map click event.
+	public var mapClick: ((CLLocationCoordinate2D) -> Void)?
+
 	/// Optional methods that you use to receive map-related update messages.
 	public weak var delegate: MapViewDelegate?
 
@@ -42,7 +55,8 @@ public class MapView : UIView {
 
 	// swiftlint:disable:next weak_delegate
 	private let wkDelegate = WKDelegate()
-
+	// swiftlint:disable:next weak_delegate
+	private lazy var scrollDelegate = MapViewScrollDeledate()
 	private lazy var js: JSBridge = {
 		let js = JSBridge(executor: self.jsExecutor ?? self)
 		js.delegate = self
@@ -65,18 +79,9 @@ public class MapView : UIView {
 		return manager
 	}()
 
-	/// Notifies of the map geographical center change.
-	public var centerDidChange: ((CLLocationCoordinate2D) -> Void)?
-	/// Notifies of the map zoom level change.
-	public var zoomDidChange: ((Double) -> Void)?
-	/// Notifies of the map style zoom level change.
-	public var styleZoomDidChange: ((Double) -> Void)?
-	/// Notifies of the map rotation angle change.
-	public var rotationDidChange: ((Double) -> Void)?
-	/// Notifies of the map pitch angle change.
-	public var pitchDidChange: ((Double) -> Void)?
-	/// Notifies of the map click event.
-	public var mapClick: ((CLLocationCoordinate2D) -> Void)?
+	deinit {
+		self.webView.scrollView.delegate = nil
+	}
 
 	/// Creates the new instance of the MapView object.
 	///
@@ -109,6 +114,9 @@ public class MapView : UIView {
 		if #available(iOS 11.0, *) {
 			self.webView.scrollView.contentInsetAdjustmentBehavior = .never
 		}
+		// disable native zoom/scroll
+		self.webView.scrollView.isScrollEnabled = false
+		self.webView.scrollView.delegate = self.scrollDelegate
 		self.addSubview(self.webView)
 	}
 
@@ -636,4 +644,17 @@ extension MapView: UserLocationManagerDelegate {
 	func userLocationManager(_ manager: UserLocationManager, didUpdateUserLocation location: CLLocation?) {
 		self.delegate?.mapView?(self, didUpdateUserLocation: location)
 	}
+}
+
+// MARK: - UIScrollViewDelegate
+class MapViewScrollDeledate: NSObject, UIScrollViewDelegate {
+
+	func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+		scrollView.pinchGestureRecognizer?.isEnabled = false
+	}
+
+	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+		return nil
+	}
+
 }
