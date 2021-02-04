@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 2020-12-28 - 0.1.16
+### Added
+- fitBounds, project and unproject methods
+### Fixed
+- scroll/zoom issues in iOS 12
+
 ## 2020-12-28 - 0.1.15
 ### Fixed
 - initial styleZoom
