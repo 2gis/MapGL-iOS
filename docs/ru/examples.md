@@ -1,6 +1,6 @@
 # Примеры
 
-## Использование
+## Начало работы
 
 Для запуска примера склонируйте проект HelloSDK (`./HelloSDK.xcworkspace/`) из [GitHub-репозитория 2GIS](https://github.com/2gis/MapGL-iOS) и задайте ваши ключи API в файле `./Example/HelloSDK/HelloVC.swift`:
 
@@ -13,13 +13,13 @@ enum Constants {
 
 ## Создание виджета карты
 
-Чтобы отобразить карту, для начала добавьте [MapView](/en/ios/webgl/maps/reference/MapView) в ваш пользовательский интерфейс. MapView является наследником класса [UIView](https://developer.apple.com/documentation/uikit/uiview), так что вы сможете использовать Storyboards и XIBs или создавать их программно:
+Чтобы отобразить карту, сначала добавьте [MapView](/en/ios/webgl/maps/reference/MapView) в ваш пользовательский интерфейс. MapView является наследником класса [UIView](https://developer.apple.com/documentation/uikit/uiview), так что вы сможете использовать Storyboards и XIBs или создавать MapView программно:
 
 ```swift
 let map = MapView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
 ```
 
-Затем инициализируйте виджет: вызовите метод `show()` и передайте в него свой ключ API. Вы также можете передать начальные координаты и необходимый уровень приближения. Полный список параметров смотрите в [описании API](/en/ios/webgl/maps/reference/MapView#nav-lvl2--show).
+Затем инициализируйте виджет: вызовите метод `show()` и передайте в него свой ключ API. Вы также можете передать начальные координаты и необходимый масштаб. Полный список параметров смотрите в [описании API](/en/ios/webgl/maps/reference/MapView#nav-lvl2--show).
 
 Например, приведённый ниже фрагмент кода показывает карту Москвы с Кремлём в центре карты:
 
@@ -33,7 +33,7 @@ map.show(
 
 ![kremlin](https://user-images.githubusercontent.com/57934605/89265464-f33e6580-d64d-11ea-89eb-b4ee20f1dbb3.png)
 
-Для вызова какой-либо функции после инициализации карты вы можете написать [trailing closure](https://docs.swift.org/swift-book/LanguageGuide/Closures.html#ID102):
+Для вызова какой-либо функции после инициализации карты напишите [trailing closure](https://docs.swift.org/swift-book/LanguageGuide/Closures.html#ID102):
 
 ```swift
 map.show(apiKey: "Your API key") { _ in
@@ -43,7 +43,7 @@ map.show(apiKey: "Your API key") { _ in
 
 ## Добавление маркера
 
-Вы можете добавить на карту любое количество маркеров. Для добавления маркера создайте экземпляр класса [Marker](/en/ios/webgl/maps/reference/Marker) и передайте этот объект в метод `add()` после инициализации карты. Из параметров вам нужно задать только координаты маркера.
+Вы можете добавить на карту любое количество маркеров. Чтобы добавить маркер, создайте экземпляр класса [Marker](/en/ios/webgl/maps/reference/Marker) и передайте этот объект в метод `add()` после инициализации карты. Единственный необходимый параметр — координаты маркера.
 
 ```swift
 map.show(apiKey: "Your API key") { _ in
@@ -54,7 +54,7 @@ map.show(apiKey: "Your API key") { _ in
 
 ![kremlin-marker](https://user-images.githubusercontent.com/57934605/89265704-4e705800-d64e-11ea-9c9e-1db831dcf34e.png)
 
-Кроме того, вы можете изменить внешний вид маркера. Вы можете задать изображение в `image` (как экземпляр класса [UIImage](https://developer.apple.com/documentation/uikit/uiimage)) и якорь (координаты отображения маркера) в `anchor`. Более подробную информацию о том, как задать якорь, смотрите в [описании API](/en/ios/webgl/maps/reference/Marker#nav-lvl2--anchor). 
+Кроме того, вы можете изменить внешний вид маркера, задав изображение в `image` (как экземпляр класса [UIImage](https://developer.apple.com/documentation/uikit/uiimage)), и якорь (координаты отображения маркера) в `anchor`. Подробнее о том, как задать якорь, можно прочитать в [описании API](/en/ios/webgl/maps/reference/Marker#nav-lvl2--anchor). 
 
 ![anchor](https://user-images.githubusercontent.com/57934605/89265659-40223c00-d64e-11ea-9b66-4525dfb94329.png)
 
@@ -100,7 +100,7 @@ label.show()
 
 ## Отрисовка пользовательских фигур
 
-Помимо маркеров и текстовых меток вы можете отображать на карте другие объекты: линии, круги и многоугольники. Для каждой фигуры вам нужно задать координаты и цвета. Кроме того, вы можете задать Z-координату, чтобы упорядочить фигуры относительно друг друга.
+Помимо маркеров и текстовых меток вы можете добавлять на карту другие объекты: линии, круги и многоугольники. Для каждой фигуры нужно задать координаты и цвета. Кроме того, вы можете задать Z-координату, чтобы упорядочить фигуры относительно друг друга.
 
 ### Отрисовка линии
 
@@ -108,9 +108,9 @@ label.show()
 
 Конструктор класса `Polyline` принимает два типа параметров: координаты точек, лежащих на линии (массив координат [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/CLLocationCoordinate2D)), и до трёх объектов класса [PolylineStyle](/en/ios/webgl/maps/reference/PolylineStyle) для применения стилей к линии.
 
-Простыми словами, линия может состоять из под-линий (до трёх штук), наложенных друг на друга. Каждая под-линия настраивается отдельным параметром (`style1` для самой верхней под-линии, `style2` для средней и `style3` для нижней). `style2` и `style3` можно опустить для отрисовки линии без под-линий.
+Проще говоря, линия состоит из под-линий (до трёх штук), наложенных друг на друга. Каждая под-линия настраивается отдельным параметром (`style1` для самой верхней под-линии, `style2` для средней и `style3` для нижней). `style2` и `style3` можно опустить для отрисовки линии без под-линий.
 
-Например, для отрисовки простой линии между двумя точками вы можете использовать подобный код:
+Код для отрисовки простой линии между двумя точками будет выглядеть примерно так:
 
 ```swift
 let polyline = Polyline(
@@ -125,7 +125,7 @@ map.add(polyline)
 
 ![kremlin-line1](https://user-images.githubusercontent.com/57934605/91268687-37291400-e78f-11ea-8a1d-2e99a67b71d9.png)
 
-В качестве более сложного примера, вы можете использовать следующий код для отрисовки линии, соединяющей несколько точек и состоящей из трёх под-линий:
+Код для отрисовки более сложной линии, соединяющей несколько точек и состоящей из трёх под-линий, будет выглядеть примерно так:
 
 ```swift
 let polyline = Polyline(
@@ -150,7 +150,7 @@ map.add(polyline)
 
 Чтобы нарисовать на карте круг, создайте экземпляр класса [Circle](/en/ios/webgl/maps/reference/Circle) и передайте полученный объект в метод карты `add()`.
 
-Конструктор класса `Circle` принимает несколько параметров. Для определения координат центра и размера круга задайте значения (в метрах) соответствующих параметров `center` и `radius`. Для выбора цвета заливки используйте `fillColor`, передав экземпляр класса [UIColor](https://developer.apple.com/documentation/uikit/UIColor). Чтобы задать цвет и толщину линии, используйте `strokeColor` и `strokeWidth`. Наконец, чтобы задать порядок по координате Z, используйте параметр `z`.
+Конструктор класса `Circle` принимает несколько параметров. Укажите координаты центра круга и его размер (в метрах), задав параметры `center` и `radius` соответственно. Для выбора цвета заливки используйте `fillColor`, передав экземпляр класса [UIColor](https://developer.apple.com/documentation/uikit/UIColor). Чтобы задать цвет и толщину линии, используйте `strokeColor` и `strokeWidth`. Наконец, чтобы задать порядок отрисовки по оси Z, используйте параметр `z`.
 
 ```swift
 let circle = Circle(
@@ -170,7 +170,7 @@ map.add(circle)
 
 Чтобы нарисовать на карте многоугольник, создайте экземпляр класса [Polygon](/en/ios/webgl/maps/reference/Polygon) и передайте полученный объект в метод карты `add()`.
 
-Конструктор класса `Polygon` принимает несколько параметров. Для определения координат вершин многоугольника задайте значение параметра `points` как массив координат [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/CLLocationCoordinate2D). Для выбора цвета заливки используйте `fillColor`, передав экземпляр класса [UIColor](https://developer.apple.com/documentation/uikit/UIColor). Чтобы задать цвет и толщину линии, используйте `strokeColor` и `strokeWidth`. Наконец, чтобы задать порядок по координате Z, используйте параметр `z`.
+Конструктор класса `Polygon` принимает несколько параметров. Для указания координат вершин многоугольника задайте значение параметра `points` как массив координат [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/CLLocationCoordinate2D). Для выбора цвета заливки используйте `fillColor`, передав экземпляр класса [UIColor](https://developer.apple.com/documentation/uikit/UIColor). Чтобы задать цвет и толщину линии, используйте `strokeColor` и `strokeWidth`. Наконец, чтобы задать порядок по координате Z, используйте параметр `z`.
 
 ```swift
 let polygon = Polygon(
@@ -199,7 +199,7 @@ map.mapClick = { coordinates in
 }
 ```
 
-Чтобы получить ID объекта, на который произведено нажатие (здание, дорога, рынок, произвольная фигура и т.д.), реализуйте [дополнительный метод](https://docs.swift.org/swift-book/LanguageGuide/Protocols.html#ID284) протокола [MapViewDelegate](/en/ios/webgl/maps/reference/MapViewDelegate):
+Чтобы получить ID объекта, на который произведено нажатие (здание, дорога, маркер, произвольная фигура и т.д.), реализуйте [дополнительный метод](https://docs.swift.org/swift-book/LanguageGuide/Protocols.html#ID284) протокола [MapViewDelegate](/en/ios/webgl/maps/reference/MapViewDelegate):
 
 ```swift
 func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
@@ -207,13 +207,13 @@ func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
 }
 ```
 
-После этого вы сможете использовать ID объекта для выделения его на карте (подробнее в разделе [Выделение объектов](/ru/ios/webgl/maps/examples#nav-lvl1--Выделение_объектов)). Этот же ID можно использовать для получения полной информации об объекте через другие API, например, [Places API](/ru/api/search/places/overview), так как для всех API используется одинаковый ID.
+После этого вы сможете использовать ID объекта для выделения его на карте (подробнее в разделе [Выделение объектов](/ru/ios/webgl/maps/examples#nav-lvl1--Выделение_объектов)). Этот же ID можно использовать для получения полной информации об объекте через [Places API](/ru/api/search/places/overview), так как для всех API используется одинаковый ID.
 
 ## Выделение объектов
 
 Вы можете выделять на карте объекты: здания, дороги и т. д.
 
-Для этого вызовите метод `setSelectedObjects()`, передав ему массив ID объектов, которые нужно выделить. Вы можете получить ID объектов, добавив для карты click listener (подробнее в разделе [Обработка событий нажатия](#nav-lvl1--Обработка_событий_нажатия)).
+Для этого вызовите метод `setSelectedObjects()` и передайте ему массив ID объектов, которые нужно выделить. Чтобы получить ID объектов, добавьте для карты click listener (подробнее в разделе [Обработка событий нажатия](#nav-lvl1--Обработка_событий_нажатия)).
 
 ```swift
 map.setSelectedObjects(["48231504731808815", "23520539192555249"])
@@ -221,7 +221,7 @@ map.setSelectedObjects(["48231504731808815", "23520539192555249"])
 
 ![highlight](https://user-images.githubusercontent.com/57934605/89265712-53cda280-d64e-11ea-98af-763d12105f96.gif)
 
-Чтобы изменить список выделенных объектов, вызовите этот же метод, передав в него массив новых ID.
+Чтобы изменить список выделенных объектов, вызовите этот метод снова и передайте в него массив новых ID.
 
 Чтобы убрать все выделения с карты, передайте в метод `setSelectedObjects()` пустой массив:
 
@@ -233,13 +233,13 @@ map.setSelectedObjects([])
 
 Если у вас есть [ключ Directions API](/ru/ios/webgl/maps/overview#nav-lvl1--Получение_ключа_доступа), вы можете прокладывать маршруты на карте.
 
-Чтобы проложить маршрут, сперва создайте объект класса [Directions](/en/ios/webgl/maps/reference/Directions): вызовите метод [makeDirections()](/en/ios/webgl/maps/reference/MapView#nav-lvl2--makeDirections) и передайте свой ключ:
+Чтобы проложить маршрут, сначала создайте объект класса [Directions](/en/ios/webgl/maps/reference/Directions): вызовите метод [makeDirections()](/en/ios/webgl/maps/reference/MapView#nav-lvl2--makeDirections) и передайте свой ключ:
 
 ```swift
 let directions = map.makeDirections(with: "Your Directions API key")
 ```
 
-Затем вы можете вызвать метод `showCarRoute()` и передать массив с координатами (до 10 точек), чтобы вычислить и отобразить оптимальный маршрут:
+Затем вызовите метод `showCarRoute()` и передайте массив с координатами (до 10 точек), чтобы вычислить и отобразить оптимальный маршрут:
 
 ```swift
 directions.showCarRoute(points: [
