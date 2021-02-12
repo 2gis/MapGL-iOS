@@ -5,8 +5,6 @@
 
 This SDK uses [WebKit](https://developer.apple.com/documentation/webkit) to render the map. If you need a more native solution (for example, if you don't want to display web content inside your app), take a look at [iOS Native SDK](https://docs.2gis.com/en/ios/native/maps/overview).
 
-Full documentation, including more usage examples and detailed descriptions of all classes and methods, can be found at [docs.2gis.com](https://docs.2gis.com/en/ios/webgl/maps/overview).
-
 
 ## Getting API Keys
 
