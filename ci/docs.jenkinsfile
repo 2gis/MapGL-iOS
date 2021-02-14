@@ -29,7 +29,7 @@ pipeline {
                                     --module-name MapGL \
                                     --project \$(pwd)/MapGL-iOS.xcodeproj \
                                     --scheme MapGL \
-                                    --sdk iphoneos \
+                                    --sdk iphonesimulator \
                                     --reference-root /${lang}/ios/webgl/maps/reference  > ${lang}.json
                             """
                         )
