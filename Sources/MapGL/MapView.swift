@@ -21,6 +21,11 @@ public class MapView : UIView {
 		static let mapDefaultCenter = CLLocationCoordinate2D(latitude: 55.750574, longitude: 37.618317)
 	}
 
+	struct MapSupport {
+		let notSupportedReason: String?
+		let notSupportedWithGoodPerformanceReason: String?
+	}
+
 	/// Optional methods that you use to receive map-related update messages.
 	public weak var delegate: MapViewDelegate?
 
@@ -39,6 +44,11 @@ public class MapView : UIView {
 	private var _mapPitch: Double = Const.mapDefaultPitch
 	private var _mapMinPitch: Double = Const.mapDefaultMinPitch
 	private var _mapMaxPitch: Double = Const.mapDefaultMaxPitch
+
+	private var _style: String?
+	private var _floorPlan: FloorPlan?
+	private var _padding: Padding?
+	private var _support: MapSupport?
 
 	// swiftlint:disable:next weak_delegate
 	private let wkDelegate = WKDelegate()
@@ -75,6 +85,10 @@ public class MapView : UIView {
 	public var pitchDidChange: ((Double) -> Void)?
 	/// Notifies of the map click event.
 	public var mapClick: ((CLLocationCoordinate2D) -> Void)?
+	/// Notifies of the floor plan change.
+	public var floorPlanDidChange: ((FloorPlan?) -> Void)?
+	/// Notifies of the isSupported change event.
+	public var isSupportedDidChange: (() -> Void)?
 
 	/// Creates the new instance of the MapView object.
 	///
@@ -214,6 +228,28 @@ public class MapView : UIView {
 		}
 	}
 
+	/// The floor plan currently displayed on the map.
+	public var floorPlan: FloorPlan? {
+		get {
+			return self._floorPlan
+		}
+		set {
+			self._floorPlan = newValue
+		}
+	}
+
+	/// Padding in density independent pixels from the different sides of the map canvas.
+	/// It influences map moving methods such as fitBounds.
+	public var padding: Padding {
+		get {
+			return _padding ?? Padding()
+		}
+		set {
+			_padding = newValue
+			self.js.setPadding(padding: newValue)
+		}
+	}
+
 	/// Initializes and shows the map. Important: all manipulations with the map must be done
 	/// after the completion handler of this method is executed.
 	///
@@ -311,6 +347,53 @@ public class MapView : UIView {
 		self.js.fetchGeographicalBounds(completion: completion)
 	}
 
+	/// Upload a style object by its ID and apply it to the map.
+	/// - Parameters:
+	///   - style: UUID of the style.
+	public func setStyle(style: String) {
+		_style = style
+		self.js.setStyle(style: style)
+	}
+
+	/// Resets all global map style variables at once. Any previously set variable will be reset.
+	public func setStyleState(styleState: [String: Bool]) {
+		self.js.setStyleState(styleState: styleState)
+	}
+
+	/// Patches global map style variables. Use this method to change a particular variable and leave others intact.
+	public func patchStyleState(styleState: [String: Bool]) {
+		self.js.patchStyleState(styleState: styleState)
+	}
+
+	/// Pans and zooms the map to contain its visible area within the specified geographical bounds.
+	/// This method also resets the map pitch and rotation to 0. But the map rotation can be kept
+	/// by applying the `considerRotation` option.
+	/// - Parameters:
+	///   - bounds: The geographical bounds to fit in.
+	///   - options: Fitting options.
+	public func fitBounds(bounds: GeographicalBounds, options: FitBoundsOptions? = nil) {
+		self.js.fitBounds(bounds: bounds, options: options)
+	}
+
+	/// Tests whether the current browser supports MapGL.
+	/// Use our raster map implementation https://api.2gis.ru/doc/maps/en/quickstart/ if not.
+	/// If returns nil value, it means that the map is not initialized.
+	public func isSupported(options: MapSupportOptions? = nil) -> Bool? {
+		if self._support != nil {
+			return self.notSupportedReason(options: options) == nil
+		}
+		return nil
+	}
+
+	/// Tests whether the current browser supports MapGL and returns the reason if not.
+	public func notSupportedReason(options: MapSupportOptions? = nil) -> String? {
+		if options?.failIfMajorPerformanceCaveat == true {
+			return _support?.notSupportedWithGoodPerformanceReason
+		} else {
+			return _support?.notSupportedReason
+		}
+	}
+
 	private func loadHtml(completion: @escaping () -> Void) {
 		self.webView.loadHTMLString(HTML.html, baseURL: nil)
 		self.wkDelegate.onInitializeMap = {
@@ -326,7 +409,7 @@ public class MapView : UIView {
 		maxBounds: GeographicalBounds? = nil,
 		completion: @escaping ((Error?) -> Void)
 	) {
-		let options: JSOptionsDictionary = [
+		var options: JSOptionsDictionary = [
 			"center": self.mapCenter,
 			"maxZoom": self.mapMaxZoom,
 			"minZoom": self.mapMinZoom,
@@ -345,6 +428,14 @@ public class MapView : UIView {
 			"maxBounds": maxBounds,
 		]
 
+		if let style = _style {
+			options["style"] = style.jsValue()
+		}
+
+		if let padding = _padding {
+			options["padding"] = padding.jsValue()
+		}
+
 		self.js.initializeMap(options: options) {
 			result in
 			switch result {
@@ -353,6 +444,7 @@ public class MapView : UIView {
 					self.zoomDidChange?(self.mapZoom)
 					self.rotationDidChange?(self.mapRotation)
 					self.pitchDidChange?(self.mapPitch)
+					self.floorPlanDidChange?(self._floorPlan)
 					completion(nil)
 				case .failure(let error):
 					completion(error)
@@ -439,6 +531,32 @@ extension MapView: JSBridgeDelegate {
 		direction.invokeCompletion(with: completionId, result: result)
 	}
 
+	func js(_ js: JSBridge, showFloorPlan floorPlanId: String, currentLevelIndex: Int, floorLevels: [String]) {
+		_floorPlan = FloorPlan(
+			id: floorPlanId,
+			levels: floorLevels,
+			currentLevelIndex: currentLevelIndex,
+			onLevelChanged: { [weak self, floorPlanId] value in
+				self?.js.setFloorPlanLevel(floorPlanId: floorPlanId, floorLevelIndex: value)
+			}
+		)
+		self.floorPlanDidChange?(_floorPlan)
+	}
+
+	func js(_ js: JSBridge, hideFloorPlan floorPlanId: String) {
+		if self.floorPlan?.id == floorPlanId {
+			_floorPlan = nil
+			self.floorPlanDidChange?(nil)
+		}
+	}
+
+	func js(_ js: JSBridge, supportedReason notSupportedReason: String?, notSupportedWithGoodPerformanceReason: String?) {
+		self._support = MapSupport(
+			notSupportedReason: notSupportedReason,
+			notSupportedWithGoodPerformanceReason: notSupportedWithGoodPerformanceReason
+		)
+		self.isSupportedDidChange?()
+	}
 }
 
 // MARK: - IObjectDelegate

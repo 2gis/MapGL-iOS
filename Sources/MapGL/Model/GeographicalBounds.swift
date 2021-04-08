@@ -16,6 +16,31 @@ public struct GeographicalBounds: Decodable {
 		self.northEast = northEast
 		self.southWest = southWest
 	}
+
+	/// Extend the bounds to include a given point.
+	public func extend(point: CLLocationCoordinate2D) -> GeographicalBounds {
+		return self.extend(points: [point])
+	}
+
+	/// Extend the bounds to include given points.
+	public func extend(points: [CLLocationCoordinate2D]) -> GeographicalBounds {
+		var minLon = southWest.longitude
+		var minLat = southWest.latitude
+		var maxLon = northEast.longitude
+		var maxLat = northEast.latitude
+
+		for point in points {
+			minLon = min(minLon, point.longitude)
+			minLat = min(minLat, point.latitude)
+			maxLon = max(maxLon, point.longitude)
+			maxLat = max(maxLat, point.latitude)
+		}
+
+		return GeographicalBounds(
+			northEast: CLLocationCoordinate2D(latitude: minLat, longitude: minLon),
+			southWest: CLLocationCoordinate2D(latitude: maxLat, longitude: maxLon)
+		)
+	}
 }
 
 extension GeographicalBounds: IJSOptions {

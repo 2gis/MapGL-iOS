@@ -93,3 +93,14 @@ extension CGSize: IJSValue {
 extension CGPoint: IJSValue {
 	func jsValue() -> String { "[\(self.x),\(self.y)]" }
 }
+
+extension Dictionary: IJSValue where Key == String, Value: IJSValue {
+	func jsValue() -> String {
+		let keyValues = self.map { (key, value) -> String in
+			"""
+			"\(key)": \(value)
+			"""
+		}.joined(separator: ",")
+		return  "{" + keyValues + "}"
+	}
+}

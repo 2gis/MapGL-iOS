@@ -181,6 +181,49 @@ class JSBridge : NSObject {
 		self.evaluateJS(js)
 	}
 
+	func setStyle(style: String) {
+		let js = """
+		window.setStyle(\(style.jsValue()));
+		"""
+		self.evaluateJS(js)
+	}
+
+	func setStyleState(styleState: [String: Bool]) {
+		let styleState = styleState.mapValues { value in value.jsValue() }.jsValue()
+		let js = """
+		window.setStyleState(\(styleState));
+		"""
+		self.evaluateJS(js)
+	}
+
+	func patchStyleState(styleState: [String: Bool]) {
+		let styleState = styleState.mapValues { value in value.jsValue() }.jsValue()
+		let js = """
+		window.patchStyleState(\(styleState));
+		"""
+		self.evaluateJS(js)
+	}
+
+	func setPadding(padding: Padding) {
+		let js = """
+		window.setPadding(\(padding.jsValue()));
+		"""
+		self.evaluateJS(js)
+	}
+
+	func setFloorPlanLevel(floorPlanId: String, floorLevelIndex: Int) {
+		let js = """
+		window.setFloorPlanLevel(\(floorPlanId.jsValue()), \(floorLevelIndex));
+		"""
+		self.evaluateJS(js)
+	}
+
+	func fitBounds(bounds: GeographicalBounds, options: FitBoundsOptions?) {
+		let js = """
+		window.fitBounds(\(bounds.jsValue()), \(options.jsValue()));
+		"""
+		self.evaluateJS(js)
+	}
 }
 
 extension JSBridge: WKScriptMessageHandler {
@@ -268,6 +311,34 @@ extension JSBridge: WKScriptMessageHandler {
 				}
 				let mapglError: MapGLError? = error.isEmpty ? nil : MapGLError(text: error)
 				delegate.js(self, carRouteDidFinishWithId: directionId, completionId: completionId, error: mapglError)
+			case "floorPlanShow":
+				guard let data = body["value"] as? [String: Any],
+					  let id = data["floorPlanId"] as? String,
+					  let currentLevelIndex = data["currentFloorLevelIndex"] as? Int,
+					  let levelObjects = data["floorLevels"] as? [[String: Any]] else {
+					assertionFailure()
+					return
+				}
+
+				let levels = levelObjects.compactMap({ $0["floorLevelName"] as? String })
+				delegate.js(self, showFloorPlan: id, currentLevelIndex: currentLevelIndex, floorLevels: levels)
+			case "floorPlanHide":
+				guard let data = body["value"] as? [String: Any],
+					  let id = data["floorPlanId"] as? String else {
+					assertionFailure()
+					return
+				}
+
+				delegate.js(self, hideFloorPlan: id)
+			case "supportChanged":
+				let data = body["value"] as? [String: String]
+				let notSupportedReason = data?["notSupportedReason"]
+				let notSupportedWithGoodPerformanceReason = data?["notSupportedWithGoodPerformanceReason"]
+				delegate.js(
+					self,
+					supportedReason: notSupportedReason,
+					notSupportedWithGoodPerformanceReason: notSupportedWithGoodPerformanceReason
+				)
 			default:
 				assertionFailure()
 		}

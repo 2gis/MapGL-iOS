@@ -39,6 +39,13 @@ final class HelloVC: UIViewController {
 		return label
 	}()
 
+	private lazy var mapFloorPlanLabel: UILabel = {
+		let label = UILabel()
+		label.font = UIFont.systemFont(ofSize: 8)
+		label.textColor = .black
+		return label
+	}()
+
 	private lazy var zoomInButton: UIButton = {
 		let button = UIButton(type: .custom)
 		button.setImage(UIImage(named: "zoomInButton"), for: .normal)
@@ -97,6 +104,16 @@ final class HelloVC: UIViewController {
 			self?.mapPitchLabel.text = "Map pitch: \(pitch)"
 		}
 
+		self.map.floorPlanDidChange = { [weak self] floorPlan in
+			if let currentLevelIndex = floorPlan?.currentLevelIndex,
+			   self?.map.floorPlan?.currentLevelIndex == currentLevelIndex {
+				self?.mapFloorPlanLabel.text = "Floor plan: \(currentLevelIndex)"
+			}
+			else {
+				self?.mapFloorPlanLabel.text = "Floor plan: hidden."
+			}
+		}
+
 		self.cardView.onClose = {
 			[weak self] in
 			guard let self = self else { return }
@@ -107,7 +124,7 @@ final class HelloVC: UIViewController {
 		self.map.show(
 			apiKey: Constants.apiKey,
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-			zoom: 16,
+			zoom: 18,
 			autoHideOSMCopyright: true,
 			maxBounds: GeographicalBounds(
 				northEast: CLLocationCoordinate2D(latitude: 36, longitude: 57),
@@ -323,6 +340,7 @@ final class HelloVC: UIViewController {
 		self.view.addSubview(self.mapZoomLabel)
 		self.view.addSubview(self.mapRotationLabel)
 		self.view.addSubview(self.mapPitchLabel)
+		self.view.addSubview(self.mapFloorPlanLabel)
 		self.view.addSubview(self.zoomInButton)
 		self.view.addSubview(self.zoomOutButton)
 		self.view.addSubview(self.locationButton)
@@ -333,6 +351,7 @@ final class HelloVC: UIViewController {
 		self.mapZoomLabel.translatesAutoresizingMaskIntoConstraints = false
 		self.mapRotationLabel.translatesAutoresizingMaskIntoConstraints = false
 		self.mapPitchLabel.translatesAutoresizingMaskIntoConstraints = false
+		self.mapFloorPlanLabel.translatesAutoresizingMaskIntoConstraints = false
 		self.zoomInButton.translatesAutoresizingMaskIntoConstraints = false
 		self.zoomOutButton.translatesAutoresizingMaskIntoConstraints = false
 		self.menuButton.translatesAutoresizingMaskIntoConstraints = false
@@ -357,6 +376,11 @@ final class HelloVC: UIViewController {
 		NSLayoutConstraint.activate([
 			self.mapPitchLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
 			self.mapPitchLabel.topAnchor.constraint(equalTo: self.mapRotationLabel.bottomAnchor, constant: 4),
+			])
+
+		NSLayoutConstraint.activate([
+			self.mapFloorPlanLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLeadingAnchor, constant: 8),
+			self.mapFloorPlanLabel.topAnchor.constraint(equalTo: self.mapPitchLabel.bottomAnchor, constant: 4),
 			])
 
 		NSLayoutConstraint.activate([
@@ -424,7 +448,7 @@ extension HelloVC: MapViewDelegate {
 	func mapView(_ mapView: MapView, didUpdateUserLocation location: CLLocation?) {
 		if waitForUserLocation, let location = location {
 			self.map.mapCenter = location.coordinate
-			self.map.mapZoom = 16
+			self.map.mapZoom = 20
 		}
 		waitForUserLocation = false
 	}
