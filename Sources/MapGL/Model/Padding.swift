@@ -2,18 +2,18 @@ import Foundation
 import UIKit
 
 /// Padding in pixels from the different sides of the map canvas.
-struct Padding {
+public struct Padding {
 
-	let left: CGFloat
-	let top: CGFloat
-	let right: CGFloat
-	let bottom: CGFloat
+	public let left: CGFloat
+	public let top: CGFloat
+	public let right: CGFloat
+	public let bottom: CGFloat
 
 	init(
-		left: CGFloat,
-		top: CGFloat,
-		right: CGFloat,
-		bottom: CGFloat
+		left: CGFloat = 0.0,
+		top: CGFloat = 0.0,
+		right: CGFloat = 0.0,
+		bottom: CGFloat = 0.0
 	) {
 		self.left = left
 		self.top = top
@@ -21,7 +21,7 @@ struct Padding {
 		self.bottom = bottom
 	}
 
-	init(insets: UIEdgeInsets) {
+	public init(insets: UIEdgeInsets) {
 		self.left = insets.left
 		self.top = insets.top
 		self.right = insets.right
