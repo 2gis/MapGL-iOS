@@ -27,7 +27,7 @@ public class MapView : UIView {
 		case unknown
 		/// Map is initialized and fully supported
 		case supported
-		/// Map is initialized and not supported for any reason
+		/// Map is not supported for any reason
 		case notSupported(reason: NotSupportedReason)
 	}
 
