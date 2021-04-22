@@ -21,15 +21,27 @@ public class MapView : UIView {
 		static let mapDefaultCenter = CLLocationCoordinate2D(latitude: 55.750574, longitude: 37.618317)
 	}
 
-	public struct MapSupport {
-		let notSupportedReason: String?
-		let notSupportedWithGoodPerformanceReason: String?
+	/// Map support options
+	public enum MapSupport: Equatable {
+		/// Map is not initialized yet
+		case unknown
+		/// Map is initialized and fully supported
+		case supported
+		/// Map is initialized and not supported for any reason
+		case notSupported(reason: NotSupportedReason)
 	}
 
-	public enum IsSupportedResult {
-		case supported
-		case notSupported
-		case unknown
+	/// Map not supported options
+	public struct NotSupportedReason: Equatable {
+		/// Causes `support` to return notSupported for any reason
+		public let notSupportedReason: String?
+		/// Causes `support` to return notSupported if performance of MapGL would be
+		/// dramatically worse than expected (i.e. a software renderer would be used)
+		public let notSupportedWithGoodPerformanceReason: String?
+
+		var isSupported: Bool {
+			self.notSupportedReason == nil && self.notSupportedWithGoodPerformanceReason == nil
+		}
 	}
 
 	/// Notifies of the map geographical center change.
@@ -46,8 +58,18 @@ public class MapView : UIView {
 	public var mapClick: ((CLLocationCoordinate2D) -> Void)?
 	/// Notifies of the floor plan change.
 	public var floorPlanDidChange: ((FloorPlan?) -> Void)?
-	/// Notifies of the isSupported change event.
-	public var isSupportedDidChange: (() -> Void)?
+	/// Notifies of the map support changed.
+	public var mapSupportDidChange: ((MapSupport) -> Void)?
+
+	/// Tests whether the current browser supports MapGL.
+	/// Use our raster map implementation https://api.2gis.ru/doc/maps/en/quickstart/ if not.
+	/// If returns `.unknown` value, it means that the map is not initialized.
+	public private(set) var support: MapSupport = .unknown {
+		didSet {
+			guard self.support != oldValue else { return }
+			self.mapSupportDidChange?(self.support)
+		}
+	}
 
 	/// Optional methods that you use to receive map-related update messages.
 	public weak var delegate: MapViewDelegate?
@@ -71,7 +93,6 @@ public class MapView : UIView {
 	private var _style: String?
 	private var _floorPlan: FloorPlan?
 	private var _padding: Padding?
-	private var _support: MapSupport?
 
 	// swiftlint:disable:next weak_delegate
 	private let wkDelegate = WKDelegate()
@@ -415,25 +436,6 @@ public class MapView : UIView {
 		self.js.patchStyleState(styleState: styleState)
 	}
 
-	/// Tests whether the current browser supports MapGL.
-	/// Use our raster map implementation https://api.2gis.ru/doc/maps/en/quickstart/ if not.
-	/// If returns nil value, it means that the map is not initialized.
-	public func isSupported(options: MapSupportOptions? = nil) -> IsSupportedResult {
-		if self._support != nil {
-			return self.notSupportedReason(options: options) == nil ? .supported : .notSupported
-		}
-		return .unknown
-	}
-
-	/// Tests whether the current browser supports MapGL and returns the reason if not.
-	public func notSupportedReason(options: MapSupportOptions? = nil) -> String? {
-		if options?.failIfMajorPerformanceCaveat == true {
-			return _support?.notSupportedWithGoodPerformanceReason
-		} else {
-			return _support?.notSupportedReason
-		}
-	}
-
 	/// Pans and zooms the map to contain its visible area within the specified geographical bounds.
 	/// This method also resets the map pitch and rotation to 0.
 	/// But the map rotation can be saved by option considerRotation
@@ -637,11 +639,15 @@ extension MapView: JSBridgeDelegate {
 	}
 
 	func js(_ js: JSBridge, supportedReason notSupportedReason: String?, notSupportedWithGoodPerformanceReason: String?) {
-		self._support = MapSupport(
+		let reason = NotSupportedReason(
 			notSupportedReason: notSupportedReason,
 			notSupportedWithGoodPerformanceReason: notSupportedWithGoodPerformanceReason
 		)
-		self.isSupportedDidChange?()
+		if reason.isSupported {
+			self.support = .supported
+		} else {
+			self.support = .notSupported(reason: reason)
+		}
 	}
 
 }

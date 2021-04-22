@@ -133,6 +133,10 @@ final class HelloVC: UIViewController {
 		}
 		assert(!Constants.apiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
 
+		self.map.mapSupportDidChange = { support in
+			print("Map support did change to: \(support)")
+		}
+
 		self.map.show(
 			apiKey: Constants.apiKey,
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),

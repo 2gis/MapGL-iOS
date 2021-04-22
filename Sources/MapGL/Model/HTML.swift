@@ -266,8 +266,7 @@ enum HTML {
 
 		} catch(e) {
 			const support = {
-				notSupportedReason: e.toString(),
-				notSupportedWithGoodPerformanceReason: e.toString()
+				notSupportedReason: e.toString()
 			}
 			window.webkit.messageHandlers.dgsMessage.postMessage({
 				type: "supportChanged",
