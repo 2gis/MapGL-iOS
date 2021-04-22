@@ -21,6 +21,29 @@ public class MapView : UIView {
 		static let mapDefaultCenter = CLLocationCoordinate2D(latitude: 55.750574, longitude: 37.618317)
 	}
 
+	/// Map support options
+	public enum MapSupport: Equatable {
+		/// Map is not initialized yet
+		case unknown
+		/// Map is initialized and fully supported
+		case supported
+		/// Map is not supported for any reason
+		case notSupported(reason: NotSupportedReason)
+	}
+
+	/// Map not supported options
+	public struct NotSupportedReason: Equatable {
+		/// Causes `support` to return notSupported for any reason
+		public let notSupportedReason: String?
+		/// Causes `support` to return notSupported if performance of MapGL would be
+		/// dramatically worse than expected (i.e. a software renderer would be used)
+		public let notSupportedWithGoodPerformanceReason: String?
+
+		var isSupported: Bool {
+			self.notSupportedReason == nil && self.notSupportedWithGoodPerformanceReason == nil
+		}
+	}
+
 	/// Notifies of the map geographical center change.
 	public var centerDidChange: ((CLLocationCoordinate2D) -> Void)?
 	/// Notifies of the map zoom level change.
@@ -33,6 +56,20 @@ public class MapView : UIView {
 	public var pitchDidChange: ((Double) -> Void)?
 	/// Notifies of the map click event.
 	public var mapClick: ((CLLocationCoordinate2D) -> Void)?
+	/// Notifies of the floor plan change.
+	public var floorPlanDidChange: ((FloorPlan?) -> Void)?
+	/// Notifies of the map support changed.
+	public var mapSupportDidChange: ((MapSupport) -> Void)?
+
+	/// Tests whether the current browser supports MapGL.
+	/// Use our raster map implementation https://api.2gis.ru/doc/maps/en/quickstart/ if not.
+	/// If returns `.unknown` value, it means that the map is not initialized.
+	public private(set) var support: MapSupport = .unknown {
+		didSet {
+			guard self.support != oldValue else { return }
+			self.mapSupportDidChange?(self.support)
+		}
+	}
 
 	/// Optional methods that you use to receive map-related update messages.
 	public weak var delegate: MapViewDelegate?
@@ -52,6 +89,10 @@ public class MapView : UIView {
 	private var _mapPitch: Double = Const.mapDefaultPitch
 	private var _mapMinPitch: Double = Const.mapDefaultMinPitch
 	private var _mapMaxPitch: Double = Const.mapDefaultMaxPitch
+
+	private var _style: String?
+	private var _floorPlan: FloorPlan?
+	private var _padding: Padding?
 
 	// swiftlint:disable:next weak_delegate
 	private let wkDelegate = WKDelegate()
@@ -235,6 +276,28 @@ public class MapView : UIView {
 		}
 	}
 
+	/// The floor plan currently displayed on the map.
+	public var floorPlan: FloorPlan? {
+		get {
+			return self._floorPlan
+		}
+		set {
+			self._floorPlan = newValue
+		}
+	}
+
+	/// Padding in density independent pixels from the different sides of the map canvas.
+	/// It influences map moving methods such as fitBounds.
+	public var padding: Padding {
+		get {
+			return _padding ?? Padding()
+		}
+		set {
+			_padding = newValue
+			self.js.setPadding(padding: newValue)
+		}
+	}
+
 	/// Initializes and shows the map. Important: all manipulations with the map must be done
 	/// after the completion handler of this method is executed.
 	///
@@ -355,6 +418,24 @@ public class MapView : UIView {
 		self.js.fetchGeographicalBounds(completion: completion)
 	}
 
+	/// Upload a style object by its ID and apply it to the map.
+	/// - Parameters:
+	///   - style: UUID of the style.
+	public func setStyle(style: String) {
+		_style = style
+		self.js.setStyle(style: style)
+	}
+
+	/// Resets all global map style variables at once. Any previously set variable will be reset.
+	public func setStyleState(styleState: [String: Bool]) {
+		self.js.setStyleState(styleState: styleState)
+	}
+
+	/// Patches global map style variables. Use this method to change a particular variable and leave others intact.
+	public func patchStyleState(styleState: [String: Bool]) {
+		self.js.patchStyleState(styleState: styleState)
+	}
+
 	/// Pans and zooms the map to contain its visible area within the specified geographical bounds.
 	/// This method also resets the map pitch and rotation to 0.
 	/// But the map rotation can be saved by option considerRotation
@@ -412,6 +493,14 @@ public class MapView : UIView {
 			options["styleZoom"] = self.styleZoom
 		}
 
+		if let style = _style {
+			options["style"] = style.jsValue()
+		}
+
+		if let padding = _padding {
+			options["padding"] = padding.jsValue()
+		}
+
 		self.js.initializeMap(options: options) { [weak self] result in
 			guard let self = self else { return }
 			switch result {
@@ -419,6 +508,7 @@ public class MapView : UIView {
 					self.centerDidChange?(self.mapCenter)
 					self.rotationDidChange?(self.mapRotation)
 					self.pitchDidChange?(self.mapPitch)
+					self.floorPlanDidChange?(self._floorPlan)
 
 					if shouldFetchZoom {
 						self.js.fetchMapZoom {
@@ -527,6 +617,37 @@ extension MapView: JSBridgeDelegate {
 			}
 		}
 		direction.invokeCompletion(with: completionId, result: result)
+	}
+
+	func js(_ js: JSBridge, showFloorPlan floorPlanId: String, currentLevelIndex: Int, floorLevels: [String]) {
+		_floorPlan = FloorPlan(
+			id: floorPlanId,
+			levels: floorLevels,
+			currentLevelIndex: currentLevelIndex,
+			onLevelChanged: { [weak self, floorPlanId] value in
+				self?.js.setFloorPlanLevel(floorPlanId: floorPlanId, floorLevelIndex: value)
+			}
+		)
+		self.floorPlanDidChange?(_floorPlan)
+	}
+
+	func js(_ js: JSBridge, hideFloorPlan floorPlanId: String) {
+		if self.floorPlan?.id == floorPlanId {
+			_floorPlan = nil
+			self.floorPlanDidChange?(nil)
+		}
+	}
+
+	func js(_ js: JSBridge, supportedReason notSupportedReason: String?, notSupportedWithGoodPerformanceReason: String?) {
+		let reason = NotSupportedReason(
+			notSupportedReason: notSupportedReason,
+			notSupportedWithGoodPerformanceReason: notSupportedWithGoodPerformanceReason
+		)
+		if reason.isSupported {
+			self.support = .supported
+		} else {
+			self.support = .notSupported(reason: reason)
+		}
 	}
 
 }

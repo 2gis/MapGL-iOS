@@ -12,5 +12,8 @@ protocol JSBridgeDelegate : AnyObject {
 	func js(_ js: JSBridge, didClickObjectWithId objectId: String)
 	func js(_ js: JSBridge, didClickClusterWithId clusterId: String, markerIds: [String])
 	func js(_ js: JSBridge, carRouteDidFinishWithId directionId: String, completionId: String, error: MapGLError?)
+	func js(_ js: JSBridge, showFloorPlan floorPlanId: String, currentLevelIndex: Int, floorLevels: [String])
+	func js(_ js: JSBridge, hideFloorPlan floorPlanId: String)
+	func js(_ js: JSBridge, supportedReason notSupportedReason: String?, notSupportedWithGoodPerformanceReason: String?)
 
 }

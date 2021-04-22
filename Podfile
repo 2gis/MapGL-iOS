@@ -1,5 +1,6 @@
 use_modular_headers!
 platform :ios, '10.0'
+source 'https://github.com/CocoaPods/Specs.git'
 
 project 'Example/HelloSDK.xcodeproj'
 

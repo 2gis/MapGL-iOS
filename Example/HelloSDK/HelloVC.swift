@@ -47,6 +47,13 @@ final class HelloVC: UIViewController {
 		return label
 	}()
 
+	private lazy var mapFloorPlanLabel: UILabel = {
+		let label = UILabel()
+		label.font = UIFont.systemFont(ofSize: 8)
+		label.textColor = .black
+		return label
+	}()
+
 	private lazy var zoomInButton: UIButton = {
 		let button = UIButton(type: .custom)
 		button.setImage(UIImage(named: "zoomInButton"), for: .normal)
@@ -109,6 +116,15 @@ final class HelloVC: UIViewController {
 			self?.mapPitchLabel.text = "Map pitch: \(pitch)"
 		}
 
+		self.map.floorPlanDidChange = { [weak self] floorPlan in
+			if let currentLevelIndex = floorPlan?.currentLevelIndex,
+			   self?.map.floorPlan?.currentLevelIndex == currentLevelIndex {
+				self?.mapFloorPlanLabel.text = "Floor plan: \(currentLevelIndex)"
+			} else {
+				self?.mapFloorPlanLabel.text = "Floor plan: hidden."
+			}
+		}
+
 		self.cardView.onClose = {
 			[weak self] in
 			guard let self = self else { return }
@@ -117,10 +133,14 @@ final class HelloVC: UIViewController {
 		}
 		assert(!Constants.apiKey.isEmpty, "contact us mapgl@2gis.com if you need one")
 
+		self.map.mapSupportDidChange = { support in
+			print("Map support did change to: \(support)")
+		}
+
 		self.map.show(
 			apiKey: Constants.apiKey,
 			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-			styleZoom: 16,
+			styleZoom: 18,
 			autoHideOSMCopyright: true,
 			maxBounds: GeographicalBounds(
 				northEast: CLLocationCoordinate2D(latitude: 36, longitude: 57),
@@ -360,6 +380,7 @@ final class HelloVC: UIViewController {
 			self.mapStyleZoomLabel,
 			self.mapRotationLabel,
 			self.mapPitchLabel,
+			self.mapFloorPlanLabel,
 		])
 		labelStack.distribution = .equalSpacing
 		labelStack.layer.backgroundColor = UIColor.white.withAlphaComponent(0.2).cgColor
@@ -438,7 +459,7 @@ extension HelloVC: MapViewDelegate {
 	func mapView(_ mapView: MapView, didUpdateUserLocation location: CLLocation?) {
 		if waitForUserLocation, let location = location {
 			self.map.mapCenter = location.coordinate
-			self.map.mapZoom = 16
+			self.map.mapZoom = 18
 		}
 		waitForUserLocation = false
 	}
