@@ -172,6 +172,9 @@ enum HTML {
 			window.setPadding = function (padding) {
 				window.map.setPadding(padding);
 			}
+			window.setLanguage = function (language) {
+				window.map.setLanguage(language);
+			}
 			window.setFloorPlanLevel = function (floorPlanId, floorLevelIndex) {
 				window.map.setFloorPlanLevel(floorPlanId, floorLevelIndex);
 			}

@@ -1,6 +1,6 @@
 PODS:
-  - MapGL (0.1.16)
-  - MapGL/Tests (0.1.16)
+  - MapGL (0.1.17)
+  - MapGL/Tests (0.1.17)
   - SwiftLint (0.39.2)
 
 DEPENDENCIES:
@@ -17,7 +17,7 @@ EXTERNAL SOURCES:
     :path: "./"
 
 SPEC CHECKSUMS:
-  MapGL: 5b8074312b8018abf1869f64eee644838d82d450
+  MapGL: 78f1a1df3612b999035bfd877c9ec3eaced6ac26
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
 PODFILE CHECKSUM: d89212324124749394d4b60b198462e45ea19e56
