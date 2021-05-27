@@ -93,6 +93,7 @@ public class MapView : UIView {
 	private var _style: String?
 	private var _floorPlan: FloorPlan?
 	private var _padding: Padding?
+	private var _language: String = "en"
 
 	// swiftlint:disable:next weak_delegate
 	private let wkDelegate = WKDelegate()
@@ -298,6 +299,17 @@ public class MapView : UIView {
 		}
 	}
 
+	/// The desired map language. Short string code "en", "ru", etc.
+	public var language: String {
+		get {
+			return _language
+		}
+		set {
+			_language = newValue
+			self.js.setLanguage(language: newValue)
+		}
+	}
+
 	/// Initializes and shows the map. Important: all manipulations with the map must be done
 	/// after the completion handler of this method is executed.
 	///
@@ -487,6 +499,7 @@ public class MapView : UIView {
 			"disablePitchByUserInteraction": disablePitchByUserInteraction,
 			"maxBounds": maxBounds,
 			"style": mapStyleId,
+			"lang": self.language,
 		]
 
 		if !shouldFetchStyleZoom {

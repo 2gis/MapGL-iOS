@@ -4,9 +4,37 @@ import MapGL
 
 final class HelloVC: UIViewController {
 
+	private enum Language: UInt {
+		case english
+		case russian
+
+		mutating func next() {
+			self = self.nextLanguage
+		}
+
+		var nextLanguage: Language {
+			Language(rawValue: self.rawValue + 1) ?? .english
+		}
+
+		var description: String {
+			switch self {
+				case .english: return "English"
+				case .russian: return "Russian"
+			}
+		}
+
+		var code: String {
+			switch self {
+				case .english: return "en"
+				case .russian: return "ru"
+			}
+		}
+	}
+
 	private static let cardViewHeight: CGFloat = 100
 	private var waitForUserLocation: Bool = false
 	private var mapStyle: MapStyle = .dark
+	private var mapLanguage: Language = .english
 
 	private lazy var map: MapView = {
 		return MapView(frame: .zero)
@@ -232,6 +260,13 @@ final class HelloVC: UIViewController {
 			self.mapStyle.toggle()
 			self.map.setStyle(by: self.mapStyle.rawValue)
 		}
+		let changeLanguage = UIAlertAction(
+			title: "Change language to \(self.mapLanguage.nextLanguage.description)",
+			style: .default
+		) { _ in
+			self.mapLanguage.next()
+			self.map.language = self.mapLanguage.code
+		}
 		let showMarkerAction = UIAlertAction(title: "Add Marker", style: .default) { _ in
 			let marker = Marker(
 				coordinates: self.map.mapCenter,
@@ -333,6 +368,7 @@ final class HelloVC: UIViewController {
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 		alert.add(actions: [
 			changeTheme,
+			changeLanguage,
 			self.routeAction(),
 			self.pedestrianRouteAction(),
 			showBuilding,

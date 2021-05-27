@@ -204,6 +204,13 @@ class JSBridge : NSObject {
 		self.evaluateJS(js)
 	}
 
+	func setLanguage(language: String) {
+		let js = """
+		window.setLanguage(\(language.jsValue()));
+		"""
+		self.evaluateJS(js)
+	}
+
 	func setFloorPlanLevel(floorPlanId: String, floorLevelIndex: Int) {
 		let js = """
 		window.setFloorPlanLevel(\(floorPlanId.jsValue()), \(floorLevelIndex));
