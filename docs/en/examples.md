@@ -13,13 +13,13 @@ enum Constants {
 
 ## Creating a map widget
 
-To display a map, first add a [MapView](/en/ios/webgl/maps/reference/MapView) to your interface. MapView is inherited from [UIView](https://developer.apple.com/documentation/uikit/uiview), therefore you can use Storyboards, XIBs, or create it programmatically:
+To display a map, first add a [MapView](/en/ios/mapgl/maps/reference/MapView) to your interface. MapView is inherited from [UIView](https://developer.apple.com/documentation/uikit/uiview), therefore you can use Storyboards, XIBs, or create it programmatically:
 
 ```swift
 let map = MapView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
 ```
 
-Then, initialize the widget by calling the `show()` method and passing your API key. You can also pass the initial coordinates and the required zoom level. See the [API Reference](/en/ios/webgl/maps/reference/MapView#nav-lvl2--show) for the full list of options.
+Then, initialize the widget by calling the `show()` method and passing your API key. You can also pass the initial coordinates and the required zoom level. See the [API Reference](/en/ios/mapgl/maps/reference/MapView#nav-lvl2--show) for the full list of options.
 
 For example, the following code will show the map of Moscow centered around the Kremlin:
 
@@ -43,7 +43,7 @@ map.show(apiKey: "Your API key") { _ in
 
 ## Adding a marker
 
-You can add any number of markers to a map. To add a marker, instantiate the [Marker](/en/ios/webgl/maps/reference/Marker) class and pass the object to the `add()` method after the map was initialized. The only required parameter is the coordinates of the marker.
+You can add any number of markers to a map. To add a marker, instantiate the [Marker](/en/ios/mapgl/maps/reference/Marker) class and pass the object to the `add()` method after the map was initialized. The only required parameter is the coordinates of the marker.
 
 ```swift
 map.show(apiKey: "Your API key") { _ in
@@ -54,7 +54,7 @@ map.show(apiKey: "Your API key") { _ in
 
 ![kremlin-marker](https://user-images.githubusercontent.com/57934605/89265704-4e705800-d64e-11ea-9c9e-1db831dcf34e.png)
 
-Additionally, you can change the marker's appearance. You can specify the `image` (as [UIImage](https://developer.apple.com/documentation/uikit/uiimage)) and the `anchor` (where the image's hotspot should be located). See the [API Reference](/en/ios/webgl/maps/reference/Marker#nav-lvl2--anchor) for more information on how to specify the anchor.
+Additionally, you can change the marker's appearance. You can specify the `image` (as [UIImage](https://developer.apple.com/documentation/uikit/uiimage)) and the `anchor` (where the image's hotspot should be located). See the [API Reference](/en/ios/mapgl/maps/reference/Marker#nav-lvl2--anchor) for more information on how to specify the anchor.
 
 ![anchor](https://user-images.githubusercontent.com/57934605/89265659-40223c00-d64e-11ea-9b66-4525dfb94329.png)
 
@@ -75,7 +75,7 @@ marker.show()
 
 ## Adding a label
 
-You can add multiple text labels to a map. To add a label, instantiate the [Label](/en/ios/webgl/maps/reference/Label) class by specifying the coordinates, the label text, the text color (as [UIColor](https://developer.apple.com/documentation/uikit/UIColor)), and the font size. Then, pass the resulting object to the `add()` method of the map:
+You can add multiple text labels to a map. To add a label, instantiate the [Label](/en/ios/mapgl/maps/reference/Label) class by specifying the coordinates, the label text, the text color (as [UIColor](https://developer.apple.com/documentation/uikit/UIColor)), and the font size. Then, pass the resulting object to the `add()` method of the map:
 
 ```swift
 map.show(apiKey: "Your API key") { _ in
@@ -104,9 +104,9 @@ Apart from image markers and text labels, you can draw custom shapes on a map, s
 
 ### Drawing a line
 
-To draw a line on a map, instantiate the [Polyline](/en/ios/webgl/maps/reference/Polyline) class and pass the resulting object to the `add()` method of the map.
+To draw a line on a map, instantiate the [Polyline](/en/ios/mapgl/maps/reference/Polyline) class and pass the resulting object to the `add()` method of the map.
 
-`Polyline` takes two types of parameters: coordinates of line points (array of [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/CLLocationCoordinate2D)) and up to three [PolylineStyle](/en/ios/webgl/maps/reference/PolylineStyle) objects to stylize the line.
+`Polyline` takes two types of parameters: coordinates of line points (array of [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/CLLocationCoordinate2D)) and up to three [PolylineStyle](/en/ios/mapgl/maps/reference/PolylineStyle) objects to stylize the line.
 
 To put it simply, a line can consist of up to three sub-lines drawn under each other. Each subline is customized by a separate parameter (`style1` for the topmost subline, `style2` for the middle subline, and `style3` for the bottommost subline). `style2` and `style3` can be omitted to draw a line without sublines.
 
@@ -148,7 +148,7 @@ In this example, there is a white line drawn underneath the blue line, and a bla
 
 ### Drawing a circle
 
-To draw a circle on a map, instantiate the [Circle](/en/ios/webgl/maps/reference/Circle) class and pass the resulting object to the `add()` method of the map.
+To draw a circle on a map, instantiate the [Circle](/en/ios/mapgl/maps/reference/Circle) class and pass the resulting object to the `add()` method of the map.
 
 `Circle` takes several parameters. To specify the center coordinates and size of the circle, specify `center` and `radius` (in meters) respectively. To specify fill color, use `fillColor` (as [UIColor](https://developer.apple.com/documentation/uikit/UIColor)). To specify stroke color and width, use `strokeColor` and `strokeWidth`. Finally, to specify the Z-order, use the `z` parameter.
 
@@ -168,7 +168,7 @@ map.add(circle)
 
 ### Drawing a polygon
 
-To draw a polygon on a map, instantiate the [Polygon](/en/ios/webgl/maps/reference/Polygon) class and pass the resulting object to the `add()` method of the map.
+To draw a polygon on a map, instantiate the [Polygon](/en/ios/mapgl/maps/reference/Polygon) class and pass the resulting object to the `add()` method of the map.
 
 `Polygon` takes several parameters. To specify the coordinates of polygon vertices, specify the `points` parameter as an array of [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/CLLocationCoordinate2D). To specify fill color, use `fillColor` (as [UIColor](https://developer.apple.com/documentation/uikit/UIColor)). To specify stroke color and width, use `strokeColor` and `strokeWidth`. Finally, to specify the Z-order, use the `z` parameter.
 
@@ -199,7 +199,7 @@ map.mapClick = { coordinates in
 }
 ```
 
-To get the ID of the tapped object (building, road, marker, custom shape, etc.), implement the [optional method](https://docs.swift.org/swift-book/LanguageGuide/Protocols.html#ID284) of the [MapViewDelegate](/en/ios/webgl/maps/reference/MapViewDelegate) protocol:
+To get the ID of the tapped object (building, road, marker, custom shape, etc.), implement the [optional method](https://docs.swift.org/swift-book/LanguageGuide/Protocols.html#ID284) of the [MapViewDelegate](/en/ios/mapgl/maps/reference/MapViewDelegate) protocol:
 
 ```swift
 func mapView(_ mapView: MapView, didSelectObject object: MapObject) {
@@ -231,9 +231,9 @@ map.setSelectedObjects([])
 
 ## Routes
 
-If you have a [Directions API key](/en/ios/webgl/maps/overview#getting-an-access-key), you can draw routes on a map.
+If you have a [Directions API key](/en/ios/mapgl/maps/overview#getting-an-access-key), you can draw routes on a map.
 
-To draw a route, first create a [Directions](/en/ios/webgl/maps/reference/Directions) object by calling the [makeDirections()](/en/ios/webgl/maps/reference/MapView#nav-lvl2--makeDirections) method and passing your key:
+To draw a route, first create a [Directions](/en/ios/mapgl/maps/reference/Directions) object by calling the [makeDirections()](/en/ios/mapgl/maps/reference/MapView#nav-lvl2--makeDirections) method and passing your key:
 
 ```swift
 let directions = map.makeDirections(with: "Your Directions API key")

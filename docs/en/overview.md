@@ -1,10 +1,10 @@
-# Overview
+# MapGL iOS API
 
 ## Introduction
 
-2GIS iOS MapGL is an SDK that allows you to add a [2GIS](https://2gis.ae/) map to your iOS application. It can be used to display the map in your interface, add custom markers and labels to it, draw routes and custom shapes, and highlight various objects on the map, such as buildings, roads, and others.
+MapGL iOS API is a wrapper around [MapGL API](/en/mapgl/overview) that allows you to add a [2GIS map](https://2gis.ae/) to your iOS application.
 
-This SDK uses [WebKit](https://developer.apple.com/documentation/webkit) to render the map. If you need a more native solution (for example, if you don't want to display web content inside your app), take a look at `iOS Native SDK`.
+Like the regular [iOS SDK](/en/ios/sdk/overview), it can be used to display the map in your interface and add various objects to it, but unlike iOS SDK, MapGL iOS API uses [WebKit](https://developer.apple.com/documentation/webkit) to render the map and is more limited in capabilities.
 
 ## Getting an access key
 
@@ -16,7 +16,7 @@ To obtain either of these API keys, fill in the form at [dev.2gis.com](https://d
 
 ## Installation
 
-2GIS iOS MapGL is available through [CocoaPods](https://cocoapods.org/). To install it, add the following line to your Podfile:
+MapGL iOS API is available through [CocoaPods](https://cocoapods.org/). To install it, add the following line to your Podfile:
 
 ```
 pod 'MapGL'
@@ -24,10 +24,10 @@ pod 'MapGL'
 
 [![Version](https://img.shields.io/cocoapods/v/MapGL.svg?style=social&logo=cocoapods&label=version)](https://cocoapods.org/pods/MapGL)
 
-After that, you should be good to go. Check the [Examples](/en/ios/webgl/maps/examples) section to see how to display the map in your application. Alternatively, check the [API Reference](/en/ios/webgl/maps/reference) to learn more about specific classes and methods.
+After that, you should be good to go. Check the [Examples](/en/ios/mapgl/maps/examples) section to see how to display the map in your application. Alternatively, check the [API Reference](/en/ios/mapgl/maps/reference) to learn more about specific classes and methods.
 
 Also, you could visit [the GitHub repository](https://github.com/2gis/MapGL-iOS) to learn more about the SDK and get familiar with sample project.
 
 ## License
 
-2GIS iOS MapGL is licensed under the BSD 2-Clause "Simplified" License. See the [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE) file for more information.
+MapGL iOS API is licensed under the BSD 2-Clause "Simplified" License. See the [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE) file for more information.
