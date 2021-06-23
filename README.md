@@ -3,7 +3,7 @@
 
 2GIS MapGL iOS API is a wrapper around [MapGL API](https://docs.2gis.com/en/mapgl/overview) that allows you to add a [2GIS map](https://2gis.ae/) to your iOS application.
 
-Like the regular [iOS SDK](https://docs.2gis.com/en/ios/sdk/overview), it can be used to display the map in your interface and add various objects to it, but unlike iOS SDK, MapGL iOS uses [WebKit](https://developer.apple.com/documentation/webkit) to render the map and is more limited in capabilities.
+Like the regular [iOS SDK](https://docs.2gis.com/en/ios/sdk/overview), it can be used to display the map in your interface and add various objects to it, but unlike iOS SDK, MapGL iOS API uses [WebKit](https://developer.apple.com/documentation/webkit) to render the map and is more limited in capabilities.
 
 ## Getting API keys
 

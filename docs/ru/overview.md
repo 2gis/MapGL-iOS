@@ -1,10 +1,10 @@
-# 2GIS MapGL iOS API
+# MapGL iOS API
 
 ## Введение
 
-2GIS MapGL iOS API позволяет добавить [карту 2GIS](https://2gis.ru/) в ваше iOS-приложение.
+MapGL iOS API позволяет добавить [карту 2GIS](https://2gis.ru/) в ваше iOS-приложение.
 
-В отличие от [iOS SDK](/ru/ios/sdk/overview), MapGL iOS использует [MapGL API](/ru/mapgl/overview) и [WebKit](https://developer.apple.com/documentation/webkit) для отображения карты и более ограничен в возможностях.
+В отличие от [iOS SDK](/ru/ios/sdk/overview), MapGL iOS API использует [MapGL API](/ru/mapgl/overview) и [WebKit](https://developer.apple.com/documentation/webkit) для отображения карты и более ограничен в возможностях.
 
 ## Получение ключа доступа
 
@@ -30,4 +30,4 @@ pod 'MapGL'
 
 ## Лицензия
 
-2GIS MapGL iOS API распространяется под упрощённой лицензией BSD 2-Clause. Дополнительную информацию можно найти в файле [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE).
+MapGL iOS API распространяется под упрощённой лицензией BSD 2-Clause. Дополнительную информацию можно найти в файле [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE).
