@@ -21,9 +21,9 @@ MapGL iOS API is available through [CocoaPods](http://cocoapods.org/). To instal
 pod 'MapGL'
 ```
 
-## Running example app
+## Running the demo app
 
-To run the example app, clone this Git repository, open `HelloSDK.xcworkspace` and specify your API keys in `Example/HelloSDK/HelloVC.swift`:
+To run the demo app, clone this Git repository, open `HelloSDK.xcworkspace` and specify your API keys in `Example/HelloSDK/HelloVC.swift`:
 
 ```swift
 enum Constants {
@@ -38,4 +38,4 @@ Full documentation, including [usage examples](https://docs.2gis.com/en/ios/mapg
 
 ## License
 
-2GIS MapGL iOS API is licensed under the BSD 2-Clause "Simplified" License. See the [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE) file for more information.
+The demo application is licensed under the BSD 2-Clause "Simplified" License. See the [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE) file for more information.
