@@ -38,4 +38,4 @@ Full documentation, including [usage examples](https://docs.2gis.com/en/ios/mapg
 
 ## License
 
-The demo application is licensed under the BSD 2-Clause "Simplified" License. See the [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE) file for more information.
+2GIS MapGL iOS API is licensed under the BSD 2-Clause "Simplified" License. See the [LICENSE](https://github.com/2gis/MapGL-iOS/blob/master/LICENSE) file for more information.
