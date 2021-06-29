@@ -21,9 +21,9 @@ MapGL iOS API is available through [CocoaPods](http://cocoapods.org/). To instal
 pod 'MapGL'
 ```
 
-## Running example app
+## Running the demo app
 
-To run the example app, clone this Git repository, open `HelloSDK.xcworkspace` and specify your API keys in `Example/HelloSDK/HelloVC.swift`:
+To run the demo app, clone this Git repository, open `HelloSDK.xcworkspace` and specify your API keys in `Example/HelloSDK/HelloVC.swift`:
 
 ```swift
 enum Constants {
