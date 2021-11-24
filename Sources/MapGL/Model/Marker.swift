@@ -45,9 +45,8 @@ open class Marker: MapObject {
 	/// Gets or sets the marker coordinates.
 	public var coordinates: CLLocationCoordinate2D {
 		didSet {
-			if oldValue != self.coordinates {
-				self.setMarkerCoordinates(coordinates: self.coordinates)
-			}
+			guard self.coordinates != oldValue else { return }
+			self.updateMarkerCoordinates(coordinates: self.coordinates)
 		}
 	}
 
@@ -67,6 +66,20 @@ open class Marker: MapObject {
 		}
 	}
 
+	/// Sets the clockwise rotation of the icon. Angle in degrees.
+	public var rotation: Double {
+		didSet {
+			guard self.rotation != oldValue else { return }
+			let js = """
+			{
+			const m = objects.get("\(self.id)");
+			m.setRotation(\(self.rotation));
+			}
+			"""
+			self.evaluateJS(js)
+		}
+	}
+
 	/// Creates the new instance of the marker object.
 	///
 	/// - Parameters:
@@ -75,6 +88,7 @@ open class Marker: MapObject {
 	///   - image: Marker image
 	///   - anchor: Marker anchor
 	///   - label: Initialization options of the marker's label. coordinate is ignored
+	///   - rotation: Sets the clockwise rotation of the icon. Angle in degrees.
 	///   - zIndex: Draw order.
 	public init(
 		id: String = NSUUID().uuidString,
@@ -82,12 +96,14 @@ open class Marker: MapObject {
 		image: UIImage? = nil,
 		anchor: Anchor = .center,
 		label: Label? = nil,
+		rotation: Double = 0,
 		zIndex: CGFloat? = nil
 	) {
 		self.coordinates = coordinates
 		self.image = image
 		self.anchor = anchor
 		self.label = label
+		self.rotation = rotation
 		self.zIndex = zIndex
 		super.init(id: id)
 	}
@@ -116,6 +132,7 @@ extension Marker: IJSOptions {
 			options["size"] = image.size
 			options["anchor"] = AnchoredImage(image: image, anchor: self.anchor)
 		}
+		options["rotation"] = self.rotation
 		if let zIndex = self.zIndex {
 			options["zIndex"] = zIndex
 		}
@@ -132,12 +149,12 @@ extension Marker: IJSOptions {
 		return js
 	}
 
-	func setMarkerCoordinates(coordinates: CLLocationCoordinate2D) {
+	private func updateMarkerCoordinates(coordinates: CLLocationCoordinate2D) {
 		let js = """
-		window.setMarkerCoordinates(
-		"\(self.id)",
-		\(self.coordinates.jsValue())
-		);
+		{
+		const m = objects.get("\(self.id)");
+		m.setCoordinates(\(self.coordinates.jsValue()));
+		}
 		"""
 		self.evaluateJS(js)
 	}

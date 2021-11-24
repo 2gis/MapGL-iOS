@@ -27,7 +27,7 @@ open class Polygon: MapObject {
 		fillColor: UIColor? = nil,
 		z: Int? = nil
 	) {
-		assert(points.count > 2, "Polygon should countain more than 2 points")
+		assert(points.count > 2, "Polygon should contain more than 2 points")
 		self.points = points
 		self.strokeColor = strokeColor
 		self.fillColor = fillColor

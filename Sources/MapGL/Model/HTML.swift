@@ -178,10 +178,6 @@ enum HTML {
 			window.setFloorPlanLevel = function (floorPlanId, floorLevelIndex) {
 				window.map.setFloorPlanLevel(floorPlanId, floorLevelIndex);
 			}
-			window.setMarkerCoordinates = function (id, coordinates) {
-				const marker = objects.get(id);
-				marker.setCoordinates(coordinates);
-			}
 			window.addPolygon = function (options) {
 				const polygon = new mapgl.Polygon(window.map, options);
 				window.setupObject(options.id, polygon);

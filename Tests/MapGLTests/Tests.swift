@@ -187,10 +187,10 @@ class Tests: XCTestCase {
 		self.map.add(marker)
 		marker.coordinates = CLLocationCoordinate2D(latitude: 3, longitude: 4)
 		let expected = """
-		window.setMarkerCoordinates(
-		"123",
-		[4.0,3.0]
-		);
+		{
+		const m = objects.get("123");
+		m.setCoordinates([4.0,3.0]);
+		}
 		"""
 		XCTAssertEqual(self.jsExecutor.javaScriptString, expected)
 		XCTAssertEqual(self.jsExecutor.invocationsCount, 2)
