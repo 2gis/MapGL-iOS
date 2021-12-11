@@ -58,6 +58,8 @@ public class MapView : UIView {
 	public var mapClick: ((CLLocationCoordinate2D) -> Void)?
 	/// Notifies of the floor plan change.
 	public var floorPlanDidChange: ((FloorPlan?) -> Void)?
+	/// Notifies of the floor level change.
+	public var floorLevelChanged: ((FloorLevel) -> Void)?
 	/// Notifies of the map support changed.
 	public var mapSupportDidChange: ((MapSupport) -> Void)?
 
@@ -662,7 +664,9 @@ extension MapView: JSBridgeDelegate {
 			self.support = .notSupported(reason: reason)
 		}
 	}
-
+	func js(_ js: JSBridge, floorLevelChanged level: FloorLevel) {
+		self.floorLevelChanged?(level)
+	}
 }
 
 // MARK: - IObjectDelegate

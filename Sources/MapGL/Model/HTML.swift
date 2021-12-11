@@ -94,14 +94,18 @@ enum HTML {
 						value: window.map.getPitch()
 					});
 				});
-
 				window.map.on('floorplanshow', (ev) => {
 					window.webkit.messageHandlers.dgsMessage.postMessage({
 						type: "floorPlanShow",
 						value: ev
 					});
 				});
-
+				window.map.on('floorlevelchange', (e) => {
+					window.webkit.messageHandlers.dgsMessage.postMessage({
+						type: "floorlevelchange",
+						value: e
+					});
+				});
 				window.map.on('floorplanhide', (ev) => {
 					window.webkit.messageHandlers.dgsMessage.postMessage({
 						type: "floorPlanHide",

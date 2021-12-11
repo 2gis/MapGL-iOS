@@ -1,5 +1,21 @@
 import Foundation
 
+/// Contains a current floor level data.
+public class FloorLevel {
+	/// An id of a floor plan.
+	public let id: String
+	/// A current level index of a floor plan.
+	public let index: Int
+	/// A current level name of a floor plan.
+	public let name: String
+
+	init(id: String, index: Int, name: String) {
+		self.id = id
+		self.index = index
+		self.name = name
+	}
+}
+
 /// Represents a floor plan of some building.
 public class FloorPlan {
 	/// An id of a floor plan.

@@ -366,6 +366,16 @@ extension JSBridge: WKScriptMessageHandler {
 				}
 
 				delegate.js(self, hideFloorPlan: id)
+			case "floorlevelchange":
+				guard let data = body["value"] as? [String: Any],
+					  let id = data["floorPlanId"] as? String,
+					  let index = data["floorLevelIndex"] as? Int,
+					  let name = data["floorLevelName"] as? String else {
+						  assertionFailure()
+						  return
+					  }
+				let level = FloorLevel(id: id, index: index, name: name)
+				delegate.js(self, floorLevelChanged: level)
 			case "supportChanged":
 				let data = body["value"] as? [String: String]
 				let notSupportedReason = data?["notSupportedReason"]

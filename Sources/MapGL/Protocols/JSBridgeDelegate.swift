@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 
-protocol JSBridgeDelegate : AnyObject {
+protocol JSBridgeDelegate: AnyObject {
 
 	func js(_ js: JSBridge, mapCenterDidChange mapCenter: CLLocationCoordinate2D)
 	func js(_ js: JSBridge, mapZoomDidChange mapZoom: Double)
@@ -14,6 +14,7 @@ protocol JSBridgeDelegate : AnyObject {
 	func js(_ js: JSBridge, carRouteDidFinishWithId directionId: String, completionId: String, error: MapGLError?)
 	func js(_ js: JSBridge, showFloorPlan floorPlanId: String, currentLevelIndex: Int, floorLevels: [String])
 	func js(_ js: JSBridge, hideFloorPlan floorPlanId: String)
+	func js(_ js: JSBridge, floorLevelChanged level: FloorLevel)
 	func js(_ js: JSBridge, supportedReason notSupportedReason: String?, notSupportedWithGoodPerformanceReason: String?)
 
 }
