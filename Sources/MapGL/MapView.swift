@@ -465,6 +465,12 @@ public class MapView : UIView {
 		self.js.fitBounds(bounds, options: options, completion: completion)
 	}
 
+	/// Eevaluate custom JS script on map
+	/// - Parameter js: JS Code to execute
+	public func evaluateJS(_ js: String) {
+		self.js.evaluateJS(js)
+	}
+
 	private func loadHtml(completion: @escaping () -> Void) {
 		self.webView.loadHTMLString(HTML.html, baseURL: nil)
 		self.wkDelegate.onInitializeMap = {
@@ -671,11 +677,7 @@ extension MapView: JSBridgeDelegate {
 
 // MARK: - IObjectDelegate
 
-extension MapView: IObjectDelegate {
-	func evaluateJS(_ js: String) {
-		self.js.evaluateJS(js)
-	}
-}
+extension MapView: IObjectDelegate {}
 
 // MARK: - Objects
 
