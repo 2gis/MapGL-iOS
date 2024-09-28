@@ -1,7 +1,7 @@
 import Foundation
 
 /// Base map object class
-open class MapObject: NSObject, IMapObject {
+open class MapObject: IMapObject {
 
 	/// Unique object id
 	@objc public let id: String

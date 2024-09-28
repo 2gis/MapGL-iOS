@@ -10,7 +10,7 @@ private struct JSOptions: IJSOptions {
 	}
 }
 
-class JSBridge : NSObject {
+final class JSBridge: NSObject {
 
 	typealias Completion = (Result<Void, Error>) -> Void
 
@@ -182,7 +182,9 @@ class JSBridge : NSObject {
 	}
 
 	func setStyleState(styleState: [String: Bool]) {
-		let styleState = styleState.mapValues { $0.jsValue() }.jsValue()
+		let styleState = styleState.mapValues {
+			$0.jsValue()
+		}.jsValue()
 		let js = """
 		window.setStyleState(\(styleState));
 		"""
@@ -190,7 +192,9 @@ class JSBridge : NSObject {
 	}
 
 	func patchStyleState(styleState: [String: Bool]) {
-		let styleState = styleState.mapValues { $0.jsValue() }.jsValue()
+		let styleState = styleState.mapValues {
+			$0.jsValue()
+		}.jsValue()
 		let js = """
 		window.patchStyleState(\(styleState));
 		"""
@@ -330,7 +334,7 @@ extension JSBridge: WKScriptMessageHandler {
 						assertionFailure()
 					}
 				} else if let cluster = body["value"] as? [[String: Any]] {
-					let ids = cluster.compactMap { $0["id"] as? String }
+					let ids = cluster.compactMap{ $0["id"] as? String }
 					assert(cluster.count == ids.count)
 					delegate.js(self, didClickClusterWithId: clusterId, markerIds: ids)
 				} else {

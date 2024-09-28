@@ -38,9 +38,9 @@ enum HTML {
 			}
 		};
 	</script>
-	<script src="https://mapgl.2gis.com/api/js"></script>
+	<script src="https://mapgl.2gis.com/api/js/v1"></script>
 	<script src="https://unpkg.com/@2gis/mapgl-clusterer@^1/dist/clustering.js"></script>
-	<script src="https://unpkg.com/@2gis/mapgl-directions@^1/dist/directions.js"></script>
+	<script src="https://unpkg.com/@2gis/mapgl-directions@^2/dist/directions.js"></script>
 	<script>
 		const postMessage = (name, args) => {
 			window.webkit.messageHandlers.dgsMessage.postMessage({

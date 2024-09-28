@@ -3,7 +3,7 @@ import WebKit
 import CoreLocation
 
 /// A MapView displays interactive 3d map.
-public class MapView : UIView {
+public class MapView: UIView {
 
 	enum Const {
 		static let mapMinZoom: Double = 2
@@ -602,15 +602,15 @@ extension MapView: JSBridgeDelegate {
 
 	func js(_ js: JSBridge, didClickMapWithEvent event: MapClickEvent) {
 		self.mapClick?(event.coordinate)
-		self.delegate?.mapView?(self, didSelectCoordnates: event.coordinate)
+		self.delegate?.mapView(self, didSelectCoordnates: event.coordinate)
 		if let objectId = event.target?.id {
-			self.delegate?.mapView?(self, didSelectObject: MapEntity(id: objectId))
+			self.delegate?.mapView(self, didSelectObject: MapEntity(id: objectId))
 		}
 	}
 
 	func js(_ js: JSBridge, didClickObjectWithId objectId: String) {
 		if let object = self.objects[objectId] {
-			self.delegate?.mapView?(self, didSelectObject: object)
+			self.delegate?.mapView(self, didSelectObject: object)
 		} else {
 			assertionFailure()
 		}
@@ -619,7 +619,7 @@ extension MapView: JSBridgeDelegate {
 	func js(_ js: JSBridge, didClickClusterWithId clusterId: String, markerIds: [String]) {
 		if let cluster = self.objects[clusterId] as? Cluster {
 			let markers = cluster.markers.filter { markerIds.contains($0.id) }
-			self.delegate?.mapView?(self, didSelectMarkers: markers, in: cluster)
+			self.delegate?.mapView(self, didSelectMarkers: markers, in: cluster)
 		} else {
 			assertionFailure()
 		}
@@ -782,7 +782,7 @@ extension MapView: UserLocationManagerDelegate {
 	}
 
 	func userLocationManager(_ manager: UserLocationManager, didUpdateUserLocation location: CLLocation?) {
-		self.delegate?.mapView?(self, didUpdateUserLocation: location)
+		self.delegate?.mapView(self, didUpdateUserLocation: location)
 	}
 }
 

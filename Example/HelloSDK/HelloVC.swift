@@ -165,17 +165,40 @@ final class HelloVC: UIViewController {
 			print("Map support did change to: \(support)")
 		}
 
+		self.map.floorLevelChanged = { [weak self] level in
+			guard let self = self else { return }
+
+//			self.floorService.updateFloorLevel(floorLevel: level)
+		}
+		self.map.floorPlanDidChange = { [weak self] plan in
+//			self?.floorService.currentFloorPlan = plan
+		}
+//		self.floorService.onCurrentFloorChanged = { [weak self] floor in
+////			self?.drawCurrentFloorMapData(floor)
+//			//			self?.drawLines(floor: floor)
+//		}
+
+//		self.map.mapMinZoom = 17.5
+
 		self.map.show(
 			apiKey: Constants.apiKey,
-			center: CLLocationCoordinate2D(latitude: 25.23584, longitude: 55.31878),
-			styleZoom: 18,
+			center: CLLocationCoordinate2D(latitude: 54.860104, longitude: 83.104987),
+			styleZoom: 17.5,
 			autoHideOSMCopyright: true,
-			maxBounds: GeographicalBounds(
-				northEast: CLLocationCoordinate2D(latitude: 36, longitude: 57),
-				southWest: CLLocationCoordinate2D(latitude: 10, longitude: 22)
-			),
+//			maxBounds: GeographicalBounds(
+//				northEast: CLLocationCoordinate2D(latitude: 36, longitude: 57),
+//				southWest: CLLocationCoordinate2D(latitude: 10, longitude: 22)
+//			),
 			mapStyleId: self.mapStyle.rawValue
 		) { error in
+
+			let floorControl = """
+   const floorControl = new mapgl.FloorControl(map, {
+   position: 'centerLeft',
+   });
+   """
+			self.map.evaluateJS(floorControl)
+
 			print(error ?? "Map initialized")
 		}
 	}
@@ -563,7 +586,7 @@ extension HelloVC {
 
 extension MapObject {
 	var title: String {
-		return type(of: self).description()
+		return "\(type(of: self))"
 	}
 	var text: String {
 		if let marker = self as? Marker {

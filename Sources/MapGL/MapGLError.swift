@@ -1,7 +1,7 @@
 import Foundation
 
 /// Represents the error occured in MapGL.
-public class MapGLError : Error, LocalizedError {
+public class MapGLError: Error, LocalizedError {
 
 	/// Description of the error.
 	private let text: String
@@ -14,7 +14,7 @@ public class MapGLError : Error, LocalizedError {
 	}
 
 	public var errorDescription: String? {
-		return self.text
+		self.text
 	}
 
 }
